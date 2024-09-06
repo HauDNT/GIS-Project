@@ -1,6 +1,6 @@
 # ReactJS
 <p align="center">
-  <a href="" target="blank"><img src="https://images.viblo.asia/da4b60f5-c0e3-4872-aec0-90fbe4ca0a61.png" width="120" alt="Nest Logo" /></a>
+  <a href="" target="blank"><img src="https://w7.pngwing.com/pngs/79/518/png-transparent-js-react-js-logo-react-react-native-logos-icon-thumbnail.png" width="200" alt="Nest Logo" /></a>
 </p>
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
