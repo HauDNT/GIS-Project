@@ -1,5 +1,7 @@
 # ReactJS
-# Getting Started with Create React App
+<p align="center">
+  <a href="" target="blank"><img src="https://images.viblo.asia/da4b60f5-c0e3-4872-aec0-90fbe4ca0a61.png" width="120" alt="Nest Logo" /></a>
+</p>
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
