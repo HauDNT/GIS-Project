@@ -19,28 +19,21 @@ import { DispatchRicesModule } from './dispatch_rices/dispatch_rices.module';
 import { DispatchRice } from './dispatch_rices/dispatch_rice.entity';
 import { ReceivingRice } from './receiving_rices/receiving_rice.entity';
 import { AuthModule } from './auth/auth.module';
+import { typeOrmAsyncConfig } from './db/data-source';
+import { ConfigModule } from '@nestjs/config';
+import configuration from './config/configuration';
 
 @Module({
     imports: [
-        TypeOrmModule.forRoot({
-            type: 'mysql',
-            database: 'geographic-information-system',
-            host: 'localhost',
-            port: 3310,
-            username: 'root',
-            password: '123456',
-            entities: [
-                Warehouse, 
-                Staff, 
-                RicePlant, 
-                Customer, 
-                ReceivingSlip, 
-                DispatchSlip,
-                ReceivingRice,
-                DispatchRice,
+        ConfigModule.forRoot({
+            envFilePath: [
+                '.env.development',
+                '.env.production',
             ],
-            synchronize: true,
+            isGlobal: true,
+            load: [configuration],
         }),
+        TypeOrmModule.forRootAsync(typeOrmAsyncConfig),
         WarehousesModule,
         StaffsModule,
         RiceplantsModule,
