@@ -1,27 +1,19 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { dataSourceOptions, typeOrmAsyncConfig } from '../db/data-source';
+import configuration from './config/configuration';
 import { WarehousesModule } from './warehouses/warehouses.module';
 import { StaffsModule } from './staffs/staffs.module';
-import { Warehouse } from './warehouses/warehouse.entity';
-import { Staff } from './staffs/staff.entity';
 import { RiceplantsModule } from './riceplants/riceplants.module';
-import { RicePlant } from './riceplants/riceplant.entity';
 import { CustomersModule } from './customers/customers.module';
-import { Customer } from './customers/customer.entity';
 import { ReceivingSlipsModule } from './receiving_slips/receiving_slips.module';
-import { ReceivingSlip } from './receiving_slips/receiving_slip.entity';
 import { DispatchSlipsModule } from './dispatch_slips/dispatch_slips.module';
-import { DispatchSlip } from './dispatch_slips/dispatch_slip.entity';
 import { ReceivingRicesModule } from './receiving_rices/receiving_rices.module';
 import { DispatchRicesModule } from './dispatch_rices/dispatch_rices.module';
-import { DispatchRice } from './dispatch_rices/dispatch_rice.entity';
-import { ReceivingRice } from './receiving_rices/receiving_rice.entity';
 import { AuthModule } from './auth/auth.module';
-import { typeOrmAsyncConfig } from './db/data-source';
-import { ConfigModule } from '@nestjs/config';
-import configuration from './config/configuration';
 
 @Module({
     imports: [
@@ -34,6 +26,7 @@ import configuration from './config/configuration';
             load: [configuration],
         }),
         TypeOrmModule.forRootAsync(typeOrmAsyncConfig),
+        TypeOrmModule.forRoot(dataSourceOptions), 
         WarehousesModule,
         StaffsModule,
         RiceplantsModule,
@@ -45,6 +38,8 @@ import configuration from './config/configuration';
         AuthModule,
     ],
     controllers: [AppController],
-    providers: [AppService],
+    providers: [
+        AppService,
+    ],
 })
 export class AppModule { }

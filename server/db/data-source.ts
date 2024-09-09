@@ -1,5 +1,6 @@
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { TypeOrmModuleOptions, TypeOrmModuleAsyncOptions } from "@nestjs/typeorm";
+import { DataSource, DataSourceOptions } from "typeorm";
 
 export const typeOrmAsyncConfig: TypeOrmModuleAsyncOptions = {
     imports: [ConfigModule],
@@ -19,4 +20,20 @@ export const typeOrmAsyncConfig: TypeOrmModuleAsyncOptions = {
             migrations: ['dist/db/migrations/*.js'],
         }
     }
-}
+};
+
+export const dataSourceOptions: DataSourceOptions = {
+    type: 'mysql',
+    host: 'localhost',
+    port: 3310,
+    username: 'root',
+    password: '123456',
+    database: 'geographic-information-system',
+    entities: ['dist/**/*.entity.js'],
+    synchronize: false,
+    migrations: ['dist/db/migrations/*.js'],
+};
+
+// Khởi tạo 1 DataSource
+const dataSource = new DataSource(dataSourceOptions);
+export default dataSource;
