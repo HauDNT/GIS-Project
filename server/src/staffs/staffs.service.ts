@@ -2,7 +2,6 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Staff } from './staff.entity';
 import { Repository } from 'typeorm';
-import { LoginDTO } from 'src/auth/dto/login.dto';
 import { SignupDTO } from 'src/auth/dto/signup.dto';
 
 @Injectable()
@@ -19,7 +18,6 @@ export class StaffsService {
 
     async findOneByUsername(username: string, isEmail: boolean): Promise<Staff> {
         let staff = undefined;
-
         if (isEmail) {
             staff = await this.staffRepository.findOneBy({ Email: username })
         }
