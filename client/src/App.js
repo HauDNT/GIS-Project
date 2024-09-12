@@ -4,7 +4,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './styles/index.scss';
 import {
     Login,
-    Home
+    Home,
+    Dashboard
 } from './views/index';
 
 function App() {
@@ -40,8 +41,8 @@ function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path='login' element={<Login />} />
-                    <Route path="/" element={<Home />}>
-
+                    <Route element={<Home />}>
+                        <Route path="/" element={<Dashboard/>} />
                     </Route>
                 </Routes>
             </BrowserRouter>
