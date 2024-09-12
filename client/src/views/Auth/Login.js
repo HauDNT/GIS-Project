@@ -3,6 +3,7 @@ import * as Yup from 'yup';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { saveObjectDataToLocalStorage } from '../../utils/LocalStorage';
 import axiosInstance from '../../common/AxiosInstance';
 import backgroundImg from '../../assets/images/wave.png';
 import backgroundElement from '../../assets/images/element.png';
@@ -41,6 +42,10 @@ function Login() {
             
             if (response.data.accessToken) {
                 toast.success("Đăng nhập thành công!");
+
+                // Save data to local storage
+                saveObjectDataToLocalStorage(response.data);
+
                 navigator('/');
             }
         } catch (error) {

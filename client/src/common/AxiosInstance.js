@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getFromLocalStorage } from "../utils/LocalStorage";
 import { ServerAddress } from "./UrlServerAddress";
 
 // Instance axios với cấu hình mặc định
@@ -13,7 +14,15 @@ const axiosInstance = axios.create({
 // Interceptor để xử lý request (có thể đưa Authenticate token vào)
 // Tạm thời bỏ qua interceptors
 axiosInstance.interceptors.request.use(
-    config => config,
+    async config => {
+        const token = getFromLocalStorage('accessToken');
+
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        };
+
+        return config;
+    },
     error => Promise.reject(error)
 );
 
