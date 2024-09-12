@@ -5,7 +5,9 @@ import './styles/index.scss';
 import {
     Login,
     Home,
-    Dashboard
+    Dashboard,
+    
+    PageNotFound,
 } from './views/index';
 
 function App() {
@@ -44,6 +46,7 @@ function App() {
                     <Route element={<Home />}>
                         <Route path="/" element={<Dashboard/>} />
                     </Route>
+                    <Route path="/*" exact element={<PageNotFound />} />
                 </Routes>
             </BrowserRouter>
 
