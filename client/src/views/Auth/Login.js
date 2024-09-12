@@ -36,11 +36,16 @@ function Login() {
             return;
         }
 
-        const response = await axiosInstance.post(`/auth/login`, data);
-
-        if (response.data.accessToken) {
-            toast.success("Đăng nhập thành công!");
-            navigator('/');
+        try {
+            const response = await axiosInstance.post(`/auth/login`, data);
+            
+            if (response.data.accessToken) {
+                toast.success("Đăng nhập thành công!");
+                navigator('/');
+            }
+        } catch (error) {
+            toast.error("Đăng nhập thất bại!");
+            alert(error);
         }
     };
 
