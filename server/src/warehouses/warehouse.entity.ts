@@ -8,10 +8,10 @@ export class Warehouse {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({ type: 'varchar' })
     TenKho: string;
 
-    @Column("text")
+    @Column({ type: 'varchar' })
     DiaChi: string;
 
     @Column({ nullable: true })
