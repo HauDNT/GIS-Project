@@ -1,13 +1,13 @@
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import './styles/index.scss';
 import {
     Login,
     Home,
     Dashboard,
     PageNotFound,
 } from './views/index';
+import './styles/index.scss';
 
 function App() {
     return (
