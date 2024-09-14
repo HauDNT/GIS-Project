@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import ReactMapGl, { Marker, NavigationControl  } from 'react-map-gl';
-import { easeCubic } from 'd3-ease';
-import RoomIcon from '@mui/icons-material/Room';
+import ReactMapGl, { Marker, NavigationControl } from 'react-map-gl';
 import "mapbox-gl/dist/mapbox-gl.css";
+import MarkerComponent from './Marker';
+import RoomIcon from '@mui/icons-material/Room';
 import "../../styles/map.scss";
 
 const MapComponent = () => {
@@ -19,22 +19,18 @@ const MapComponent = () => {
         zoom: 14,
         width: "100vw",
         height: "100vh",
-        transitionDuration: 500,
-        transitionEasing: easeCubic,
     });
 
     const handleViewportChange = (newViewport) => {
         setViewPort({
             ...newViewport,
-            transitionDuration: 500,
-            transitionEasing: easeCubic,
         });
     };
 
     const handleDbClick = (e) => {
         e.preventDefault();
 
-        const { lng, lat } = e.lngLat;  // Lấy lng và lat
+        const { lng, lat } = e.lngLat;
         setNewPlace(prevPlaces => [
             ...prevPlaces,
             {
@@ -45,7 +41,7 @@ const MapComponent = () => {
     };
 
     return (
-        <div style={{ width: "100vw", height: "100vh" }}>
+        <div className='map-container'>
             <ReactMapGl
                 {...viewPort}
                 mapboxAccessToken='pk.eyJ1IjoidGhvbWFzZGFuZzE4MTIwMDMiLCJhIjoiY20xMXIyMXdlMHVqNjJrb3EyOWd0bmRpbiJ9.OMZfnZwOUP-NHKdLaS9ypg'
@@ -56,29 +52,23 @@ const MapComponent = () => {
                 onDblClick={handleDbClick}
                 onZoom={(newViewPort) => handleViewportChange(newViewPort)}
                 onDrag={(newViewPort) => handleViewportChange(newViewPort)}
+                cursor='default'
+                
             >
                 {
                     newPlace.length > 0 && newPlace.map(place => (
-                        <>
-                            <Marker
-                                latitude={place.latitude}   // Sử dụng latitude
-                                longitude={place.longitude}  // Sử dụng longitude
-                                offsetLeft={-3.5 * viewPort.zoom}
-                                offsetTop={-7 * viewPort.zoom}
-                            >
-                                <RoomIcon
-                                    style={{
-                                        fontSize: 30,
-                                        color: 'tomato',
-                                        cursor: 'pointer'
-                                    }}
-                                />
-                            </Marker>
-                        </>
+                        <MarkerComponent
+                            latitude={place.latitude}
+                            longitude={place.longitude}
+                            offsetLeft={0 * viewPort.zoom}
+                            offsetRight={0 * viewPort.zoom}
+                        >
+                            <RoomIcon className='marker-icon' />
+                        </MarkerComponent>
                     ))
                 }
 
-                <NavigationControl position='top-left'/>
+                <NavigationControl position='top-right' />
             </ReactMapGl>
         </div>
     )

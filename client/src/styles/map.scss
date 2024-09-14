@@ -1,3 +1,10 @@
-.leaflet-container {
+.map-container {
+    width: 100vw;
     height: 100vh;
+
+    .marker-icon {
+        color: red;
+        cursor: pointer;
+        font-size: 35px;
+    }
 }
