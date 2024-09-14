@@ -1,42 +1,87 @@
-/*
-    * https://cloud.maptiler.com/account/keys/
-    * https://docs.maptiler.com/react/maplibre-gl-js/how-to-use-maplibre-gl-js/
-*/
-
-import React, { useRef, useEffect } from 'react';
-import maplibregl from 'maplibre-gl';
-import 'maplibre-gl/dist/maplibre-gl.css';
-import '../../styles/map.scss';
+import { useState } from 'react';
+import ReactMapGl, { Marker, NavigationControl  } from 'react-map-gl';
+import { easeCubic } from 'd3-ease';
+import RoomIcon from '@mui/icons-material/Room';
+import "mapbox-gl/dist/mapbox-gl.css";
+import "../../styles/map.scss";
 
 const MapComponent = () => {
-    const mapContainer = useRef(null);
-    const map = useRef(null);
-    const lng = 105.14434709756426;
-    const lat = 9.914565453807697;
-    const zoom = 14;
-    const API_KEY = 'U1lmMrNJDyClexTW95Ld';
+    const [newPlace, setNewPlace] = useState([
+        {
+            latitude: 9.97032002433383,
+            longitude: 105.11054875065781,
+        }
+    ]);
 
-    useEffect(() => {
-        if (map.current) return;
+    const [viewPort, setViewPort] = useState({
+        latitude: 9.97032002433383,
+        longitude: 105.11054875065781,
+        zoom: 14,
+        width: "100vw",
+        height: "100vh",
+        transitionDuration: 500,
+        transitionEasing: easeCubic,
+    });
 
-        map.current = new maplibregl.Map({
-            container: mapContainer.current,
-            style: `https://api.maptiler.com/maps/streets-v2/style.json?key=${API_KEY}`,
-            center: [lng, lat],
-            zoom: zoom
+    const handleViewportChange = (newViewport) => {
+        setViewPort({
+            ...newViewport,
+            transitionDuration: 500,
+            transitionEasing: easeCubic,
         });
+    };
 
-        map.current.addControl(new maplibregl.NavigationControl(), 'top-right');
-        new maplibregl.Marker({ color: "#FF0000" })
-            .setLngLat([lng, lat])
-            .addTo(map.current);
-    }, [API_KEY, lng, lat, zoom]);
+    const handleDbClick = (e) => {
+        e.preventDefault();
+
+        const { lng, lat } = e.lngLat;  // Lấy lng và lat
+        setNewPlace(prevPlaces => [
+            ...prevPlaces,
+            {
+                latitude: lat,
+                longitude: lng,
+            }
+        ]);
+    };
 
     return (
-        <div className="map-wrap">
-            <div ref={mapContainer} className="map" />
+        <div style={{ width: "100vw", height: "100vh" }}>
+            <ReactMapGl
+                {...viewPort}
+                mapboxAccessToken='pk.eyJ1IjoidGhvbWFzZGFuZzE4MTIwMDMiLCJhIjoiY20xMXIyMXdlMHVqNjJrb3EyOWd0bmRpbiJ9.OMZfnZwOUP-NHKdLaS9ypg'
+                width="100%"
+                height="100%"
+                transitionDuration="200"
+                mapStyle="mapbox://styles/thomasdang1812003/cm11ynsa601fd01qucszn06ou"
+                onDblClick={handleDbClick}
+                onZoom={(newViewPort) => handleViewportChange(newViewPort)}
+                onDrag={(newViewPort) => handleViewportChange(newViewPort)}
+            >
+                {
+                    newPlace.length > 0 && newPlace.map(place => (
+                        <>
+                            <Marker
+                                latitude={place.latitude}   // Sử dụng latitude
+                                longitude={place.longitude}  // Sử dụng longitude
+                                offsetLeft={-3.5 * viewPort.zoom}
+                                offsetTop={-7 * viewPort.zoom}
+                            >
+                                <RoomIcon
+                                    style={{
+                                        fontSize: 30,
+                                        color: 'tomato',
+                                        cursor: 'pointer'
+                                    }}
+                                />
+                            </Marker>
+                        </>
+                    ))
+                }
+
+                <NavigationControl position='top-left'/>
+            </ReactMapGl>
         </div>
-    );
+    )
 }
 
 export default MapComponent;
