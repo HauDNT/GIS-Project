@@ -86,10 +86,10 @@ function Login() {
 
     return (
         <div className="login-page">
-            <img class="wave" src={backgroundImg} />
+            <img class="wave" src={backgroundImg} alt='' />
             <div class="container">
                 <div class="img">
-                    <img src={backgroundElement} />
+                    <img src={backgroundElement} alt='' />
                 </div>
                 <div class="login-content">
                     <Formik
@@ -98,7 +98,7 @@ function Login() {
                         onSubmit={handleLogin}
                     >
                             <Form>
-                                <img src={avatarIcon} className="mb-3" />
+                                <img src={avatarIcon} className="mb-3" alt='avatar icon' />
                                 <h3 class="title mb-3">Hệ thống quản lý kho lúa</h3>
 
                                 <div className="input-div one">
