@@ -6,7 +6,6 @@ import {
     Login,
     Home,
     Dashboard,
-    
     PageNotFound,
 } from './views/index';
 
@@ -25,11 +24,6 @@ function App() {
                 integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
                 crossorigin="anonymous"
             />
-            <script
-                src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-                crossorigin="anonymous"
-            ></script>
             <link
                 href="https://fonts.googleapis.com/css?family=Poppins:300&display=swap"
                 rel="stylesheet"
@@ -38,13 +32,16 @@ function App() {
                 href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
                 rel="stylesheet"
             />
-            <script src="https://kit.fontawesome.com/a81368914c.js"></script>
+            <link
+                href="https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.css"
+                rel="stylesheet"
+            />
 
             <BrowserRouter>
                 <Routes>
                     <Route path='login' element={<Login />} />
                     <Route element={<Home />}>
-                        <Route path="/" element={<Dashboard/>} />
+                        <Route path="/" element={<Dashboard />} />
                     </Route>
                     <Route path="/*" exact element={<PageNotFound />} />
                 </Routes>
@@ -64,6 +61,12 @@ function App() {
                 limit={3}
             />
 
+            <script src="https://kit.fontawesome.com/a81368914c.js"></script>
+            <script
+                src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+                crossorigin="anonymous"
+            ></script>
             <script
                 src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
                 integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
