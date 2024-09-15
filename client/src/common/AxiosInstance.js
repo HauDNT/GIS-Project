@@ -1,6 +1,7 @@
 import axios from "axios";
 import { getFromLocalStorage } from "../utils/LocalStorage";
 import { ServerAddress } from "./UrlServerAddress";
+import { toast } from "react-toastify";
 
 // Instance axios với cấu hình mặc định
 const axiosInstance = axios.create({
@@ -34,7 +35,8 @@ axiosInstance.interceptors.response.use(
     },
     error => {
         // Xử lý lỗi response
-        return Promise.reject(error);
+        toast.error(`Lỗi khi tải dữ liệu: ${error}`);
+        return;
     }
 );
 
