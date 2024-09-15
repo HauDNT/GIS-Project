@@ -9,22 +9,22 @@ export class Staff {
     id: number;
 
     @Column()
-    HoTen: string;
+    Fullname: string;
 
     @Column()
     Email: string;
 
     @Column()
-    SoDienThoai: string;
+    PhoneNumber: string;
 
     @Column()
-    MatKhau: string;
+    Pasword: string;
 
     @Column()
-    GioiTinh: boolean;
+    Gender: boolean;
 
     @Column("text")
-    DiaChi: string;
+    Address: string;
     
     @ManyToOne(() => Warehouse, warehouse => warehouse.staffs)
     warehouse: Warehouse;

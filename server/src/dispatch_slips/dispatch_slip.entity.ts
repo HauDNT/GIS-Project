@@ -19,7 +19,7 @@ export class DispatchSlip {
     ID_Staff: number;
 
     @Column("datetime") 
-    ThoiGianLapDon: Date;
+    CreatedAt: Date;
 
     @ManyToOne(() => Customer, customer => customer.dispatchSlips)
     @JoinColumn({ name: "ID_Customer" })

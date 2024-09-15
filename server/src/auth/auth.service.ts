@@ -32,7 +32,7 @@ export class AuthService {
     async login(data: LoginDTO): Promise<UserDataReponse> {
         const isEmail = data.username.includes("@");
         const staff = await this.staffService.findOneByUsername(data.username, isEmail);
-        const passwordMatched = await bcrypt.compare(data.password, staff.MatKhau);
+        const passwordMatched = await bcrypt.compare(data.password, staff.Pasword);
 
         if (passwordMatched) {
 
@@ -40,14 +40,14 @@ export class AuthService {
             const payload: JWTPayloadType = {
                 userId: staff.id,
                 email: staff.Email,
-                phoneNumber: staff.SoDienThoai,
+                phoneNumber: staff.PhoneNumber,
             };
 
             return {
                 userId: staff.id,
-                fullname: staff.HoTen,
+                fullname: staff.Fullname,
                 email: staff.Email,
-                phoneNumber: staff.SoDienThoai,
+                phoneNumber: staff.PhoneNumber,
                 accessToken: this.jwtService.sign(payload),
             }
         }

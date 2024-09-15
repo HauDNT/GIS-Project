@@ -9,16 +9,16 @@ export class Warehouse {
     id: number;
 
     @Column({ type: 'varchar' })
-    TenKho: string;
+    Name: string;
 
     @Column({ type: 'varchar' })
-    DiaChi: string;
+    Address: string;
 
-    @Column({ nullable: true })
-    TungDo: number;
+    @Column({ type: 'double', precision: 25, scale: 20, nullable: true })
+    Latitude: number;
 
-    @Column({ nullable: true })
-    HoanhDo: number;
+    @Column({ type: 'double', precision: 25, scale: 20, nullable: true })
+    Longitude: number;
 
     @OneToMany(() => Staff, staff => staff.warehouse)
     staffs: Staff[];
