@@ -1,7 +1,7 @@
 import { useRef, useEffect } from "react";
 import mapboxgl from 'mapbox-gl';
 
-const Marker = ({ currentMap, longitude, latitude, onClick}) => {
+const Marker = ({ currentMap, longitude, latitude, onClick }) => {
     const markerRef = useRef();
 
     useEffect(() => {

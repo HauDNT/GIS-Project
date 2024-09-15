@@ -1,6 +1,8 @@
-// @import url('../styles/Navbar.scss');
+@import url('../styles/global.scss');
+@import url('../styles/login.scss');
 @import url('../styles/map.scss');
-@import url('../styles/PageNotFound.scss');
+@import url('../styles/card.scss');
+@import url('../styles/pageNotFound.scss');
 
 body {
     margin: 0;
@@ -14,17 +16,4 @@ body {
 
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
-}
-
-.container-fluid {
-    position: relative;
-    top: 70px;
-}
-
-.zoom-effect {
-    transition: transform 0.3s ease;
-}
-
-.zoom-effect:hover {
-    transform: scale(1.03);
 }
