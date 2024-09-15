@@ -12,10 +12,10 @@ export class DispatchRice {
     ID_RicePlant: number;
 
     @Column()
-    SoLuong: number;
+    Amount: number;
 
     @Column()
-    DonGia: number;
+    UnitPrice: number;
 
     @ManyToOne(() => DispatchSlip, dispatchSlip => dispatchSlip.dispatchRices)
     dispatchSlip: DispatchSlip;

@@ -12,10 +12,10 @@ export class ReceivingRice {
     ID_RicePlant: number;
 
     @Column()
-    SoLuong: number;
+    Amount: number;
 
     @Column()
-    DonGia: number;
+    UnitPrice: number;
 
     @ManyToOne(() => ReceivingSlip, receiveSlip => receiveSlip.receiveRices)
     receiveSlip: ReceivingSlip;

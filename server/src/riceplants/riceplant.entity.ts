@@ -8,7 +8,7 @@ export class RicePlant {
     id: number;
 
     @Column()
-    LoaiLua: string;
+    Type: string;
 
     @OneToOne(() => ReceivingRice, receiveRice => receiveRice.ricePlant)
     receiveRice: ReceivingRice;

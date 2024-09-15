@@ -9,19 +9,19 @@ export class Customer {
     id: number;
 
     @Column()
-    HoTen: string;
+    Fullname: string;
 
     @Column()
     Email: string;
 
     @Column()
-    SoDienThoai: number;
+    PhoneNumber: number;
 
     @Column()
-    GioiTinh: boolean;
+    Gender: boolean;
 
     @Column("text")
-    DiaChi: string;
+    Address: string;
 
     @OneToMany(() => DispatchSlip, dispatchSlips => dispatchSlips.customer)
     dispatchSlips: DispatchSlip[];

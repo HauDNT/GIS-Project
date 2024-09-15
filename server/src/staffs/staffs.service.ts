@@ -24,7 +24,7 @@ export class StaffsService {
             staff = await this.staffRepository.findOneBy({ Email: username })
         }
         else {
-            staff = await this.staffRepository.findOneBy({ SoDienThoai: username })
+            staff = await this.staffRepository.findOneBy({ PhoneNumber: username })
         }
 
         return staff;
