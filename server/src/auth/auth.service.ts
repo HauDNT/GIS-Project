@@ -16,11 +16,11 @@ export class AuthService {
 
     async signup(data: SignupDTO) {
         let existUser = await this.staffService.findOneByUsername(data.Email, true);
-        existUser = await this.staffService.findOneByUsername(data.SoDienThoai, false);
+        existUser = await this.staffService.findOneByUsername(data.PhoneNumber, false);
 
         if (!existUser) {
             const salt = await bcrypt.genSalt();
-            data.MatKhau = await bcrypt.hash(data.MatKhau, salt);
+            data.Password = await bcrypt.hash(data.Password, salt);
 
             return this.staffService.create(data);
         }
@@ -32,7 +32,7 @@ export class AuthService {
     async login(data: LoginDTO): Promise<UserDataReponse> {
         const isEmail = data.username.includes("@");
         const staff = await this.staffService.findOneByUsername(data.username, isEmail);
-        const passwordMatched = await bcrypt.compare(data.password, staff.Pasword);
+        const passwordMatched = await bcrypt.compare(data.password, staff.Password);
 
         if (passwordMatched) {
 
