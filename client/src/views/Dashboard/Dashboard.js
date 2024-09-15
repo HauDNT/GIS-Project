@@ -1,10 +1,25 @@
+import { useState, useEffect } from 'react';
+import axiosInstance from '../../common/AxiosInstance';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import MapComponent from "../../components/Map/Mapbox/MapComponent";
+import MapComponent from "../../components/Map/MapComponent";
 import CardComponent from '../../components/CardComponent';
 
 function Dashboard() {
+    const [warehouses, setWarehouse] = useState([]);
+
+    const fetchWarehousesData = async () => {
+        const result = (await axiosInstance.get('/warehouses/all'));
+        if (result.data) {
+            setWarehouse(result.data || []);
+        }
+    };
+
+    useEffect(() => {
+        fetchWarehousesData()
+    }, []);
+
     return (
         <Container fluid>
             <Row>
@@ -36,11 +51,15 @@ function Dashboard() {
                     </div>
                 </Col>
             </Row>
-            <Row>
-                <Col sm={12} xs={12}>
-                    <MapComponent />
-                </Col>
-            </Row>
+            {
+                warehouses.length > 0 && (
+                    <Row>
+                        <Col sm={12} xs={12}>
+                            <MapComponent placesData={warehouses}/>
+                        </Col>
+                    </Row>
+                )
+            }
         </Container>
     )
 }

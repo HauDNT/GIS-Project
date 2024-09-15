@@ -6,27 +6,22 @@ import MapToolbar from './MapToolbar';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoidGhvbWFzZGFuZzE4MTIwMDMiLCJhIjoiY20xMXIyMXdlMHVqNjJrb3EyOWd0bmRpbiJ9.OMZfnZwOUP-NHKdLaS9ypg';
 
-const MapComponent = () => {
+const MapComponent = ({ placesData = [] }) => {
     const mapContainer = useRef(null);
     const map = useRef(null);
     const [lat, setLat] = useState(9.97032002433383);
     const [lng, setLng] = useState(105.11054875065781);
     const [zoom, setZoom] = useState(14);
     const [mapLoaded, setMapLoaded] = useState(false);
-    const [newPlaces, setNewPlaces] = useState([
-        {
-            latitude: 9.97032002433383,
-            longitude: 105.11054875065781,
-        }
-    ]);
+    const [places, setNewPlaces] = useState(placesData);
     const enableAddPlace = useRef(false);
 
     const addNewMarker = (lngLat) => {
         setNewPlaces(prevPlaces => [
             ...prevPlaces,
             {
-                latitude: lngLat.lat,
-                longitude: lngLat.lng,
+                Latitude: lngLat.lat,
+                Longitude: lngLat.lng,
             }
         ]);
     };
@@ -69,6 +64,7 @@ const MapComponent = () => {
 
         map.current.on('click', (event) => {
             if (enableAddPlace.current) {
+                console.log(event.lngLat);
                 addNewMarker(event.lngLat);
                 enableAddPlace.current = false;
                 map.current.getCanvas().style.cursor = 'grabbing';
@@ -79,18 +75,18 @@ const MapComponent = () => {
         return () => {
             map.current.off('dblclick'); // Cleanup sự kiện khi component bị unmount
         }
-    }, []);
+    }, [placesData]);
 
     return (
         <div className='map-wrapper wrapper'>
             <div ref={mapContainer} className="map-container" />
             {
-                mapLoaded && newPlaces.map((place, index) => (
+                mapLoaded && places.map((place, index) => (
                     <Marker
                         key={index}
                         currentMap={map.current}
-                        longitude={place.longitude}
-                        latitude={place.latitude}
+                        longitude={place.Longitude}
+                        latitude={place.Latitude}
                         onClick={handleMarkerClick}
                     />
                 ))
