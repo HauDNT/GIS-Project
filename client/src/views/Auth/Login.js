@@ -43,7 +43,7 @@ function Login() {
                 // Save data to local storage
                 saveObjectDataToLocalStorage(response.data);
 
-                navigator('/');
+                navigator('/dashboard');
             }
         } catch (error) {
             toast.error("Đăng nhập thất bại!");
