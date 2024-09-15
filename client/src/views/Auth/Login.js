@@ -8,7 +8,6 @@ import axiosInstance from '../../common/AxiosInstance';
 import backgroundImg from '../../assets/images/wave.png';
 import backgroundElement from '../../assets/images/element.png';
 import avatarIcon from '../../assets/images/avatar.png';
-import '../../styles/Login.scss';
 
 function Login() {
     let navigator = useNavigate();

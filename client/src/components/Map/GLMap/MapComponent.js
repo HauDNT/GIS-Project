@@ -3,7 +3,6 @@ import ReactMapGl, { Marker, NavigationControl } from 'react-map-gl';
 import "mapbox-gl/dist/mapbox-gl.css";
 import MarkerComponent from './Marker';
 import RoomIcon from '@mui/icons-material/Room';
-import "../../styles/map.scss";
 
 const MapComponent = () => {
     const [newPlace, setNewPlace] = useState([
