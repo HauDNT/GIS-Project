@@ -7,7 +7,7 @@ import VerticalCenterModal from './AddWarehouseModal';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoidGhvbWFzZGFuZzE4MTIwMDMiLCJhIjoiY20xMXIyMXdlMHVqNjJrb3EyOWd0bmRpbiJ9.OMZfnZwOUP-NHKdLaS9ypg';
 
-const MapComponent = ({ placesData = [] }) => {
+const MapComponent = ({ placesData }) => {
     const mapContainer = useRef(null);
     const map = useRef(null);
     const enableAddPlace = useRef(false);
@@ -86,7 +86,11 @@ const MapComponent = ({ placesData = [] }) => {
         return () => {
             map.current.off('click'); // Cleanup sự kiện khi component bị unmount
         }
-    }, [placesData, lng, lat, zoom]);
+    }, []);
+
+    useEffect(() => {
+        setNewPlaces(placesData);
+    }, [placesData]);
 
     return (
         <>
@@ -119,15 +123,15 @@ const MapComponent = ({ placesData = [] }) => {
                 />
             </div>
             {
-                places.length > 0 && isEnableModal && (
-                    <VerticalCenterModal
-                        isEnable={isEnableModal}
+                places.length > 0 ? (
+                    <VerticalCenterModal 
+                        isEnable = {isEnableModal} 
                         latitude={places[places.length - 1].Latitude}
                         longitude={places[places.length - 1].Longitude}
                         afterAddAction={() => setEnableModal(false)}
                         cancelAction={cancelAddMarker}
                     />
-                )
+                ) : null
             }
         </>
     );
