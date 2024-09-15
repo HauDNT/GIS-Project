@@ -37,11 +37,9 @@ function Login() {
         }
 
         try {
-            const response = await axiosInstance.post(`/auth/login`, data);
+            const response = await axiosInstance.post('/auth/login', data);
             
             if (response.data.accessToken) {
-                toast.success("Đăng nhập thành công!");
-
                 // Save data to local storage
                 saveObjectDataToLocalStorage(response.data);
 

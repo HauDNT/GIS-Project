@@ -27,10 +27,6 @@ const menuItems = [
     {
         name: 'Kho',
         icon: <MapsHomeWorkOutlined />,
-        // submenu: [
-        //     { name: 'Xem danh sách kho', icon: <MapsHomeWorkOutlined /> },
-        //     { name: 'Submenu 2', icon: <MapsHomeWorkOutlined /> },
-        // ]
     },
     {
         name: 'Nhân sự',

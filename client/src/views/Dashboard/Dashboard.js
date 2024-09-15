@@ -11,9 +11,9 @@ function Dashboard() {
 
     const fetchWarehousesData = async () => {
         const result = (await axiosInstance.get('/warehouses/all'));
-        if (result.data) {
-            setWarehouse(result.data || []);
-        }
+        if (result && result.data) {
+            setWarehouse(result.data);
+        };
     };
 
     useEffect(() => {
@@ -52,7 +52,7 @@ function Dashboard() {
                 </Col>
             </Row>
             {
-                warehouses.length > 0 && (
+                warehouses && (
                     <Row>
                         <Col sm={12} xs={12}>
                             <MapComponent placesData={warehouses}/>

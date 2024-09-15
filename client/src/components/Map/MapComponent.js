@@ -3,18 +3,20 @@ import mapboxgl from 'mapbox-gl';
 import { toast } from 'react-toastify';
 import Marker from './Marker';
 import MapToolbar from './MapToolbar';
+import VerticalCenterModal from './AddWarehouseModal';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoidGhvbWFzZGFuZzE4MTIwMDMiLCJhIjoiY20xMXIyMXdlMHVqNjJrb3EyOWd0bmRpbiJ9.OMZfnZwOUP-NHKdLaS9ypg';
 
 const MapComponent = ({ placesData = [] }) => {
     const mapContainer = useRef(null);
     const map = useRef(null);
+    const enableAddPlace = useRef(false);
     const [lat, setLat] = useState(9.97032002433383);
     const [lng, setLng] = useState(105.11054875065781);
     const [zoom, setZoom] = useState(14);
     const [mapLoaded, setMapLoaded] = useState(false);
+    const [isEnableModal, setEnableModal] = useState(false);
     const [places, setNewPlaces] = useState(placesData);
-    const enableAddPlace = useRef(false);
 
     const addNewMarker = (lngLat) => {
         setNewPlaces(prevPlaces => [
@@ -24,6 +26,8 @@ const MapComponent = ({ placesData = [] }) => {
                 Longitude: lngLat.lng,
             }
         ]);
+
+        setEnableModal(true);
     };
 
     const handleMarkerClick = () => {
@@ -49,10 +53,18 @@ const MapComponent = ({ placesData = [] }) => {
             zoom: 14,
             essential: true,
         });
-    }
+    };
+
+    const cancelAddMarker = () => {
+        const updatedPlaces = places.filter((_, index) => index !== places.length - 1);
+        setNewPlaces(updatedPlaces);
+        setEnableModal(false);
+        toast.error('Hủy bỏ thêm kho mới')
+    };
 
     useEffect(() => {
-        if (map.current) return; // initialize map only once
+        if (map.current) return;
+
         map.current = new mapboxgl.Map({
             container: mapContainer.current,
             style: 'mapbox://styles/thomasdang1812003/cm11wky8301du01pbdyaresom',
@@ -60,48 +72,64 @@ const MapComponent = ({ placesData = [] }) => {
             zoom: zoom,
         });
 
-        map.current.on('load', () => setMapLoaded(true))
+        map.current.on('load', () => setMapLoaded(true));
+
+        map.current.getCanvas().style.cursor = 'default';
 
         map.current.on('click', (event) => {
             if (enableAddPlace.current) {
-                console.log(event.lngLat);
                 addNewMarker(event.lngLat);
                 enableAddPlace.current = false;
-                map.current.getCanvas().style.cursor = 'grabbing';
-                toast.success('Địa điểm đã được thêm!');
             };
         });
 
         return () => {
-            map.current.off('dblclick'); // Cleanup sự kiện khi component bị unmount
+            map.current.off('click'); // Cleanup sự kiện khi component bị unmount
         }
-    }, [placesData]);
+    }, [placesData, lng, lat, zoom]);
 
     return (
-        <div className='map-wrapper wrapper'>
-            <div ref={mapContainer} className="map-container" />
+        <>
+            <div className='map-wrapper wrapper'>
+                <div ref={mapContainer} className="map-container" />
+                {
+                    mapLoaded && places.map((place, index) => (
+                        <Marker
+                            key={index}
+                            currentMap={map.current}
+                            longitude={place.Longitude}
+                            latitude={place.Latitude}
+                            onClick={handleMarkerClick}
+                        />
+                    ))
+                }
+                <MapToolbar
+                    onZoomIn={zoomIn}
+                    onZoomOut={zoomOut}
+                    onResetView={resetView}
+                    addNewPlace={() => {
+                        if (!enableAddPlace.current) {
+                            toast.info('Nhấp vào bản đồ để thêm địa điểm kho mới');
+                            enableAddPlace.current = true;
+                        }
+                        else {
+                            enableAddPlace.current = false;
+                        }
+                    }}
+                />
+            </div>
             {
-                mapLoaded && places.map((place, index) => (
-                    <Marker
-                        key={index}
-                        currentMap={map.current}
-                        longitude={place.Longitude}
-                        latitude={place.Latitude}
-                        onClick={handleMarkerClick}
+                places.length > 0 && isEnableModal && (
+                    <VerticalCenterModal
+                        isEnable={isEnableModal}
+                        latitude={places[places.length - 1].Latitude}
+                        longitude={places[places.length - 1].Longitude}
+                        afterAddAction={() => setEnableModal(false)}
+                        cancelAction={cancelAddMarker}
                     />
-                ))
+                )
             }
-            <MapToolbar
-                onZoomIn={zoomIn}
-                onZoomOut={zoomOut}
-                onResetView={resetView}
-                addNewPlace={() => {
-                    map.current.getCanvas().style.cursor = 'default';
-                    toast.info('Nhấp vào bản đồ để thêm địa điểm kho mới');
-                    enableAddPlace.current = true;
-                }}
-            />
-        </div>
+        </>
     );
 }
 
