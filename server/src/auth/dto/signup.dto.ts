@@ -3,7 +3,7 @@ import { IsString, IsNotEmpty, IsEmail, IsPhoneNumber, Length } from "class-vali
 export class SignupDTO {
     @IsString()
     @IsNotEmpty()
-    HoTen: string;
+    Fullname: string;
 
     @IsEmail()
     @IsString()
@@ -13,17 +13,17 @@ export class SignupDTO {
     @IsString()
     @IsNotEmpty({ message: 'Số điện thoại không được để trống' })
     @Length(10, 10, { message: 'Số điện thoại phải có độ dài có 10 ký tự' })
-    SoDienThoai: string;
+    PhoneNumber: string;
     
     @IsString()
     @IsNotEmpty({ message: 'Mật khẩu không được để trống' })
     @Length(8, 16, { message: 'Mật khẩu phải có độ dài từ 8 đến 16 ký tự' })
-    MatKhau: string;
+    Password: string;
 
     @IsNotEmpty()
-    GioiTinh: boolean;
+    Gender: boolean;
 
     @IsString()
     @IsNotEmpty()
-    DiaChi: string;
+    Address: string;
 }

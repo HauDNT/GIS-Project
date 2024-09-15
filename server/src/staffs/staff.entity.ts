@@ -18,7 +18,7 @@ export class Staff {
     PhoneNumber: string;
 
     @Column()
-    Pasword: string;
+    Password: string;
 
     @Column()
     Gender: boolean;
