@@ -43,4 +43,15 @@
             border-radius: 200px;
         }
     }
+
+    .tool-large {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        width: 250px !important;
+
+        button {
+            margin: 5px;
+        }
+    }
 }

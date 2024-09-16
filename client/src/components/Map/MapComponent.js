@@ -3,7 +3,10 @@ import mapboxgl from 'mapbox-gl';
 import { toast } from 'react-toastify';
 import Marker from './Marker';
 import MapToolbar from './MapToolbar';
-import VerticalCenterModal from './AddWarehouseModal';
+import VerticalCenterModal from './Modals/AddWarehouseModal';
+import FindPlaceModal from './Modals/FindPlaceModal';
+import { FindCoordinates } from './FindCoordinates';
+
 
 mapboxgl.accessToken = 'pk.eyJ1IjoidGhvbWFzZGFuZzE4MTIwMDMiLCJhIjoiY20xMXIyMXdlMHVqNjJrb3EyOWd0bmRpbiJ9.OMZfnZwOUP-NHKdLaS9ypg';
 
@@ -15,7 +18,8 @@ const MapComponent = ({ placesData }) => {
     const [lng, setLng] = useState(105.11054875065781);
     const [zoom, setZoom] = useState(14);
     const [mapLoaded, setMapLoaded] = useState(false);
-    const [isEnableModal, setEnableModal] = useState(false);
+    const [isEnableModalAddPlace, setEnableModalAddPlace] = useState(false);
+    const [isEnableModalFindPlace, setEnableModalFindPlace] = useState(false);
     const [places, setNewPlaces] = useState(placesData);
 
     const addNewMarker = (lngLat) => {
@@ -27,7 +31,7 @@ const MapComponent = ({ placesData }) => {
             }
         ]);
 
-        setEnableModal(true);
+        setEnableModalAddPlace(true);
     };
 
     const handleMarkerClick = () => {
@@ -58,8 +62,27 @@ const MapComponent = ({ placesData }) => {
     const cancelAddMarker = () => {
         const updatedPlaces = places.filter((_, index) => index !== places.length - 1);
         setNewPlaces(updatedPlaces);
-        setEnableModal(false);
+        setEnableModalAddPlace(false);
         toast.error('Hủy bỏ thêm kho mới')
+    };
+
+    const findPlace = async (address) => {
+        const coordinates = await FindCoordinates(mapboxgl.accessToken, address);
+        
+        if (coordinates) {
+            const lat = coordinates[1];
+            const lng = coordinates[0];
+            setLat(lat);
+            setLng(lng);
+            setZoom(14);
+            map.current.flyTo({
+                center: [lng, lat],
+                zoom: 14,
+                essential: true,
+            });
+        } else {
+            toast.error('Không thể lấy tọa độ.');
+        }
     };
 
     useEffect(() => {
@@ -86,7 +109,7 @@ const MapComponent = ({ placesData }) => {
         return () => {
             map.current.off('click'); // Cleanup sự kiện khi component bị unmount
         }
-    }, []);
+    }, [lat, lng, zoom]);
 
     useEffect(() => {
         setNewPlaces(placesData);
@@ -120,19 +143,27 @@ const MapComponent = ({ placesData }) => {
                             enableAddPlace.current = false;
                         }
                     }}
+                    findPlace={() => setEnableModalFindPlace(true)}
                 />
             </div>
             {
                 places.length > 0 ? (
-                    <VerticalCenterModal 
-                        isEnable = {isEnableModal} 
+                    <VerticalCenterModal
+                        isEnable={isEnableModalAddPlace}
                         latitude={places[places.length - 1].Latitude}
                         longitude={places[places.length - 1].Longitude}
-                        afterAddAction={() => setEnableModal(false)}
+                        afterAddAction={() => setEnableModalAddPlace(false)}
                         cancelAction={cancelAddMarker}
                     />
                 ) : null
             }
+
+            <FindPlaceModal 
+                isEnable={isEnableModalFindPlace}
+                apiKey={mapboxgl.accessToken}
+                handleFindPlace={findPlace}
+                handleCancelFind={() => setEnableModalFindPlace(false)}
+            />
         </>
     );
 }
