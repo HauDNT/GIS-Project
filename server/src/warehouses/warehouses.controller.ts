@@ -9,7 +9,7 @@ export class WarehousesController {
     constructor(private readonly warehousesService: WarehousesService) { }
 
     @Get('all')
-    @UseGuards(JWTGuard)
+    // @UseGuards(JWTGuard)
     getAll(): Promise<Warehouse[]> {
         return this.warehousesService.getAll();
     }

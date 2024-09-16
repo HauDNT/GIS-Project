@@ -1,10 +1,11 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { dataSourceOptions, typeOrmAsyncConfig } from '../db/data-source';
 import configuration from './config/configuration';
+import { LoggerMiddleware } from './middlewares/LoggerMiddleware';
 import { WarehousesModule } from './warehouses/warehouses.module';
 import { StaffsModule } from './staffs/staffs.module';
 import { RiceplantsModule } from './riceplants/riceplants.module';
@@ -26,7 +27,7 @@ import { AuthModule } from './auth/auth.module';
             load: [configuration],
         }),
         TypeOrmModule.forRootAsync(typeOrmAsyncConfig),
-        TypeOrmModule.forRoot(dataSourceOptions), 
+        TypeOrmModule.forRoot(dataSourceOptions),
         WarehousesModule,
         StaffsModule,
         RiceplantsModule,
@@ -42,4 +43,9 @@ import { AuthModule } from './auth/auth.module';
         AppService,
     ],
 })
-export class AppModule { }
+
+export class AppModule {
+    configure(consumer: MiddlewareConsumer) {
+        consumer.apply(LoggerMiddleware).forRoutes('*');
+    }
+}
