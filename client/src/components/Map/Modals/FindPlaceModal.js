@@ -30,7 +30,7 @@ const FindPlaceModal = ({ isEnable = false, handleCancelFind, handleFindPlace })
                 <Modal.Title>Tìm địa chỉ</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Form>
+                <Form onSubmit={(e) => e.preventDefault()}>
                     <Row className="mb-3">
                         <Form.Group md="12" controlId="validationCustom01">
                             <Form.Label>Nhập vào địa chỉ cần tìm</Form.Label>

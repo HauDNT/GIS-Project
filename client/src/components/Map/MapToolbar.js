@@ -6,7 +6,7 @@ import {
     PushPinOutlined,
     ArrowBackIosNew,
     ArrowForwardIos,
-    FindInPage,
+    TravelExplore,
 } from '@mui/icons-material';
 import { useState } from 'react';
 
@@ -33,7 +33,7 @@ const MapToolbar = ({ onZoomIn, onZoomOut, onResetView, findPlace, addNewPlace }
                 <PushPinOutlined/>
             </Button>
             <Button variant="outline-primary" onClick={findPlace} className='mt-10px'>
-                <FindInPage/>
+                <TravelExplore/>
             </Button>
 
             {
