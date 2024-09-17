@@ -7,8 +7,8 @@ import MapToolbar from './MapToolbar';
 import VerticalCenterModal from './Modals/AddWarehouseModal';
 import FindPlaceModal from './Modals/FindPlaceModal';
 import GeocoderMarker from './GeocoderMarkerComponent';
+import MarkerModal from './MarkerPopup';
 import { FindCoordinates } from './FindCoordinates';
-
 
 mapboxgl.accessToken = 'pk.eyJ1IjoidGhvbWFzZGFuZzE4MTIwMDMiLCJhIjoiY20xMXIyMXdlMHVqNjJrb3EyOWd0bmRpbiJ9.OMZfnZwOUP-NHKdLaS9ypg';
 
@@ -24,8 +24,11 @@ const MapComponent = ({ placesData }) => {
     const [places, setNewPlaces] = useState(placesData);
     const [isEnableModalAddPlace, setEnableModalAddPlace] = useState(false);
     const [isEnableModalFindPlace, setEnableModalFindPlace] = useState(false);
+    const [selectedCoordinates, setSelectedCoordinates] = useState({ Latitude: null, Longitude: null });
 
     const addNewMarker = (lngLat) => {
+        setSelectedCoordinates({ Latitude: lngLat.lat, Longitude: lngLat.lng });
+
         setNewPlaces(prevPlaces => [
             ...prevPlaces,
             {
@@ -35,10 +38,6 @@ const MapComponent = ({ placesData }) => {
         ]);
 
         setEnableModalAddPlace(true);
-    };
-
-    const handleMarkerClick = () => {
-        alert('Marker clicked');
     };
 
     const zoomIn = () => {
@@ -66,12 +65,13 @@ const MapComponent = ({ placesData }) => {
         const updatedPlaces = places.filter((_, index) => index !== places.length - 1);
         setNewPlaces(updatedPlaces);
         setEnableModalAddPlace(false);
-        toast.error('Hủy bỏ thêm kho mới')
+        setSelectedCoordinates({ Latitude: null, Longitude: null });
+        toast.error('Hủy bỏ thêm kho mới');
     };
 
     const findPlace = async (address) => {
         const coordinates = await FindCoordinates(mapboxgl.accessToken, address);
-        
+
         if (coordinates) {
             const lat = coordinates[1];
             const lng = coordinates[0];
@@ -80,7 +80,7 @@ const MapComponent = ({ placesData }) => {
             if (geocoderMarkerRef.current) geocoderMarkerRef.current.remove();
 
             const geocoderMarker = document.createElement('div');
-            ReactDOM.render(<GeocoderMarker/>, geocoderMarker);
+            ReactDOM.render(<GeocoderMarker />, geocoderMarker);
 
             geocoderMarkerRef.current = new mapboxgl.Marker({
                 element: geocoderMarker
@@ -113,7 +113,10 @@ const MapComponent = ({ placesData }) => {
             zoom: zoom,
         });
 
-        map.current.on('load', () => setMapLoaded(true));
+        map.current.on('load', () => {
+            setMapLoaded(true)
+        });
+
 
         map.current.getCanvas().style.cursor = 'default';
 
@@ -127,7 +130,7 @@ const MapComponent = ({ placesData }) => {
         return () => {
             map.current.off('click'); // Cleanup sự kiện khi component bị unmount
         }
-    }, [lat, lng, zoom]);
+    }, []);
 
     useEffect(() => {
         setNewPlaces(placesData);
@@ -139,13 +142,14 @@ const MapComponent = ({ placesData }) => {
                 <div ref={mapContainer} className="map-container" />
                 {
                     mapLoaded && places.map((place, index) => (
-                        <Marker
-                            key={index}
-                            currentMap={map.current}
-                            longitude={place.Longitude}
-                            latitude={place.Latitude}
-                            onClick={handleMarkerClick}
-                        />
+                        <>
+                            <Marker
+                                key={index}
+                                currentMap={map.current}
+                                longitude={place.Longitude}
+                                latitude={place.Latitude}
+                            />
+                        </>
                     ))
                 }
                 <MapToolbar
@@ -164,19 +168,16 @@ const MapComponent = ({ placesData }) => {
                     findPlace={() => setEnableModalFindPlace(true)}
                 />
             </div>
-            {
-                places.length > 0 ? (
-                    <VerticalCenterModal
-                        isEnable={isEnableModalAddPlace}
-                        latitude={places[places.length - 1].Latitude}
-                        longitude={places[places.length - 1].Longitude}
-                        afterAddAction={() => setEnableModalAddPlace(false)}
-                        cancelAction={cancelAddMarker}
-                    />
-                ) : null
-            }
+            <VerticalCenterModal
+                isEnable={isEnableModalAddPlace}
+                latitude={selectedCoordinates.Latitude} // Sử dụng tọa độ đã chọn
+                longitude={selectedCoordinates.Longitude} // Sử dụng tọa độ đã chọn
+                afterAddAction={() => setEnableModalAddPlace(false)}
+                cancelAction={cancelAddMarker}
+            />
 
-            <FindPlaceModal 
+
+            <FindPlaceModal
                 isEnable={isEnableModalFindPlace}
                 apiKey={mapboxgl.accessToken}
                 handleFindPlace={findPlace}
@@ -187,3 +188,15 @@ const MapComponent = ({ placesData }) => {
 }
 
 export default MapComponent;
+
+{
+    {/* places.length > 0 ? (
+        <VerticalCenterModal
+            isEnable={isEnableModalAddPlace}
+            latitude={selectedCoordinates.Latitude} // Sử dụng tọa độ đã chọn
+            longitude={selectedCoordinates.Longitude} // Sử dụng tọa độ đã chọn
+            afterAddAction={() => setEnableModalAddPlace(false)}
+            cancelAction={cancelAddMarker}
+        />
+    ) : null */}
+}

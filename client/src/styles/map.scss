@@ -13,13 +13,24 @@
         height: 100%;
         padding: 10px;
         border-radius: 5px;
-    
+
         .marker-icon {
             color: red;
             cursor: pointer;
             font-size: 35px;
         }
     }
+
+    .marker-wrapper {
+        position: relative;
+        background-color: red;
+        z-index: 2000;
+
+        .marker-modal {
+            position: absolute;
+        }
+    }
+
 
     .map-toolbar {
         position: absolute;
@@ -34,6 +45,8 @@
         box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
         z-index: 100;
         overflow: scroll;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
 
         &::-webkit-scrollbar {
             display: none;
