@@ -1,4 +1,4 @@
-const MarkerModal = () => {
+const MarkerPopup = () => {
     return (
         <div className="">
             <h3>
@@ -8,4 +8,4 @@ const MarkerModal = () => {
     )
 }
 
-export default MarkerModal;
+export default MarkerPopup;

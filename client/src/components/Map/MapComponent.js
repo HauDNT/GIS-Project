@@ -24,11 +24,9 @@ const MapComponent = ({ placesData }) => {
     const [places, setNewPlaces] = useState(placesData);
     const [isEnableModalAddPlace, setEnableModalAddPlace] = useState(false);
     const [isEnableModalFindPlace, setEnableModalFindPlace] = useState(false);
-    const [selectedCoordinates, setSelectedCoordinates] = useState({ Latitude: null, Longitude: null });
+    const [selectedCoordinates, setSelectedCoordinates] = useState(null);
 
     const addNewMarker = (lngLat) => {
-        setSelectedCoordinates({ Latitude: lngLat.lat, Longitude: lngLat.lng });
-
         setNewPlaces(prevPlaces => [
             ...prevPlaces,
             {
@@ -65,7 +63,8 @@ const MapComponent = ({ placesData }) => {
         const updatedPlaces = places.filter((_, index) => index !== places.length - 1);
         setNewPlaces(updatedPlaces);
         setEnableModalAddPlace(false);
-        setSelectedCoordinates({ Latitude: null, Longitude: null });
+        setSelectedCoordinates(null);
+
         toast.error('Hủy bỏ thêm kho mới');
     };
 
@@ -122,6 +121,7 @@ const MapComponent = ({ placesData }) => {
 
         map.current.on('click', (event) => {
             if (enableAddPlace.current) {
+                setSelectedCoordinates({ Latitude: event.lngLat.lat, Longitude: event.lngLat.lng });
                 addNewMarker(event.lngLat);
                 enableAddPlace.current = false;
             };
@@ -168,14 +168,18 @@ const MapComponent = ({ placesData }) => {
                     findPlace={() => setEnableModalFindPlace(true)}
                 />
             </div>
-            <VerticalCenterModal
-                isEnable={isEnableModalAddPlace}
-                latitude={selectedCoordinates.Latitude} // Sử dụng tọa độ đã chọn
-                longitude={selectedCoordinates.Longitude} // Sử dụng tọa độ đã chọn
-                afterAddAction={() => setEnableModalAddPlace(false)}
-                cancelAction={cancelAddMarker}
-            />
 
+            {
+                selectedCoordinates && (
+                    <VerticalCenterModal
+                        isEnable={isEnableModalAddPlace}
+                        latitude={selectedCoordinates.Latitude} // Sử dụng tọa độ đã chọn
+                        longitude={selectedCoordinates.Longitude} // Sử dụng tọa độ đã chọn
+                        afterAddAction={() => setEnableModalAddPlace(false)}
+                        cancelAction={cancelAddMarker}
+                    />
+                )
+            }
 
             <FindPlaceModal
                 isEnable={isEnableModalFindPlace}
@@ -188,15 +192,3 @@ const MapComponent = ({ placesData }) => {
 }
 
 export default MapComponent;
-
-{
-    {/* places.length > 0 ? (
-        <VerticalCenterModal
-            isEnable={isEnableModalAddPlace}
-            latitude={selectedCoordinates.Latitude} // Sử dụng tọa độ đã chọn
-            longitude={selectedCoordinates.Longitude} // Sử dụng tọa độ đã chọn
-            afterAddAction={() => setEnableModalAddPlace(false)}
-            cancelAction={cancelAddMarker}
-        />
-    ) : null */}
-}
