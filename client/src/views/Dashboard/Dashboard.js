@@ -17,7 +17,7 @@ function Dashboard() {
     };
 
     useEffect(() => {
-        fetchWarehousesData()
+        fetchWarehousesData();
     }, []);
 
     return (

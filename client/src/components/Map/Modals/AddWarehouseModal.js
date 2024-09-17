@@ -32,18 +32,30 @@ const VerticalCenterModal = ({ isEnable = false, latitude, longitude, afterAddAc
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        handleValidation(event);
+        // handleValidation(event);
 
-        if (validated) {
-            const result = await axiosInstance.post('/warehouses/create', values);
+        console.log('Check submit value: ', values);
 
-            if (result.status === 201) {
-                toast.success('Thêm kho mới thành công!');
-                setValues(initValues);
-                setValidated(false);
-                afterAddAction();
-            }
+        const result = await axiosInstance.post('/warehouses/create', values);
+
+        if (result.status === 201) {
+            toast.success('Thêm kho mới thành công!');
+            setValues(initValues);
+            setValidated(false);
+            afterAddAction();
         }
+
+
+        // if (validated) {
+        //     const result = await axiosInstance.post('/warehouses/create', values);
+
+        //     if (result.status === 201) {
+        //         toast.success('Thêm kho mới thành công!');
+        //         setValues(initValues);
+        //         setValidated(false);
+        //         afterAddAction();
+        //     }
+        // }
     };
 
     const handleCancelAction = () => {
