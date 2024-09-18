@@ -4,7 +4,7 @@ import mapboxgl from 'mapbox-gl';
 import { usePopupContext } from '../../context/PopupMapContext';
 import MarkerPopup from './MarkerPopup';
 
-const Marker = ({ id, currentMap, longitude, latitude, onClick }) => {
+const Marker = ({ id, currentMap, placeData, onClick }) => {
     const markerRef = useRef();
     const popupRef = useRef();
     const { activeMarkerId, updatePopupContext } = usePopupContext();
@@ -20,7 +20,7 @@ const Marker = ({ id, currentMap, longitude, latitude, onClick }) => {
                     popupRef.current.remove();
                     updatePopupContext(null);
                 }}
-                data={{ latitude: latitude, longitude: longitude }}
+                data={placeData}
             />,
             popupElement
         );
@@ -32,7 +32,7 @@ const Marker = ({ id, currentMap, longitude, latitude, onClick }) => {
             offset: [0, -40],
             anchor: "bottom",
         })
-            .setLngLat([longitude, latitude])
+            .setLngLat([placeData.Longitude, placeData.Latitude])
             .setDOMContent(popupElement)
             .addTo(currentMap);
 
@@ -78,7 +78,7 @@ const Marker = ({ id, currentMap, longitude, latitude, onClick }) => {
 
         const marker = new mapboxgl
             .Marker()
-            .setLngLat([longitude, latitude])
+            .setLngLat([placeData.Longitude, placeData.Latitude])
             .addTo(currentMap);
 
         markerRef.current = marker;
@@ -94,7 +94,7 @@ const Marker = ({ id, currentMap, longitude, latitude, onClick }) => {
                 popupRef.current.remove(); // Xóa Popup
             }
         }
-    }, [currentMap, longitude, latitude, id]);
+    }, [currentMap, placeData, id]);
 
     return null;
 }

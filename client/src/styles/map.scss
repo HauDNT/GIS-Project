@@ -29,6 +29,7 @@
         }
 
         .mapboxgl-popup-content {
+            max-height: 200px;
             width: 100%;
             padding: 10px;
             font-size: 16px;
@@ -36,6 +37,47 @@
             background-color: rgba(255, 255, 255, 0.95);
             box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
             z-index: 100;
+            overflow: scroll;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+
+            .popup-header {
+                display: flex;
+                align-items: center;
+    
+                h6 {
+                    margin: 0;
+                    font-weight: bold;
+                }
+        
+                .popup-close-btn {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 25px;
+                    height: 25px;
+                    margin-left: auto;
+                    outline: none;
+                    border: none;
+                    border-radius: 100px;
+                    background-color: red;
+        
+                    svg {
+                        width: 15px;
+                        height: 15px;
+                    }
+                }
+            }
+
+            .popup-content {
+                margin: 0 3px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-top-left-radius: 4px;
+                border-bottom-left-radius: 4px;
+                border-left: 4px solid #78B7D0;
+            }
         }
     }
 

@@ -16,6 +16,13 @@ function Dashboard() {
         };
     };
 
+    const getNewestWarehouseJustAdded = async () => {
+        const result = (await axiosInstance.get('/warehouses/last'));
+        if (result && result.data) {
+            setWarehouse(oldData => [...oldData, result.data]);
+        };
+    };
+
     useEffect(() => {
         fetchWarehousesData();
     }, []);
@@ -55,7 +62,10 @@ function Dashboard() {
                 warehouses && (
                     <Row>
                         <Col sm={12} xs={12}>
-                            <MapComponent placesData={warehouses}/>
+                            <MapComponent 
+                                placesData={warehouses}
+                                reloadData={() => getNewestWarehouseJustAdded()}
+                            />
                         </Col>
                     </Row>
                 )

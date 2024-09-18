@@ -4,14 +4,14 @@ import mapboxgl from 'mapbox-gl';
 import { toast } from 'react-toastify';
 import Marker from './Marker';
 import MapToolbar from './MapToolbar';
-import VerticalCenterModal from './Modals/AddWarehouseModal';
+import AddWarehouseModal from './Modals/AddWarehouseModal';
 import FindPlaceModal from './Modals/FindPlaceModal';
 import GeocoderMarker from './GeocoderMarkerComponent';
 import { FindCoordinates } from './FindCoordinates';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoidGhvbWFzZGFuZzE4MTIwMDMiLCJhIjoiY20xMXIyMXdlMHVqNjJrb3EyOWd0bmRpbiJ9.OMZfnZwOUP-NHKdLaS9ypg';
 
-const MapComponent = ({ placesData }) => {
+const MapComponent = ({ placesData, reloadData }) => {
     const mapContainer = useRef(null);
     const map = useRef(null);
     const geocoderMarkerRef = useRef();
@@ -37,6 +37,15 @@ const MapComponent = ({ placesData }) => {
         setEnableModalAddPlace(true);
     };
 
+    const cancelAddMarker = () => {
+        const updatedPlaces = places.filter((_, index) => index !== places.length - 1);
+        setNewPlaces(updatedPlaces);
+        setEnableModalAddPlace(false);
+        setSelectedCoordinates(null);
+
+        toast.error('Hủy bỏ thêm kho mới');
+    };
+
     const zoomIn = () => {
         setZoom(currentZoom => currentZoom + 1);
         map.current.zoomIn();
@@ -56,15 +65,6 @@ const MapComponent = ({ placesData }) => {
             zoom: 14,
             essential: true,
         });
-    };
-
-    const cancelAddMarker = () => {
-        const updatedPlaces = places.filter((_, index) => index !== places.length - 1);
-        setNewPlaces(updatedPlaces);
-        setEnableModalAddPlace(false);
-        setSelectedCoordinates(null);
-
-        toast.error('Hủy bỏ thêm kho mới');
     };
 
     const findPlace = async (address) => {
@@ -144,8 +144,7 @@ const MapComponent = ({ placesData }) => {
                             key={index}
                             id={`marker-${index + 1}`}
                             currentMap={map.current} 
-                            longitude={place.Longitude} 
-                            latitude={place.Latitude}
+                            placeData={place}
                         />
                     ))
                 }
@@ -167,12 +166,16 @@ const MapComponent = ({ placesData }) => {
             </div>
 
             {
-                selectedCoordinates && (
-                    <VerticalCenterModal
+                isEnableModalAddPlace && selectedCoordinates && (
+                    <AddWarehouseModal
+                        key={isEnableModalAddPlace ? 'enabled' : 'disabled'}
                         isEnable={isEnableModalAddPlace}
                         latitude={selectedCoordinates.Latitude} // Sử dụng tọa độ đã chọn
                         longitude={selectedCoordinates.Longitude} // Sử dụng tọa độ đã chọn
-                        afterAddAction={() => setEnableModalAddPlace(false)}
+                        afterAddAction={() => {
+                            setEnableModalAddPlace(false);
+                            reloadData();
+                        }}
                         cancelAction={cancelAddMarker}
                     />
                 )

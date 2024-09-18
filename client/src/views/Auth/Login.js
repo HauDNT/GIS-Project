@@ -42,12 +42,10 @@ function Login() {
             if (response.data.accessToken) {
                 // Save data to local storage
                 saveObjectDataToLocalStorage(response.data);
-
                 navigator('/dashboard');
             }
         } catch (error) {
             toast.error("Đăng nhập thất bại!");
-            alert(error);
         }
     };
 

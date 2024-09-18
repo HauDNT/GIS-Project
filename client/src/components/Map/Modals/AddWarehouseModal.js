@@ -1,23 +1,17 @@
 import { useEffect, useState } from 'react';
-import {
-    Button,
-    Form,
-    Modal,
-    Row,
-    Col,
-} from 'react-bootstrap';
+import { Button, Form, Modal, Row, Col } from 'react-bootstrap';
 import axiosInstance from "../../../common/AxiosInstance";
 import { toast } from 'react-toastify';
 
-const VerticalCenterModal = ({ isEnable = false, latitude, longitude, afterAddAction, cancelAction }) => {
+const AddWarehouseModal = ({ isEnable = false, latitude, longitude, afterAddAction, cancelAction }) => {
     const [show, setShow] = useState(isEnable);
     const [validated, setValidated] = useState(false);
+
     const initValues = {
         Name: '',
         Address: '',
-        Latitude: latitude,
-        Longitude: longitude,
     };
+
     const [values, setValues] = useState(initValues);
 
     const handleValidation = (event) => {
@@ -26,44 +20,37 @@ const VerticalCenterModal = ({ isEnable = false, latitude, longitude, afterAddAc
             event.preventDefault();
             event.stopPropagation();
         }
-
         setValidated(true);
-    }
+    };
+
+    useEffect(() => {
+        setValues(initValues);
+        setValidated(false);
+        setShow(isEnable);
+    }, [latitude, longitude, isEnable]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         handleValidation(event);
 
-        console.log('Check submit value: ', values);
+        if (validated) {
+            try {
+                const result = await axiosInstance.post('/warehouses/create', { ...values, Latitude: latitude, Longitude: longitude });
 
-        const result = await axiosInstance.post('/warehouses/create', values);
-
-        if (result.status === 201) {
-            toast.success('Thêm kho mới thành công!');
-            setValues(initValues);
-            setValidated(false);
-            afterAddAction();
+                if (result.status === 201) {
+                    toast.success('Thêm kho mới thành công!');
+                    afterAddAction();
+                }
+            } catch (error) {
+                toast.error('Thêm kho mới thất bại. Vui lòng thử lại.');
+            }
         }
-
-
-        // if (validated) {
-        //     const result = await axiosInstance.post('/warehouses/create', values);
-
-        //     if (result.status === 201) {
-        //         toast.success('Thêm kho mới thành công!');
-        //         setValues(initValues);
-        //         setValidated(false);
-        //         afterAddAction();
-        //     }
-        // }
     };
 
     const handleCancelAction = () => {
         setValidated(false);
         cancelAction();
-    }
-
-    useEffect(() => setShow(isEnable), [isEnable]);
+    };
 
     return (
         <Modal
@@ -111,11 +98,10 @@ const VerticalCenterModal = ({ isEnable = false, latitude, longitude, afterAddAc
                                 value={latitude}
                                 disabled
                             />
-                            <Form.Control.Feedback>Hợp lệ</Form.Control.Feedback>
                         </Form.Group>
                     </Row>
                     <Row className="mb-3">
-                        <Form.Group as={Col} md="12" controlId="validationCustom03">
+                        <Form.Group as={Col} md="12" controlId="validationCustom04">
                             <Form.Label>Vĩ độ</Form.Label>
                             <Form.Control
                                 required
@@ -123,7 +109,6 @@ const VerticalCenterModal = ({ isEnable = false, latitude, longitude, afterAddAc
                                 value={longitude}
                                 disabled
                             />
-                            <Form.Control.Feedback>Hợp lệ</Form.Control.Feedback>
                         </Form.Group>
                     </Row>
                     <Modal.Footer className='pe-0'>
@@ -137,7 +122,7 @@ const VerticalCenterModal = ({ isEnable = false, latitude, longitude, afterAddAc
                 </Form>
             </Modal.Body>
         </Modal>
-    )
+    );
 }
 
-export default VerticalCenterModal;
+export default AddWarehouseModal;
