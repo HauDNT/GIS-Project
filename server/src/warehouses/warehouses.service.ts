@@ -11,11 +11,20 @@ export class WarehousesService {
         @InjectRepository(Warehouse)
         private warehouseRepository: Repository<Warehouse>
     ) { }
-    
+
     async getAll(): Promise<Warehouse[]> {
         const result = await this.warehouseRepository.find();
 
         return result;
+    }
+
+    async getNewestWarehouse(): Promise<Warehouse> {
+        const result = await this.warehouseRepository.find({ 
+            order: { id: 'DESC' },
+            take: 1,
+        });
+
+        return result[0];
     }
 
     async create(data: CreateWarehouseDTO): Promise<Warehouse> {

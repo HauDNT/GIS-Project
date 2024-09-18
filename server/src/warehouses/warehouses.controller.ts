@@ -9,9 +9,14 @@ export class WarehousesController {
     constructor(private readonly warehousesService: WarehousesService) { }
 
     @Get('all')
-    // @UseGuards(JWTGuard)
+    @UseGuards(JWTGuard)
     getAll(): Promise<Warehouse[]> {
         return this.warehousesService.getAll();
+    }
+
+    @Get('last')
+    getNewestWarehouse(): Promise<Warehouse> {
+        return this.warehousesService.getNewestWarehouse();
     }
 
     @Post('create')
