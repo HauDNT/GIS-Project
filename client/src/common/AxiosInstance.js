@@ -35,7 +35,7 @@ axiosInstance.interceptors.response.use(
     },
     error => {
         // Xử lý lỗi response
-        toast.error(`Lỗi khi tải dữ liệu: ${error}`);
+        console.log(`Lỗi khi tải dữ liệu: ${error}`);
         return;
     }
 );
