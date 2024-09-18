@@ -7,7 +7,6 @@ import MapToolbar from './MapToolbar';
 import VerticalCenterModal from './Modals/AddWarehouseModal';
 import FindPlaceModal from './Modals/FindPlaceModal';
 import GeocoderMarker from './GeocoderMarkerComponent';
-import MarkerModal from './MarkerPopup';
 import { FindCoordinates } from './FindCoordinates';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoidGhvbWFzZGFuZzE4MTIwMDMiLCJhIjoiY20xMXIyMXdlMHVqNjJrb3EyOWd0bmRpbiJ9.OMZfnZwOUP-NHKdLaS9ypg';
@@ -116,7 +115,6 @@ const MapComponent = ({ placesData }) => {
             setMapLoaded(true)
         });
 
-
         map.current.getCanvas().style.cursor = 'default';
 
         map.current.on('click', (event) => {
@@ -130,7 +128,7 @@ const MapComponent = ({ placesData }) => {
         return () => {
             map.current.off('click'); // Cleanup sự kiện khi component bị unmount
         }
-    }, []);
+    }, [lat, lng, zoom, map.current]);
 
     useEffect(() => {
         setNewPlaces(placesData);
@@ -142,14 +140,13 @@ const MapComponent = ({ placesData }) => {
                 <div ref={mapContainer} className="map-container" />
                 {
                     mapLoaded && places.map((place, index) => (
-                        <>
-                            <Marker
-                                key={index}
-                                currentMap={map.current}
-                                longitude={place.Longitude}
-                                latitude={place.Latitude}
-                            />
-                        </>
+                        <Marker 
+                            key={index}
+                            id={`marker-${index + 1}`}
+                            currentMap={map.current} 
+                            longitude={place.Longitude} 
+                            latitude={place.Latitude}
+                        />
                     ))
                 }
                 <MapToolbar

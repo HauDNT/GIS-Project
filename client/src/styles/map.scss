@@ -14,23 +14,30 @@
         padding: 10px;
         border-radius: 5px;
 
-        .marker-icon {
-            color: red;
+        .mapboxgl-marker {
             cursor: pointer;
-            font-size: 35px;
         }
     }
 
-    .marker-wrapper {
-        position: relative;
-        background-color: red;
-        z-index: 2000;
+    .mapboxgl-popup {
+        opacity: 0; // Bắt đầu ở trạng thái trong suốt
+        transform: translateY(-20px); // Đẩy popup lên 10px
+        transition: opacity 0.4s ease, transform 0.4s ease; // Thiết lập các hiệu ứng chuyển động
 
-        .marker-modal {
-            position: absolute;
+        &.open {
+            opacity: 1; // Đưa opacity về 1 khi mở
+        }
+
+        .mapboxgl-popup-content {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+            z-index: 100;
         }
     }
-
 
     .map-toolbar {
         position: absolute;

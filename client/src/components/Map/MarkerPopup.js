@@ -1,11 +1,12 @@
-const MarkerPopup = () => {
+const MarkerPopup = ({ data, onClose }) => {
     return (
-        <div className="">
-            <h3>
-                Marker Modal
-            </h3>
-        </div>
-    )
-}
+        <>
+            <h3>Thông tin Marker</h3>
+            <p>Kinh độ: {data.latitude}</p>
+            <p>Vĩ độ: {data.longitude}</p>
+            <button onClick={onClose}>Đóng</button>
+        </>
+    );
+};
 
 export default MarkerPopup;
