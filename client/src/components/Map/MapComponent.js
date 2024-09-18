@@ -173,6 +173,7 @@ const MapComponent = ({ placesData, reloadData }) => {
                         latitude={selectedCoordinates.Latitude} // Sử dụng tọa độ đã chọn
                         longitude={selectedCoordinates.Longitude} // Sử dụng tọa độ đã chọn
                         afterAddAction={() => {
+                            places.filter((_, index) => index !== places.length - 1);
                             setEnableModalAddPlace(false);
                             reloadData();
                         }}

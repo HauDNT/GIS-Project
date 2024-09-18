@@ -14,7 +14,7 @@ export class WarehousesController {
         return this.warehousesService.getAll();
     }
 
-    @Get('last')
+    @Get('newest')
     getNewestWarehouse(): Promise<Warehouse> {
         return this.warehousesService.getNewestWarehouse();
     }
