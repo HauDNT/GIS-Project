@@ -1,6 +1,7 @@
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import ContextProviders from './context/ContextProviders';
 import {
     Login,
     Home,
@@ -37,16 +38,18 @@ function App() {
                 rel="stylesheet"
             />
 
-            <BrowserRouter>
-                <Routes>
-                    <Route path='/' element={<Navigate to='/login' />} />
-                    <Route path='/login' element={<Login />} />
-                    <Route element={<Home />}>
-                        <Route path="/dashboard" element={<Dashboard />} />
-                    </Route>
-                    <Route path="/*" exact element={<PageNotFound />} />
-                </Routes>
-            </BrowserRouter>
+            <ContextProviders>
+                <BrowserRouter>
+                    <Routes>
+                        <Route path='/' element={<Navigate to='/login' />} />
+                        <Route path='/login' element={<Login />} />
+                        <Route element={<Home />}>
+                            <Route path="/dashboard" element={<Dashboard />} />
+                        </Route>
+                        <Route path="/*" exact element={<PageNotFound />} />
+                    </Routes>
+                </BrowserRouter>
+            </ContextProviders>
 
             <ToastContainer
                 position="bottom-right"

@@ -32,7 +32,7 @@ const VerticalCenterModal = ({ isEnable = false, latitude, longitude, afterAddAc
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        // handleValidation(event);
+        handleValidation(event);
 
         console.log('Check submit value: ', values);
 
