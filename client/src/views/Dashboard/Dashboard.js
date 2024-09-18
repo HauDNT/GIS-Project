@@ -17,7 +17,7 @@ function Dashboard() {
     };
 
     const getNewestWarehouseJustAdded = async () => {
-        const result = (await axiosInstance.get('/warehouses/last'));
+        const result = (await axiosInstance.get('/warehouses/newest'));
         if (result && result.data) {
             setWarehouse(oldData => [...oldData, result.data]);
         };
