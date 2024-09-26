@@ -4,7 +4,6 @@ import { Repository } from 'typeorm';
 import { Warehouse } from './warehouse.entity';
 import { CreateWarehouseDTO } from './dto/createWarehouse.dto';
 
-
 @Injectable()
 export class WarehousesService {
     constructor(
@@ -18,6 +17,21 @@ export class WarehousesService {
         return result;
     }
 
+    async getByPage(
+        page: number, 
+        limit: number
+    ): Promise<{data: Warehouse[], total: number}> {
+        const [data, total] = await this.warehouseRepository.findAndCount({
+            skip: (page - 1) * limit,
+            take: limit,
+        });
+
+        return {
+            data,
+            total,
+        };
+    };
+
     async getNewestWarehouse(): Promise<Warehouse> {
         const result = await this.warehouseRepository.find({ 
             order: { id: 'DESC' },
@@ -26,6 +40,7 @@ export class WarehousesService {
 
         return result[0];
     }
+
 
     async create(data: CreateWarehouseDTO): Promise<Warehouse> {
         const newWarehouse = new Warehouse();
