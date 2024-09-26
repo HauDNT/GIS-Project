@@ -1,7 +1,6 @@
 import axios from "axios";
 import { getFromLocalStorage } from "../utils/LocalStorage";
 import { ServerAddress } from "./UrlServerAddress";
-import { toast } from "react-toastify";
 
 // Instance axios với cấu hình mặc định
 const axiosInstance = axios.create({
