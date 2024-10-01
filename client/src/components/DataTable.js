@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button';
+import { Grid, Paper, Button } from '@mui/material';
 
 const DataTable = ({ data, columnHeadersName = [], pageSize, onDelete }) => {
     const [tableData, setTableData] = useState(data);
@@ -21,15 +20,18 @@ const DataTable = ({ data, columnHeadersName = [], pageSize, onDelete }) => {
     return (
         // <>
         <Paper sx={{ height: 400, width: '100%' }}>
-            <Button
-                variant="contained"
-                color="error"
-                onClick={() => onDelete(selectedRows)}
-                disabled={selectedRows.length === 0}
-                sx={{ mb: 2 }}
-            >
-                Xóa ({selectedRows.length})
-            </Button>
+            <Grid container justifyContent="flex-end" sx={{ mb: 2, mt: 1, p: 1 }}>
+                <Grid item>
+                    <Button
+                        variant="contained"
+                        color="error"
+                        onClick={() => onDelete(selectedRows)}
+                        disabled={selectedRows.length === 0}
+                    >
+                        Xóa ({selectedRows.length})
+                    </Button>
+                </Grid>
+            </Grid>
             <DataGrid
                 rows={rows}
                 columns={columns}
