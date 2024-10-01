@@ -6,6 +6,9 @@ import {
     Login,
     Home,
     Dashboard,
+    Customers,
+    Staffs,
+    Warehouses,
     PageNotFound,
 } from './views/index';
 import './styles/index.scss';
@@ -45,6 +48,9 @@ function App() {
                         <Route path='/login' element={<Login />} />
                         <Route element={<Home />}>
                             <Route path="/dashboard" element={<Dashboard />} />
+                            <Route path="/customers" element={<Customers />} />
+                            <Route path="/warehouses" element={<Warehouses />} />
+                            <Route path="/staffs" element={<Staffs />} />
                         </Route>
                         <Route path="/*" exact element={<PageNotFound />} />
                     </Routes>
