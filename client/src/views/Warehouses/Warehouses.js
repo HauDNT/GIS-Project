@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 
 function Warehouses() {
     const { listWarehouses, deleteWarehouse } = useContext(WarehousesContext);
-    const headerNames = ['STT', 'Tên kho', 'Địa chỉ', 'Kinh độ', 'Vĩ độ'];
+    const headerNames = ['Mã kho', 'Tên kho', 'Địa chỉ', 'Kinh độ', 'Vĩ độ'];
 
     const deleteWarehouses = async (warehouseDeletedIds) => {
         const status = true;
@@ -25,17 +25,12 @@ function Warehouses() {
 
     return (
         listWarehouses.length > 0 &&
-        <>
-            <DataTable
-                data={listWarehouses}
-                columnHeadersName={headerNames}
-                pageSize={listWarehouses.length}
-                onDelete={deleteWarehouses}
-            />
-            <div>
-                {listWarehouses.length}
-            </div>
-        </>
+        <DataTable
+            data={listWarehouses}
+            columnHeadersName={headerNames}
+            pageSize={listWarehouses.length}
+            onDelete={deleteWarehouses}
+        />
     )
 }
 
