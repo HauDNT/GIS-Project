@@ -14,7 +14,7 @@ export const seedData = async (manager: EntityManager): Promise<void> => {
     await seedRicePlants();
 
     async function seedWarehouses() {
-        
+
     }
 
     async function seedStaffs() {

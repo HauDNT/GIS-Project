@@ -20,6 +20,9 @@ export class Warehouse {
     @Column({ type: 'double', precision: 25, scale: 20, nullable: true })
     Longitude: number;
 
+    @Column({ default: false })
+    isDeleted: boolean;
+
     @OneToMany(() => Staff, staff => staff.warehouse)
     staffs: Staff[];
 

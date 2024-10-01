@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { WarehousesService } from './warehouses.service';
 import { Warehouse } from './warehouse.entity';
 import { JWTGuard } from 'src/auth/jwt/jwt-guard';
@@ -19,7 +19,7 @@ export class WarehousesController {
     getByPage(
         @Query('page') page: number = 1,
         @Query('limit') limit: number = 10,
-    ): Promise<{data: Warehouse[], total: number}> {
+    ): Promise<{ data: Warehouse[], total: number }> {
         return this.warehousesService.getByPage(page, limit);
     }
 
@@ -34,5 +34,43 @@ export class WarehousesController {
         @Body() data: CreateWarehouseDTO,
     ): Promise<Warehouse> {
         return this.warehousesService.create(data);
-    }
+    };
+
+    @Patch('soft-delete/:id')
+    @UseGuards(JWTGuard)
+    async softDelete(
+        @Param('id') id: number
+    ): Promise<{ message: string; }> {
+        try {
+            await this.warehousesService.softDelete(id);
+            return { message: 'Xoá kho thành công! Kho sẽ được đưa vào thùng rác trong 30 ngày' };
+        } catch (error) {
+            throw new HttpException(
+                {
+                    status: HttpStatus.INTERNAL_SERVER_ERROR,
+                    error: 'Xoá kho thất bại! Vui lòng thử lại sau.',
+                },
+                HttpStatus.INTERNAL_SERVER_ERROR,
+            );
+        }
+    };
+
+    @Patch('restore/:id')
+    @UseGuards(JWTGuard)
+    async restore(
+        @Param('id') id: number
+    ): Promise<{ message: string; }> {
+        try {
+            await this.warehousesService.restore(id);
+            return { message: 'Khôi phục kho thành công!' };
+        } catch (error) {
+            throw new HttpException(
+                {
+                    status: HttpStatus.INTERNAL_SERVER_ERROR,
+                    error: 'Khôi phục kho thất bại! Vui lòng thử lại sau.',
+                },
+                HttpStatus.INTERNAL_SERVER_ERROR,
+            );
+        }
+    };
 }
