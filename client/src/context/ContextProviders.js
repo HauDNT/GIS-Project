@@ -1,10 +1,13 @@
-import { PopupMapProvider } from "./PopupMapContext";
+import { PopupMapProvider } from './PopupMapContext';
+import { WarehousesProvider } from './WarehousesContext';
 
 const ContextProviders = ({ children }) => {
     return (
-        <PopupMapProvider>
-            { children }
-        </PopupMapProvider>
+        <WarehousesProvider>
+            <PopupMapProvider>
+                {children}
+            </PopupMapProvider>
+        </WarehousesProvider>
     )
 }
 

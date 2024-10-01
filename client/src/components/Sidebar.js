@@ -28,7 +28,7 @@ const menuItems = [
     {
         name: 'Kho',
         icon: <MapsHomeWorkOutlined />,
-        routeName: 'warehouse',
+        routeName: 'warehouses',
     },
     {
         name: 'Nhân sự',

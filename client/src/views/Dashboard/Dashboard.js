@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import axiosInstance from '../../common/AxiosInstance';
+import { WarehousesContext } from '../../context/WarehousesContext.js';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -7,25 +8,14 @@ import MapComponent from "../../components/Map/MapComponent";
 import CardComponent from '../../components/CardComponent';
 
 function Dashboard() {
-    const [warehouses, setWarehouse] = useState([]);
-
-    const fetchWarehousesData = async () => {
-        const result = (await axiosInstance.get('/warehouses/all'));
-        if (result && result.data) {
-            setWarehouse(result.data);
-        };
-    };
+    const { listWarehouses, updateListWarehouses } = useContext(WarehousesContext);
 
     const getNewestWarehouseJustAdded = async () => {
         const result = (await axiosInstance.get('/warehouses/newest'));
         if (result && result.data) {
-            setWarehouse(oldData => [...oldData, result.data]);
+            updateListWarehouses(result.data);
         };
     };
-
-    useEffect(() => {
-        fetchWarehousesData();
-    }, []);
 
     return (
         <Container fluid>
@@ -59,11 +49,11 @@ function Dashboard() {
                 </Col>
             </Row>
             {
-                warehouses && (
+                listWarehouses && (
                     <Row>
                         <Col sm={12} xs={12}>
                             <MapComponent 
-                                placesData={warehouses}
+                                placesData={listWarehouses}
                                 reloadData={() => getNewestWarehouseJustAdded()}
                             />
                         </Col>
