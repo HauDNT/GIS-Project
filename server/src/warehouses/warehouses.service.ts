@@ -12,7 +12,16 @@ export class WarehousesService {
     ) { };
 
     async getAll(): Promise<Warehouse[]> {
-        const result = await this.warehouseRepository.find({ where: { isDeleted: false } });
+        const result = await this.warehouseRepository.find({ 
+            where: { isDeleted: false },
+            select: [
+                'id',
+                'Name',
+                'Address',
+                'Latitude',
+                'Longitude'
+            ],
+        });
 
         return result;
     };
