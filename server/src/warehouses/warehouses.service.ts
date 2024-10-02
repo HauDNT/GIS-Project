@@ -51,6 +51,22 @@ export class WarehousesService {
         return result[0];
     };
 
+    async getWarehousesDeleted(): Promise<Warehouse[]> {
+        const result = await this.warehouseRepository.find({ 
+            where: { isDeleted: true },
+            select: [
+                'id',
+                'Name',
+                'Address',
+                'Latitude',
+                'Longitude',
+                'deletedAt',
+            ],
+        });
+
+        return result;
+    };
+
     async create(data: CreateWarehouseDTO): Promise<Warehouse> {
         const newWarehouse = new Warehouse();
 
@@ -65,6 +81,7 @@ export class WarehousesService {
     async softDelete(id: number): Promise<Warehouse> {
         const warehouse = await this.warehouseRepository.findOneBy({id});
         warehouse.isDeleted = true;
+        warehouse.deletedAt = new Date();
 
         return this.warehouseRepository.save(warehouse);
     };
@@ -72,6 +89,7 @@ export class WarehousesService {
     async restore(id: number): Promise<Warehouse> {
         const warehouse = await this.warehouseRepository.findOneBy({id});
         warehouse.isDeleted = false;
+        warehouse.deletedAt = null;
 
         return this.warehouseRepository.save(warehouse);
     };

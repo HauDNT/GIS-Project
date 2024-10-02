@@ -12,7 +12,7 @@ export class WarehousesController {
     @UseGuards(JWTGuard)
     getAll(): Promise<Warehouse[]> {
         return this.warehousesService.getAll();
-    }
+    };
 
     @Get()
     @UseGuards(JWTGuard)
@@ -21,12 +21,17 @@ export class WarehousesController {
         @Query('limit') limit: number = 10,
     ): Promise<{ data: Warehouse[], total: number }> {
         return this.warehousesService.getByPage(page, limit);
-    }
+    };
 
     @Get('newest')
     getNewestWarehouse(): Promise<Warehouse> {
         return this.warehousesService.getNewestWarehouse();
-    }
+    };
+
+    @Get('deleted')
+    getWarehousesDeleted(): Promise<Warehouse[]> {
+        return this.warehousesService.getWarehousesDeleted();
+    };
 
     @Post('create')
     @UseGuards(JWTGuard)
@@ -52,11 +57,11 @@ export class WarehousesController {
                 },
                 HttpStatus.INTERNAL_SERVER_ERROR,
             );
-        }
+        };
     };
 
     @Patch('restore/:id')
-    @UseGuards(JWTGuard)
+    // @UseGuards(JWTGuard)
     async restore(
         @Param('id') id: number
     ): Promise<{ message: string; }> {
@@ -71,6 +76,6 @@ export class WarehousesController {
                 },
                 HttpStatus.INTERNAL_SERVER_ERROR,
             );
-        }
+        };
     };
-}
+};

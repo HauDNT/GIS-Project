@@ -23,6 +23,9 @@ export class Warehouse {
     @Column({ default: false })
     isDeleted: boolean;
 
+    @Column({ type: 'timestamp', nullable: true })
+    deletedAt: Date | null;
+
     @OneToMany(() => Staff, staff => staff.warehouse)
     staffs: Staff[];
 

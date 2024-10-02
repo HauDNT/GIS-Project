@@ -35,7 +35,6 @@ export class AuthService {
         const passwordMatched = await bcrypt.compare(data.password, staff.Password);
 
         if (passwordMatched) {
-
             // Send JWT Token
             const payload: JWTPayloadType = {
                 userId: staff.id,
