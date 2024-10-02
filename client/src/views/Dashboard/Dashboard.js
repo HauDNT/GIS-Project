@@ -8,12 +8,16 @@ import MapComponent from "../../components/Map/MapComponent";
 import CardComponent from '../../components/CardComponent';
 
 function Dashboard() {
-    const { listWarehouses, updateListWarehouses } = useContext(WarehousesContext);
+    const { listWarehouses, loadWarehousesData, addToListWarehouses } = useContext(WarehousesContext);
+
+    useEffect(() => {
+        loadWarehousesData();
+    }, []);
 
     const getNewestWarehouseJustAdded = async () => {
         const result = (await axiosInstance.get('/warehouses/newest'));
         if (result && result.data) {
-            updateListWarehouses(result.data);
+            addToListWarehouses(result.data);
         };
     };
 

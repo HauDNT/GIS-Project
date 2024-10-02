@@ -1,8 +1,14 @@
 import { useEffect, useState } from 'react';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridNoRowsOverlay } from '@mui/x-data-grid';
 import { Grid, Paper, Button } from '@mui/material';
 
-const DataTable = ({ data, columnHeadersName = [], pageSize, onDelete }) => {
+const DataTable = ({
+    data,
+    columnHeadersName = [],
+    pageSize,
+    onDelete,
+    onRestore,
+}) => {
     const [tableData, setTableData] = useState(data);
     const [selectedRows, setSelectedRows] = useState([]);
 
@@ -18,10 +24,26 @@ const DataTable = ({ data, columnHeadersName = [], pageSize, onDelete }) => {
     }, [data]);
 
     return (
-        // <>
         <Paper sx={{ height: 400, width: '100%' }}>
-            <Grid container justifyContent="flex-end" sx={{ mb: 2, mt: 1, p: 1 }}>
-                <Grid item>
+            <Grid container sx={{ mb: 2, mt: 1, p: 1 }}>
+                <Grid item xs={6} justifyContent="flex-start" >
+                    <Button
+                        variant="outlined"
+                        color="inherit"
+                        onClick={() => window.history.back()}
+                    >
+                        Quay lại
+                    </Button>
+                </Grid>
+                <Grid item xs={6} justifyContent="flex-end" className='d-flex'>
+                    <Button
+                        variant="outlined"
+                        color="info"
+                        sx={{ mr: 2 }}
+                        onClick={() => onRestore(selectedRows)}
+                    >
+                        Khôi phục
+                    </Button>
                     <Button
                         variant="contained"
                         color="error"
@@ -48,18 +70,6 @@ const DataTable = ({ data, columnHeadersName = [], pageSize, onDelete }) => {
                 sx={{ border: 0 }}
             />
         </Paper>
-        /* <div>
-            {
-                selectedRows.length > 0 && (
-                    selectedRows.map(item => (
-                        <div>
-                            {item}
-                        </div>
-                    ))
-                )
-            }
-        </div>
-    </> */
     );
 }
 

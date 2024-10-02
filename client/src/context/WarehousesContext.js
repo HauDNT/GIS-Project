@@ -10,15 +10,17 @@ const WarehousesProvider = ({ children }) => {
     const loadWarehousesData = async () => {
         try {
             const result = await axiosInstance.get('/warehouses/all');
+            
             if (result) {
                 setListWarehouses(result.data);
             }
         } catch (error) {
+            console.error("Error loading warehouses data: ", error);
             toast.error("Không thể tải dữ liệu kho.");
         }
     };
 
-    const updateListWarehouses = (newWarehouse) => {
+    const addToListWarehouses = (newWarehouse) => {
         setListWarehouses(prevData => ([...prevData, newWarehouse]));
     };
 
@@ -26,17 +28,13 @@ const WarehousesProvider = ({ children }) => {
         setListWarehouses(prevData => prevData.filter(warehouse => warehouse.id !== warehouseDeletedId))
     };
 
-    useEffect(() => {
-        loadWarehousesData();
-    }, []);
-
     return (
         <WarehousesContext.Provider
-            value={{ listWarehouses, updateListWarehouses, deleteWarehouse }}
+            value={{ listWarehouses, loadWarehousesData, addToListWarehouses, deleteWarehouse }}
         >
             { children }
         </WarehousesContext.Provider>
-    )
+    );
 }
 
 export { WarehousesProvider, WarehousesContext };
