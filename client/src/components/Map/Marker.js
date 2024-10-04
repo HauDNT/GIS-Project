@@ -61,16 +61,18 @@ const Marker = ({ id, currentMap, placeData, onClick }) => {
         *       + Cập nhật id mới này cho usePopupContext.
         */
 
+        // onClick();
+
         if (popupRef.current) {
             popupRef.current.remove(); // Đóng popup nếu đã tồn tại
-        }
+        };
 
         if (activeMarkerId === id) {
             updatePopupContext(null); // Nếu marker đang hoạt động, xóa id
         } else {
             createPopup(); // Tạo popup cho marker mới
             updatePopupContext(id); // Cập nhật id mới
-        }
+        };
     };
 
     useEffect(() => {
