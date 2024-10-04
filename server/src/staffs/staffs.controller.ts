@@ -1,7 +1,53 @@
-import { Controller } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import { Staff } from './staff.entity';
 import { StaffsService } from './staffs.service';
+import { JWTGuard } from 'src/auth/jwt/jwt-guard';
 
 @Controller('staffs')
 export class StaffsController {
     constructor(private readonly staffsService: StaffsService) { }
+
+    @Get('all')
+    @UseGuards(JWTGuard)
+    getAll(): Promise<Staff[]> {
+        return this.staffsService.getAll();
+    };
+
+    @Patch('soft-delete/:id')
+    @UseGuards(JWTGuard)
+    async softDelete(
+        @Param('id') id: number
+    ): Promise<{ message: string; }> {
+        try {
+            await this.staffsService.softDelete(id);
+            return { message: 'Xoá nhân viên thành công! Nhân viên sẽ được đưa vào thùng rác trong 30 ngày' };
+        } catch (error) {
+            throw new HttpException(
+                {
+                    status: HttpStatus.INTERNAL_SERVER_ERROR,
+                    error: 'Xoá nhân viên thất bại! Vui lòng thử lại sau.',
+                },
+                HttpStatus.INTERNAL_SERVER_ERROR,
+            );
+        };
+    };
+
+    @Patch('restore/:id')
+    @UseGuards(JWTGuard)
+    async restore(
+        @Param('id') id: number
+    ): Promise<{ message: string; }> {
+        try {
+            await this.staffsService.restore(id);
+            return { message: 'Khôi phục kho thành công!' };
+        } catch (error) {
+            throw new HttpException(
+                {
+                    status: HttpStatus.INTERNAL_SERVER_ERROR,
+                    error: 'Khôi phục kho thất bại! Vui lòng thử lại sau.',
+                },
+                HttpStatus.INTERNAL_SERVER_ERROR,
+            );
+        };
+    };
 }

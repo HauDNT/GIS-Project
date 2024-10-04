@@ -15,7 +15,7 @@ export class StaffsService {
     async create(data: SignupDTO) {
         await this.staffRepository.save(data);
         return {message: "Tạo tài khoản thành công"}
-    }
+    };
 
     async findOneByUsername(username: string, isEmail: boolean): Promise<Staff> {
         let staff = undefined;
@@ -28,5 +28,38 @@ export class StaffsService {
         }
 
         return staff;
-    }
+    };
+
+    async getAll(): Promise<Staff[]> {
+        const staffs = await this.staffRepository.find({
+            select: [
+                'id',
+                'Fullname',
+                'Gender',
+                'Address',
+                'Email',
+                'PhoneNumber',
+            ],
+        });
+
+        return staffs;
+    };
+
+    async softDelete(id: number): Promise<Staff> {
+        const staff = await this.staffRepository.findOneBy({id});
+
+        staff.isDeleted = true;
+        staff.deletedAt = new Date();
+        
+        return this.staffRepository.save(staff);
+    };
+
+    async restore(id: number): Promise<Staff> {
+        const staff = await this.staffRepository.findOneBy({id});
+
+        staff.isDeleted = false;
+        staff.deletedAt = null;
+
+        return this.staffRepository.save(staff);
+    };
 }

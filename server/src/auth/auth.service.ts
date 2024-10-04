@@ -16,13 +16,16 @@ export class AuthService {
 
     async signup(data: SignupDTO) {
         let existUser = await this.staffService.findOneByUsername(data.Email, true);
-        existUser = await this.staffService.findOneByUsername(data.PhoneNumber, false);
 
         if (!existUser) {
-            const salt = await bcrypt.genSalt();
-            data.Password = await bcrypt.hash(data.Password, salt);
+            existUser = await this.staffService.findOneByUsername(data.PhoneNumber, false);
 
-            return this.staffService.create(data);
+            if (!existUser) {
+                const salt = await bcrypt.genSalt();
+                data.Password = await bcrypt.hash(data.Password, salt);
+    
+                return this.staffService.create(data);
+            }
         }
         else {
             throw new UnauthorizedException("Email hoặc số điện thoại đã tồn tại. Hãy thử lại.")

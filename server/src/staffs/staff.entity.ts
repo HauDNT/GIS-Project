@@ -25,6 +25,12 @@ export class Staff {
 
     @Column("text")
     Address: string;
+
+    @Column({ default: false })
+    isDeleted: boolean;
+
+    @Column({ type: 'timestamp', nullable: true })
+    deletedAt: Date | null;
     
     @ManyToOne(() => Warehouse, warehouse => warehouse.staffs)
     warehouse: Warehouse;

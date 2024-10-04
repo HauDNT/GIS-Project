@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Warehouse } from './warehouse.entity';
 import { CreateWarehouseDTO } from './dto/createWarehouse.dto';
+import { omitFields } from '../utils/omit_field.utils';
 
 @Injectable()
 export class WarehousesService {
@@ -12,23 +13,39 @@ export class WarehousesService {
     ) { };
 
     async getAll(): Promise<Warehouse[]> {
-        const result = await this.warehouseRepository.find({ 
+        const result = await this.warehouseRepository.find({
             where: { isDeleted: false },
-            select: [
-                'id',
-                'Name',
-                'Address',
-                'Latitude',
-                'Longitude'
-            ],
+        });
+
+        result.forEach((item, index) => {
+            result[index] = omitFields(item, ['deletedAt', 'isDeleted']);
         });
 
         return result;
     };
 
+    async getDetail(id: number): Promise<Warehouse> {
+        const result = await this.warehouseRepository.findOne({
+            where: { id },
+            relations: ['staffs'],
+        });
+
+        const formatResult = {
+            ...result,
+            staffs: result.staffs.map(staff => ({
+                id: staff.id,
+                Fullname: staff.Fullname,
+                Email: staff.Email,
+                PhoneNumber: staff.PhoneNumber,
+            })),
+        };
+
+        return omitFields(formatResult, ['deletedAt', 'isDeleted']);
+    };
+
     async getByPage(
         page: number,
-        limit: number
+        limit: number,
     ): Promise<{ data: Warehouse[], total: number }> {
         const [data, total] = await this.warehouseRepository.findAndCount({
             skip: (page - 1) * limit,
@@ -52,19 +69,11 @@ export class WarehousesService {
     };
 
     async getWarehousesDeleted(): Promise<Warehouse[]> {
-        const result = await this.warehouseRepository.find({ 
+        const result = await this.warehouseRepository.find({
             where: { isDeleted: true },
-            select: [
-                'id',
-                'Name',
-                'Address',
-                'Latitude',
-                'Longitude',
-                'deletedAt',
-            ],
         });
 
-        return result;
+        return omitFields(result, ['isDeleted']);
     };
 
     async create(data: CreateWarehouseDTO): Promise<Warehouse> {
@@ -79,7 +88,7 @@ export class WarehousesService {
     };
 
     async softDelete(id: number): Promise<Warehouse> {
-        const warehouse = await this.warehouseRepository.findOneBy({id});
+        const warehouse = await this.warehouseRepository.findOneBy({ id });
         warehouse.isDeleted = true;
         warehouse.deletedAt = new Date();
 
@@ -87,7 +96,7 @@ export class WarehousesService {
     };
 
     async restore(id: number): Promise<Warehouse> {
-        const warehouse = await this.warehouseRepository.findOneBy({id});
+        const warehouse = await this.warehouseRepository.findOneBy({ id });
         warehouse.isDeleted = false;
         warehouse.deletedAt = null;
 
