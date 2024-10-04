@@ -12,7 +12,7 @@ import DataTable from "../../components/DataTable.js";
 
 function Warehouses() {
     const navigate = useNavigate();
-    const { listWarehouses, deleteWarehouse } = useContext(WarehousesContext);
+    const { listWarehouses, loadWarehousesData, deleteWarehouse } = useContext(WarehousesContext);
     const headerNames = ['Mã kho', 'Tên kho', 'Địa chỉ', 'Kinh độ', 'Vĩ độ'];
 
     const softDeleteWarehouses = async (warehouseIds) => {
@@ -21,10 +21,18 @@ function Warehouses() {
                 axiosInstance.patch(`/warehouses/soft-delete/${id}`);
                 deleteWarehouse(id);
             });
+
+            toast.success('Xoá kho thành công');
         } catch (error) {
             toast.error('Đã xảy ra lỗi trong quá trình xoá kho. Vui lòng kiểm tra lại.');
         };
     };
+
+    useEffect(() => {
+        if (listWarehouses.length === 0) {
+            loadWarehousesData();
+        };
+    }, []);
 
     return (
         <Container fluid>
@@ -34,6 +42,7 @@ function Warehouses() {
                 pageSize={listWarehouses.length}
                 onDelete={softDeleteWarehouses}
                 onRestore={() => navigate('restore')}
+                handleAction={(itemValue) => navigate(`/warehouses/${itemValue}`)}
             />
         </Container>
     )
