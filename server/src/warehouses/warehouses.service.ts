@@ -30,9 +30,11 @@ export class WarehousesService {
             relations: ['staffs'],
         });
 
+        const isNotDeletedStaffs = result.staffs.filter(staff => !staff.isDeleted);
+
         const formatResult = {
             ...result,
-            staffs: result.staffs.map(staff => ({
+            staffs: isNotDeletedStaffs.map(staff => ({
                 id: staff.id,
                 Fullname: staff.Fullname,
                 Email: staff.Email,
