@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Param, ParseIntPipe, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { WarehousesService } from './warehouses.service';
 import { Warehouse } from './warehouse.entity';
 import { JWTGuard } from 'src/auth/jwt/jwt-guard';
@@ -6,7 +6,7 @@ import { CreateWarehouseDTO } from './dto/createWarehouse.dto';
 
 @Controller('warehouses')
 export class WarehousesController {
-    constructor(private readonly warehousesService: WarehousesService) { }
+    constructor(private readonly warehousesService: WarehousesService) { };
 
     @Get('all')
     @UseGuards(JWTGuard)
@@ -14,11 +14,28 @@ export class WarehousesController {
         return this.warehousesService.getAll();
     };
 
+    @Get('details/:id')
+    @UseGuards(JWTGuard)
+    getDetail(
+        @Param(
+            'id',
+            new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE })
+        ) id: number,
+    ): Promise<Warehouse> {
+        return this.warehousesService.getDetail(id);
+    };
+
     @Get()
     @UseGuards(JWTGuard)
     getByPage(
-        @Query('page') page: number = 1,
-        @Query('limit') limit: number = 10,
+        @Query(
+            'page',
+            new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE })
+        ) page: number = 1,
+        @Query(
+            'limit',
+            new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE })
+        ) limit: number = 10,
     ): Promise<{ data: Warehouse[], total: number }> {
         return this.warehousesService.getByPage(page, limit);
     };
@@ -61,7 +78,7 @@ export class WarehousesController {
     };
 
     @Patch('restore/:id')
-    // @UseGuards(JWTGuard)
+    @UseGuards(JWTGuard)
     async restore(
         @Param('id') id: number
     ): Promise<{ message: string; }> {
