@@ -86,7 +86,6 @@ const MapComponent = ({ placesData, reloadData }) => {
                 .setLngLat([lng, lat])
                 .addTo(map.current);
 
-            // Set coordinates into map and go:
             setLat(lat);
             setLng(lng);
             setZoom(14);
@@ -140,11 +139,23 @@ const MapComponent = ({ placesData, reloadData }) => {
                 <div ref={mapContainer} className="map-container" />
                 {
                     mapLoaded && places.map((place, index) => (
-                        <Marker 
+                        <Marker
                             key={index}
                             id={`marker-${index + 1}`}
-                            currentMap={map.current} 
+                            currentMap={map.current}
                             placeData={place}
+                            // onClick={() => {
+                            //     setLat(place.Latitude);
+                            //     setLng(place.Longitude);
+                            //     map.current.flyTo({
+                            //         center: [
+                            //             place.Longitude, 
+                            //             place.Latitude,
+                            //         ],
+                            //         zoom: 14,
+                            //         essential: true,
+                            //     });
+                            // }}
                         />
                     ))
                 }
