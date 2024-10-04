@@ -1,20 +1,18 @@
 import { useState, useEffect, useContext } from 'react';
 import { toast } from 'react-toastify';
-import { useNavigate, useHistory } from "react-router-dom";
-import {
-    Container,
-    Row,
-    Col,
-} from 'react-bootstrap';
+import { useNavigate } from "react-router-dom";
+import { Container } from 'react-bootstrap';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import axiosInstance from '../../common/AxiosInstance';
 import { WarehousesContext } from '../../context/WarehousesContext.js';
 import DataTable from "../../components/DataTable.js";
+import Loading from '../../components/Loading.js';
 
 function Warehouses() {
     const navigate = useNavigate();
     const { listWarehouses, loadWarehousesData, deleteWarehouse } = useContext(WarehousesContext);
     const headerNames = ['Mã kho', 'Tên kho', 'Địa chỉ', 'Kinh độ', 'Vĩ độ'];
+    const [isLoading, setLoading] = useState(true);
 
     const softDeleteWarehouses = async (warehouseIds) => {
         try {
@@ -33,25 +31,33 @@ function Warehouses() {
         if (listWarehouses.length === 0) {
             loadWarehousesData();
         };
+        
+        setInterval(() => setLoading(false), 1000);
     }, []);
 
     return (
         <Container fluid>
-            <DataTable
-                data={listWarehouses}
-                columnHeadersName={headerNames}
-                pageSize={listWarehouses.length}
-                onDelete={softDeleteWarehouses}
-                onRestore={() => navigate('restore')}
-                action={{
-                    type: 'redirect',
-                    field: 'actions',
-                    name: 'Xem chi tiết',
-                    icon: <BorderColorIcon/>,
-                    callback: (itemValue) => navigate(`/warehouses/${itemValue}`)
-                }}
-                autoHeight={false}
-            />
+            {
+                isLoading ? (
+                    <Loading/>
+                ) : (
+                    <DataTable
+                        data={listWarehouses}
+                        columnHeadersName={headerNames}
+                        pageSize={listWarehouses.length}
+                        onDelete={softDeleteWarehouses}
+                        onRestore={() => navigate('restore')}
+                        action={{
+                            type: 'redirect',
+                            field: 'actions',
+                            name: 'Xem chi tiết',
+                            icon: <BorderColorIcon/>,
+                            callback: (itemValue) => navigate(`/warehouses/${itemValue}`)
+                        }}
+                        autoHeight={false}
+                    />
+                )
+            }
         </Container>
     )
 }

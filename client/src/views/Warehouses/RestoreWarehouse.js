@@ -17,7 +17,7 @@ function WarehousesRestore() {
                 setWarehousesDeleted(result.data);
             };
         } catch (error) {
-            toast.error('Lấy dữ liệu các kho bị xoá thất bại!');
+            toast.error('Không thể lấy dữ liệu các kho bị xoá!');
         };
     };
 

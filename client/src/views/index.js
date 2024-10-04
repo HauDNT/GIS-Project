@@ -9,6 +9,7 @@ export { default as EditWarehouse } from './Warehouses/EditWarehouse';
 
 // Staffs
 export { default as Staffs } from './Staffs/Staffs';
+export { default as RestoreStaffs } from './Staffs/RestoreStaffs';
 
 // Customers
 export { default as Customers } from './Customers/Customers';

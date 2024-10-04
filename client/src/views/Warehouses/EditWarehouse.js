@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 import { Container as BootstrapContainer, Row, Col } from 'react-bootstrap';
 import {
@@ -16,6 +16,7 @@ import DataTable from "../../components/DataTable.js";
 
 function EditWarehouse() {
     const { id } = useParams();
+    const navigate = useNavigate();
     const [data, setData] = useState(null);
     const [isLoading, setLoading] = useState(true);
     const headerStaffsTable = ['Mã nhân viên', 'Họ và tên', 'Email', 'Số điện thoại'];
@@ -27,7 +28,7 @@ function EditWarehouse() {
             if (result) {
                 setData(result.data);
 
-                setInterval(() => setLoading(false) , 1000);
+                setInterval(() => setLoading(false), 1000);
             };
         } catch (error) {
             console.log(error);
@@ -45,7 +46,27 @@ function EditWarehouse() {
                 toast.success('Cập nhật thông tin thành công');
             };
         } catch (error) {
-            toast.error('Cập nhật thông tin thất bại! Vui lòng thử lại sau.')  
+            toast.error('Cập nhật thông tin thất bại! Vui lòng thử lại sau.')
+        };
+    };
+
+    // Thử tìm cách xuất hàm này từ component staffs sang edit warehouse để sử dụng (tránh viết lại 1 hàm tại 2 nơi)
+    const softDeleteStaffs = async (staffIds) => {
+        try {
+            await Promise.all(
+                staffIds.map(id => {
+                    axiosInstance.patch(`/staffs/soft-delete/${id}`);
+                }),
+            );
+
+            setData(prevData => ({
+                ...prevData,
+                staffs: prevData.staffs.filter(staff => !staffIds.includes(staff.id)),
+            }));
+
+            toast.success('Xoá nhân viên thành công');
+        } catch (error) {
+            toast.error('Đã xảy ra lỗi trong quá trình xoá nhân viên. Vui lòng kiểm tra lại.');
         };
     };
 
@@ -55,7 +76,7 @@ function EditWarehouse() {
 
     return (
         isLoading ? (
-            <Loading/>
+            <Loading />
         ) : (
             <BootstrapContainer fluid className="form mt-1em">
                 <Row>
@@ -95,7 +116,7 @@ function EditWarehouse() {
                                                     fullWidth
                                                     margin="normal"
                                                     value={data?.Name}
-                                                    onChange={(event) => setData({...data, Name: event.target.value})}
+                                                    onChange={(event) => setData({ ...data, Name: event.target.value })}
                                                     required
                                                     InputLabelProps={{
                                                         shrink: true,
@@ -109,7 +130,7 @@ function EditWarehouse() {
                                                     fullWidth
                                                     margin="normal"
                                                     value={data?.Address}
-                                                    onChange={(event) => setData({...data, Address: event.target.value})}
+                                                    onChange={(event) => setData({ ...data, Address: event.target.value })}
                                                     InputLabelProps={{
                                                         shrink: true,
                                                     }}
@@ -160,23 +181,23 @@ function EditWarehouse() {
                                             <Typography className="pt-0-5em pb-0-5em" variant="h5" gutterBottom>
                                                 Danh sách nhân viên làm việc tại kho
                                             </Typography>
-                                            {
-                                                data?.staffs?.length > 0 &&
-                                                <DataTable
-                                                    data={data.staffs}
-                                                    columnHeadersName={headerStaffsTable}
-                                                    pageSize={data.staffs.length}
-                                                    action={{
-                                                        type: 'redirect',
-                                                        field: 'actions',
-                                                        name: 'Chi tiết',
-                                                        icon: <SearchOutlinedIcon />,
-                                                    }}
-                                                    onBack={false}
-                                                    disabledHeader={false}
-                                                    disabledFooter={true}
-                                                />
-                                            }
+                                            <DataTable
+                                                data={data?.staffs}
+                                                columnHeadersName={headerStaffsTable}
+                                                pageSize={data.staffs.length}
+                                                action={{
+                                                    type: 'redirect',
+                                                    field: 'actions',
+                                                    name: 'Chi tiết',
+                                                    icon: <SearchOutlinedIcon />,
+                                                    callback: () => alert('Nothing'),
+                                                }}
+                                                onBack={false}
+                                                onRestore={() => navigate('/staffs/restore')}
+                                                onDelete={softDeleteStaffs}
+                                                disabledHeader={false}
+                                                disabledFooter={true}
+                                            />
                                         </Col>
                                     </Row>
                                 </Col>
