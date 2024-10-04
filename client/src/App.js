@@ -8,6 +8,7 @@ import {
     Dashboard,
     Customers,
     Staffs,
+    RestoreStaffs,
     Warehouses,
     WarehousesRestore,
     EditWarehouse,
@@ -55,6 +56,7 @@ function App() {
                             <Route path="/warehouses/:id" element={<EditWarehouse />} />
                             <Route path="/warehouses/restore" element={<WarehousesRestore />} />
                             <Route path="/staffs" element={<Staffs />} />
+                            <Route path="/staffs/restore" element={<RestoreStaffs />} />
                         </Route>
                         <Route path="/*" exact element={<PageNotFound />} />
                     </Routes>
