@@ -13,6 +13,12 @@ export class StaffsController {
         return this.staffsService.getAll();
     };
 
+    @Get('deleted')
+    @UseGuards(JWTGuard)
+    getStaffsDeleted(): Promise<Staff[]> {
+        return this.staffsService.getStaffsDeleted();
+    };
+
     @Patch('soft-delete/:id')
     @UseGuards(JWTGuard)
     async softDelete(
@@ -39,12 +45,12 @@ export class StaffsController {
     ): Promise<{ message: string; }> {
         try {
             await this.staffsService.restore(id);
-            return { message: 'Khôi phục kho thành công!' };
+            return { message: 'Khôi phục nhân viên thành công!' };
         } catch (error) {
             throw new HttpException(
                 {
                     status: HttpStatus.INTERNAL_SERVER_ERROR,
-                    error: 'Khôi phục kho thất bại! Vui lòng thử lại sau.',
+                    error: 'Khôi phục nhân viên thất bại! Vui lòng thử lại sau.',
                 },
                 HttpStatus.INTERNAL_SERVER_ERROR,
             );
