@@ -6,6 +6,7 @@ import {
     Row,
     Col,
 } from 'react-bootstrap';
+import BorderColorIcon from '@mui/icons-material/BorderColor';
 import axiosInstance from '../../common/AxiosInstance';
 import { WarehousesContext } from '../../context/WarehousesContext.js';
 import DataTable from "../../components/DataTable.js";
@@ -42,7 +43,14 @@ function Warehouses() {
                 pageSize={listWarehouses.length}
                 onDelete={softDeleteWarehouses}
                 onRestore={() => navigate('restore')}
-                handleAction={(itemValue) => navigate(`/warehouses/${itemValue}`)}
+                action={{
+                    type: 'redirect',
+                    field: 'actions',
+                    name: 'Xem chi tiết',
+                    icon: <BorderColorIcon/>,
+                    callback: (itemValue) => navigate(`/warehouses/${itemValue}`)
+                }}
+                autoHeight={false}
             />
         </Container>
     )
