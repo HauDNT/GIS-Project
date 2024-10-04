@@ -87,6 +87,17 @@ export class WarehousesService {
         return this.warehouseRepository.save(newWarehouse);
     };
 
+    async update(id: number, data: CreateWarehouseDTO): Promise<Warehouse> {
+        const warehouse = await this.warehouseRepository.findOneBy({ id });
+
+        warehouse.Name = data.Name;
+        warehouse.Address = data.Address;
+        warehouse.Latitude = data.Latitude;
+        warehouse.Longitude = data.Longitude;
+
+        return this.warehouseRepository.save(warehouse);
+    };
+
     async softDelete(id: number): Promise<Warehouse> {
         const warehouse = await this.warehouseRepository.findOneBy({ id });
         warehouse.isDeleted = true;
