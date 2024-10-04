@@ -1,5 +1,6 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Param, ParseIntPipe, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Param, ParseIntPipe, Patch, Post, Put, Query, Res, UseGuards } from '@nestjs/common';
 import { WarehousesService } from './warehouses.service';
+import { Response } from 'express';
 import { Warehouse } from './warehouse.entity';
 import { JWTGuard } from 'src/auth/jwt/jwt-guard';
 import { CreateWarehouseDTO } from './dto/createWarehouse.dto';
@@ -52,10 +53,44 @@ export class WarehousesController {
 
     @Post('create')
     @UseGuards(JWTGuard)
-    create(
+    async create(
         @Body() data: CreateWarehouseDTO,
-    ): Promise<Warehouse> {
-        return this.warehousesService.create(data);
+        @Res() response: Response,
+    ): Promise<void> {
+        try {
+            await this.warehousesService.create(data);
+            
+            response.status(HttpStatus.CREATED).json({
+                status: 'success',
+                message: 'Tạo kho thành công.',
+            });
+        } catch (error) {
+            throw new HttpException({
+                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                message: 'Tạo kho thất bại! Vui lòng thử lại sau.',
+            }, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    };
+
+    @Put('update/:id')
+    async update(
+        @Param('id') id: number,
+        @Body() data: CreateWarehouseDTO,
+        @Res() response: Response,
+    ): Promise<void> {
+        try {
+            await this.warehousesService.update(id, data);
+
+            response.status(HttpStatus.OK).json({
+                status: 'success',
+                message: 'Cập nhật kho thành công.',
+            });
+        } catch (error) {
+            throw new HttpException({
+                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                message: 'Cập nhật kho thất bại! Vui lòng thử lại sau.',
+            }, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     };
 
     @Patch('soft-delete/:id')
