@@ -1,9 +1,7 @@
-import { useState, useEffect, useContext } from 'react';
+import { useEffect, useContext } from 'react';
 import axiosInstance from '../../common/AxiosInstance';
 import { WarehousesContext } from '../../context/WarehousesContext.js';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import { Container, Row, Col } from 'react-bootstrap';
 import MapComponent from "../../components/Map/MapComponent";
 import CardComponent from '../../components/CardComponent';
 
