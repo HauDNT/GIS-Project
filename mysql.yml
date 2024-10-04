@@ -1,10 +1,21 @@
-# version: '3.8'
+version: "3.8"
 services:
   db-mysql:
     image: mysql:5.7.40
-    restart: always
+    container_name: geographic-information-system
+    restart: no
     environment:
       - MYSQL_DATABASE=geographic-information-system
       - MYSQL_ROOT_PASSWORD=123456
     ports:
       - "3310:3306"
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    environment:
+      - PMA_HOST=db-mysql
+      - PMA_PORT=3306
+      - PMA_USER=root
+      - PMA_PASSWORD=123456
+    ports:
+      - "8000:80"
