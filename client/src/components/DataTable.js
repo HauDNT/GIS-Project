@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { DataGrid, GridNoRowsOverlay } from '@mui/x-data-grid';
 import { Grid, Paper, Button } from '@mui/material';
+import BorderColorIcon from '@mui/icons-material/BorderColor';
 
 const DataTable = ({
     data,
@@ -8,6 +9,7 @@ const DataTable = ({
     pageSize,
     onDelete,
     onRestore,
+    handleAction,
 }) => {
     const [tableData, setTableData] = useState(data);
     const [selectedRows, setSelectedRows] = useState([]);
@@ -17,6 +19,24 @@ const DataTable = ({
         headerName: columnHeadersName[index] || col.charAt(0).toUpperCase() + col.slice(1),
         flex: 1,
     }));
+
+    columns.push({
+        field: 'actions',
+        headerName: 'Xem chi tiết',
+        renderCell: (params) => (
+            <Button
+                variant="contained"
+                color="primary"
+                onClick={(event) => {
+                    event.stopPropagation();
+                    handleAction(params.row.id);
+                }}
+            >
+                <BorderColorIcon/>
+            </Button>
+        ),
+    });
+
     const rows = tableData.map((item) => ({ id: item.id, ...item }));
 
     useEffect(() => {

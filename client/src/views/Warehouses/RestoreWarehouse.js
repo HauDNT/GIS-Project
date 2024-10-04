@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { toast } from 'react-toastify';
-import axiosInstance from '../../common/AxiosInstance';
+import axiosInstance from '../../common/AxiosInstance.js';
 import DataTable from "../../components/DataTable.js";
 import { WarehousesContext } from '../../context/WarehousesContext.js';
 
@@ -27,18 +27,17 @@ function WarehousesRestore() {
 
     const restoreWarehouses = async (warehouseIds) => {
         try {
-            // Khôi phục kho
             await Promise.all(
                 warehouseIds.map(id => axiosInstance.patch(`/warehouses/restore/${id}`))
             );
 
-            // Cập nhật state để loại bỏ các kho vừa khôi phục
             setWarehousesDeleted(prevData =>
                 prevData.filter(item => !warehouseIds.includes(item.id))
             );
 
-            // Tải lại dữ liệu kho
             await loadWarehousesData();
+
+            toast.success('Khôi phục kho thành công');
         } catch (error) {
             console.error("Error loading warehouses data: ", error);
             toast.error('Đã xảy ra lỗi trong quá trình khôi phục kho. Vui lòng kiểm tra lại.');

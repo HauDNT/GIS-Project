@@ -4,7 +4,8 @@ export { default as Dashboard } from './Dashboard/Dashboard';
 
 // Warehouses
 export { default as Warehouses } from './Warehouses/Warehouses';
-export { default as WarehousesRestore} from './Warehouses/Restore';
+export { default as WarehousesRestore} from './Warehouses/RestoreWarehouse';
+export { default as EditWarehouse } from './Warehouses/EditWarehouse';
 
 // Staffs
 export { default as Staffs } from './Staffs/Staffs';
