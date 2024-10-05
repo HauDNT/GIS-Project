@@ -14,7 +14,9 @@ export class StaffsService {
     ) { };
 
     async getAll(): Promise<Staff[]> {
-        let staffs = await this.staffRepository.find();
+        let staffs = await this.staffRepository.find({
+            where: { isDeleted: false },
+        });
 
         staffs = staffs.map(staff => {
             return plainToClass(Staff, omitFields(staff, ['deletedAt', 'isDeleted']));

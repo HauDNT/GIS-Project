@@ -9,6 +9,7 @@ export class StaffsController {
     constructor(private readonly staffsService: StaffsService) { }
 
     @Get('all')
+    @UseGuards(JWTGuard)
     getAll(): Promise<Staff[]> {
         return this.staffsService.getAll();
     };
