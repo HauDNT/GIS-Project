@@ -12,6 +12,7 @@ import {
 import Loading from "../../components/Loading.js";
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import axiosInstance from "../../common/AxiosInstance";
+import { softDeleteStaffs } from "../Staffs/Staffs.js";
 import DataTable from "../../components/DataTable.js";
 
 function EditWarehouse() {
@@ -28,7 +29,8 @@ function EditWarehouse() {
             if (result) {
                 setData(result.data);
 
-                setInterval(() => setLoading(false), 1000);
+                const intervalId = setInterval(() => setLoading(false), 1000);
+                return () => clearInterval(intervalId);
             };
         } catch (error) {
             console.log(error);
@@ -47,26 +49,6 @@ function EditWarehouse() {
             };
         } catch (error) {
             toast.error('Cập nhật thông tin thất bại! Vui lòng thử lại sau.')
-        };
-    };
-
-    // Thử tìm cách xuất hàm này từ component staffs sang edit warehouse để sử dụng (tránh viết lại 1 hàm tại 2 nơi)
-    const softDeleteStaffs = async (staffIds) => {
-        try {
-            await Promise.all(
-                staffIds.map(id => {
-                    axiosInstance.patch(`/staffs/soft-delete/${id}`);
-                }),
-            );
-
-            setData(prevData => ({
-                ...prevData,
-                staffs: prevData.staffs.filter(staff => !staffIds.includes(staff.id)),
-            }));
-
-            toast.success('Xoá nhân viên thành công');
-        } catch (error) {
-            toast.error('Đã xảy ra lỗi trong quá trình xoá nhân viên. Vui lòng kiểm tra lại.');
         };
     };
 
@@ -194,7 +176,14 @@ function EditWarehouse() {
                                                 }}
                                                 onBack={false}
                                                 onRestore={() => navigate('/staffs/restore')}
-                                                onDelete={softDeleteStaffs}
+                                                onDelete={(staffIds) => {
+                                                    softDeleteStaffs(staffIds);
+
+                                                    setData(prevData => ({
+                                                        ...prevData,
+                                                        staffs: prevData.staffs.filter(staff => !staffIds.includes(staff.id)),
+                                                    }));
+                                                }}
                                                 disabledHeader={false}
                                                 disabledFooter={true}
                                             />

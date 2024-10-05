@@ -32,7 +32,8 @@ function Warehouses() {
             loadWarehousesData();
         };
         
-        setInterval(() => setLoading(false), 1000);
+        const intervalId = setInterval(() => setLoading(false), 1000);
+        return () => clearInterval(intervalId);
     }, []);
 
     return (

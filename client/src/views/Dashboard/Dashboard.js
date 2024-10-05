@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import axiosInstance from '../../common/AxiosInstance';
 import { WarehousesContext } from '../../context/WarehousesContext.js';
 import { Container, Row, Col } from 'react-bootstrap';
-import MapComponent from "../../components/Map/MapComponent";
+import MapComponent from "../../components/MainMap/MapComponent.js";
 import CardComponent from '../../components/CardComponent';
 import Loading from '../../components/Loading.js';
 
@@ -61,7 +61,7 @@ function Dashboard() {
                         <Row>
                             <Col sm={12} xs={12}>
                                 <MapComponent
-                                    placesData={listWarehouses ? listWarehouses : []}
+                                    placesData={listWarehouses || []}
                                     reloadData={() => getNewestWarehouseJustAdded()}
                                 />
                             </Col>

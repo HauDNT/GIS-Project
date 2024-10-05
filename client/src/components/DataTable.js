@@ -55,7 +55,7 @@ const DataTable = ({
 
     useEffect(() => {
         setTableData(data);
-    }, [data]);
+    }, [data.length]);
 
     return (
         <Paper sx={[{ width: '100%' }, !autoHeight && { height: 400 }]}>

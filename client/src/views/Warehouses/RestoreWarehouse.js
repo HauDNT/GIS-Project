@@ -50,7 +50,7 @@ function WarehousesRestore() {
 
     return (
         <DataTable
-            data={warehousesDeleted}
+            data={warehousesDeleted || []}
             columnHeadersName={headerNames}
             pageSize={warehousesDeleted.length}
             onDelete={forceDeletedWarehouses}
