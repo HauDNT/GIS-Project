@@ -1,14 +1,14 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Get, HttpException, HttpStatus, Param, Patch, Post, Query, UseGuards, UseInterceptors } from '@nestjs/common';
 import { Staff } from './staff.entity';
 import { StaffsService } from './staffs.service';
 import { JWTGuard } from 'src/auth/jwt/jwt-guard';
 
 @Controller('staffs')
+@UseInterceptors(ClassSerializerInterceptor)    // Using with Exclude entities
 export class StaffsController {
     constructor(private readonly staffsService: StaffsService) { }
 
     @Get('all')
-    @UseGuards(JWTGuard)
     getAll(): Promise<Staff[]> {
         return this.staffsService.getAll();
     };

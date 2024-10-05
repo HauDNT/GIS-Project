@@ -2,6 +2,7 @@ import { DispatchSlip } from "src/dispatch_slips/dispatch_slip.entity";
 import { ReceivingSlip } from "src/receiving_slips/receiving_slip.entity";
 import { Warehouse } from "src/warehouses/warehouse.entity";
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Exclude } from 'class-transformer';
 
 @Entity("staffs")
 export class Staff {
@@ -18,6 +19,7 @@ export class Staff {
     PhoneNumber: string;
 
     @Column()
+    @Exclude()
     Password: string;
 
     @Column()
