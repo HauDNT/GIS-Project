@@ -1,5 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { plainToClass } from 'class-transformer';
 import { Staff } from './staff.entity';
 import { Repository } from 'typeorm';
 import { SignupDTO } from 'src/auth/dto/signup.dto';
@@ -13,9 +14,13 @@ export class StaffsService {
     ) { };
 
     async getAll(): Promise<Staff[]> {
-        const staffs = await this.staffRepository.find();
+        let staffs = await this.staffRepository.find();
 
-        return omitFields(staffs, ['deletedAt', 'isDeleted']);
+        staffs = staffs.map(staff => {
+            return plainToClass(Staff, omitFields(staff, ['deletedAt', 'isDeleted']));
+        });
+
+        return staffs;
     };
 
     async getStaffsDeleted(): Promise<Staff[]> {
