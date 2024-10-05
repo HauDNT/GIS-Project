@@ -48,7 +48,7 @@ function RestoreStaffs() {
 
     return (
         <DataTable
-            data={staffsData}
+            data={staffsData || []}
             columnHeadersName={headerNames}
             pageSize={staffsData.length}
             onRestore={restoreStaffs}
