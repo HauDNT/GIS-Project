@@ -18,7 +18,6 @@ const MapToolbar = ({ onZoomIn, onZoomOut, onResetView, findPlace, addNewPlace }
     };
 
     return (
-        // <div className="map-toolbar tool-large">
         <div className={`map-toolbar ${openFull && 'tool-large'}`}>
             <Button variant="outline-primary" onClick={onZoomIn}>
                 <ZoomIn/>
