@@ -2,16 +2,17 @@ import { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import mapboxgl from 'mapbox-gl';
 import { toast } from 'react-toastify';
-import Marker from './Marker';
+import { MapboxAPIKey } from '../../../common/MapboxApiKey';
+import Marker from '../Marker';
 import MapToolbar from './MapToolbar';
-import AddWarehouseModal from './Modals/AddWarehouseModal';
-import FindPlaceModal from './Modals/FindPlaceModal';
+import AddWarehouseModal from '../Modals/AddWarehouseModal';
+import FindPlaceModal from '../Modals/FindPlaceModal';
 import GeocoderMarker from './GeocoderMarkerComponent';
 import { FindCoordinates } from './FindCoordinates';
 
-mapboxgl.accessToken = 'pk.eyJ1IjoidGhvbWFzZGFuZzE4MTIwMDMiLCJhIjoiY20xMXIyMXdlMHVqNjJrb3EyOWd0bmRpbiJ9.OMZfnZwOUP-NHKdLaS9ypg';
+mapboxgl.accessToken = MapboxAPIKey;
 
-const MapComponent = ({ placesData, reloadData }) => {
+const MapComponent = ({ placesData = [], reloadData = () => {} }) => {
     const mapContainer = useRef(null);
     const map = useRef(null);
     const geocoderMarkerRef = useRef();

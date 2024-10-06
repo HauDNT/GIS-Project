@@ -1,8 +1,8 @@
 import { useState, useEffect, useContext } from 'react';
-import axiosInstance from '../../common/AxiosInstance';
+import axiosInstance from '../../common/AxiosInstance.js';
 import { WarehousesContext } from '../../context/WarehousesContext.js';
 import { Container, Row, Col } from 'react-bootstrap';
-import MapComponent from "../../components/MainMap/MapComponent.js";
+import MapComponent from "../../components/Mapbox/MainMap/MapComponent.js";
 import CardComponent from '../../components/CardComponent';
 import Loading from '../../components/Loading.js';
 
