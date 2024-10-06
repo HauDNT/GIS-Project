@@ -4,7 +4,7 @@ import mapboxgl from 'mapbox-gl';
 import { usePopupContext } from '../../context/PopupMapContext';
 import MarkerPopup from './MarkerPopup';
 
-const Marker = ({ id, currentMap, placeData, onClick }) => {
+const Marker = ({ id, currentMap, placeData, enableClick = true }) => {
     const markerRef = useRef();
     const popupRef = useRef();
     const { activeMarkerId, updatePopupContext } = usePopupContext();
@@ -85,7 +85,9 @@ const Marker = ({ id, currentMap, placeData, onClick }) => {
 
         markerRef.current = marker;
 
-        marker.getElement().addEventListener('click', handleClick);
+        if (enableClick) {
+            marker.getElement().addEventListener('click', handleClick);
+        };
 
         // Cleanup khi component bị unmount hoặc khi marker thay đổi
         return () => {

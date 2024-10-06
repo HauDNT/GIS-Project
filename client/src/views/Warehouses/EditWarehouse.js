@@ -54,6 +54,16 @@ function EditWarehouse() {
         };
     };
 
+    const updateAddress = (lngLat) => {
+        setData(
+            prevData => ({
+                ...prevData,
+                Latitude: lngLat.lat,
+                Longitude: lngLat.lng,
+            }),
+        );
+    };
+
     useEffect(() => {
         fetchWarehouseDetail(id);
     }, []);
@@ -99,6 +109,7 @@ function EditWarehouse() {
                                             lat={data?.Latitude}
                                             lng={data?.Longitude}
                                             zoom={14}
+                                            updateLatLngData={(lngLat) => updateAddress(lngLat)}
                                         />
                                     </Row>
                                 </Col>
