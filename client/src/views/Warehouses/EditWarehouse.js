@@ -8,11 +8,13 @@ import {
     Container,
     Typography,
     Avatar,
+    Box,
 } from '@mui/material';
 import Loading from "../../components/Loading.js";
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import axiosInstance from "../../common/AxiosInstance";
 import { softDeleteStaffs } from "../Staffs/Staffs.js";
+import MiniMapComponent from "../../components/Mapbox/MiniMap/MiniMapComponent.js";
 import DataTable from "../../components/DataTable.js";
 
 function EditWarehouse() {
@@ -62,11 +64,21 @@ function EditWarehouse() {
         ) : (
             <BootstrapContainer fluid className="form mt-1em">
                 <Row>
+                    <Container>
+                        <Col md={12} sm={12}>
+                            <Typography variant="h5">
+                                Thông tin kho
+                            </Typography>
+                        </Col>
+                    </Container>
+                </Row>
+                <Row>
                     <Col md={4} sm={12} className="form-avatar">
                         <Container>
                             <Row>
                                 <Col className="avatar-wrapper">
-                                    <Avatar
+                                    <Box
+                                        component="img"
                                         src="https://lsx.vn/wp-content/uploads/2022/06/Mau-don-xin-xay-dung-nha-kho-moi-2022-scaled.jpg"
                                     />
                                 </Col>
@@ -81,17 +93,19 @@ function EditWarehouse() {
                     <Col md={8} sm={12} className="form-body">
                         <Container>
                             <Row>
-                                <Col md={12}>
-                                    <Typography variant="h5" gutterBottom>
-                                        Thông tin kho
-                                    </Typography>
+                                <Col md={7} className="mb-1em">
+                                    <Row>
+                                        <MiniMapComponent
+                                            lat={data?.Latitude}
+                                            lng={data?.Longitude}
+                                            zoom={14}
+                                        />
+                                    </Row>
                                 </Col>
-                            </Row>
-                            <Row>
-                                <Col md={12} sm={12}>
+                                <Col md={5}>
                                     <form onSubmit={(e) => handleSubmit(e)}>
                                         <Row>
-                                            <Col md={5} sm={12}>
+                                            <Col>
                                                 <TextField
                                                     label="Tên kho"
                                                     variant="outlined"
@@ -105,7 +119,9 @@ function EditWarehouse() {
                                                     }}
                                                 />
                                             </Col>
-                                            <Col md={7} sm={12}>
+                                        </Row>
+                                        <Row>
+                                            <Col>
                                                 <TextField
                                                     label="Địa chỉ"
                                                     variant="outlined"
@@ -121,7 +137,7 @@ function EditWarehouse() {
                                             </Col>
                                         </Row>
                                         <Row>
-                                            <Col md={5} sm={12}>
+                                            <Col>
                                                 <TextField
                                                     label="Tung độ"
                                                     variant="outlined"
@@ -134,7 +150,9 @@ function EditWarehouse() {
                                                     disabled
                                                 />
                                             </Col>
-                                            <Col md={7} sm={12}>
+                                        </Row>
+                                        <Row>
+                                            <Col>
                                                 <TextField
                                                     label="Hoành độ"
                                                     variant="outlined"
@@ -151,47 +169,49 @@ function EditWarehouse() {
                                         <Row>
                                             <Col md={12} className="text-end">
                                                 <Button variant="contained" color="primary" type="submit">
-                                                    Gửi
+                                                    Cập nhật
                                                 </Button>
                                             </Col>
                                         </Row>
                                     </form>
                                 </Col>
-                                <Col md={12} sm={12}>
-                                    <Row>
-                                        <Col md={12} sm={12}>
-                                            <Typography className="pt-0-5em pb-0-5em" variant="h5" gutterBottom>
-                                                Danh sách nhân viên làm việc tại kho
-                                            </Typography>
-                                            <DataTable
-                                                data={data?.staffs}
-                                                columnHeadersName={headerStaffsTable}
-                                                pageSize={data.staffs.length}
-                                                action={{
-                                                    type: 'redirect',
-                                                    field: 'actions',
-                                                    name: 'Chi tiết',
-                                                    icon: <SearchOutlinedIcon />,
-                                                    callback: () => alert('Nothing'),
-                                                }}
-                                                onBack={false}
-                                                onRestore={() => navigate('/staffs/restore')}
-                                                onDelete={(staffIds) => {
-                                                    softDeleteStaffs(staffIds);
-
-                                                    setData(prevData => ({
-                                                        ...prevData,
-                                                        staffs: prevData.staffs.filter(staff => !staffIds.includes(staff.id)),
-                                                    }));
-                                                }}
-                                                disabledHeader={false}
-                                                disabledFooter={true}
-                                            />
-                                        </Col>
-                                    </Row>
-                                </Col>
                             </Row>
                         </Container>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col md={12} sm={12}>
+                        <Row>
+                            <Col md={12} sm={12}>
+                                <Typography className="pt-0-5em pb-0-5em" variant="h5" >
+                                    Danh sách nhân viên làm việc tại kho
+                                </Typography>
+                                <DataTable
+                                    data={data?.staffs}
+                                    columnHeadersName={headerStaffsTable}
+                                    pageSize={data.staffs.length}
+                                    action={{
+                                        type: 'redirect',
+                                        field: 'actions',
+                                        name: 'Chi tiết',
+                                        icon: <SearchOutlinedIcon />,
+                                        callback: () => alert('Nothing'),
+                                    }}
+                                    onBack={false}
+                                    onRestore={() => navigate('/staffs/restore')}
+                                    onDelete={(staffIds) => {
+                                        softDeleteStaffs(staffIds);
+
+                                        setData(prevData => ({
+                                            ...prevData,
+                                            staffs: prevData.staffs.filter(staff => !staffIds.includes(staff.id)),
+                                        }));
+                                    }}
+                                    disabledHeader={false}
+                                    disabledFooter={true}
+                                />
+                            </Col>
+                        </Row>
                     </Col>
                 </Row>
             </BootstrapContainer>

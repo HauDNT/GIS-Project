@@ -1,4 +1,4 @@
-import axiosInstance from '../../common/AxiosInstance';
+import axiosInstance from '../../../common/AxiosInstance';
 
 export const FindCoordinates = async (apiKey, address) => {
     // const geocodingAPIUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}.json?access_token=${apiKey}`;
