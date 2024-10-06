@@ -15,6 +15,7 @@ import { DispatchSlipsModule } from './dispatch_slips/dispatch_slips.module';
 import { ReceivingRicesModule } from './receiving_rices/receiving_rices.module';
 import { DispatchRicesModule } from './dispatch_rices/dispatch_rices.module';
 import { AuthModule } from './auth/auth.module';
+import { FilesModule } from './files/files.module';
 
 @Module({
     imports: [
@@ -37,6 +38,7 @@ import { AuthModule } from './auth/auth.module';
         ReceivingRicesModule,
         DispatchRicesModule,
         AuthModule,
+        FilesModule,
     ],
     controllers: [AppController],
     providers: [

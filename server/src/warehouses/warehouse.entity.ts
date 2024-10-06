@@ -20,6 +20,9 @@ export class Warehouse {
     @Column({ type: 'double', precision: 25, scale: 20, nullable: true })
     Longitude: number;
 
+    @Column({ type: 'varchar', nullable: true })
+    imageUrl: string;
+
     @Column({ default: false })
     isDeleted: boolean;
 
