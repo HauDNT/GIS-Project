@@ -1,46 +1,104 @@
-// src/files/files.service.ts
 import { Injectable } from '@nestjs/common';
-import { diskStorage } from 'multer';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import * as fs from 'fs';
+import { Warehouse } from 'src/warehouses/warehouse.entity';
+import { Staff } from 'src/staffs/staff.entity';
+import { Customer } from 'src/customers/customer.entity';
 
 @Injectable()
 export class FilesService {
-    getMulterStorage(type: string) {
-        return diskStorage({
-            destination: (req, file, save) => {
-                let dirName = 'public/';
+    constructor(
+        @InjectRepository(Warehouse)
+        private warehouseRepository: Repository<Warehouse>,
+        @InjectRepository(Staff)
+        private staffRepository: Repository<Staff>,
+        @InjectRepository(Customer)
+        private customerRepository: Repository<Customer>,
+    ) { };
 
-                switch (type) {
-                    case 'customers':
-                        dirName += 'customers/';
-                        break;
-                    case 'warehouses':
-                        dirName += 'warehouses/';
-                        break;
-                    case 'staffs':
-                        dirName += 'staffs';
-                        break;
-                    default:
-                        dirName += type;
-                        break;
-                };
+    private objectFound: any = null;
 
+    async findByTypeAndId(type: string, id: number) {
+        switch (type) {
+            case 'customers':
+                this.objectFound = await this.customerRepository.findOneBy({ id });
+                break;
+            case 'staffs':
+                this.objectFound = await this.staffRepository.findOneBy({ id });
+                break;
+            case 'warehouses':
+                this.objectFound = await this.warehouseRepository.findOneBy({ id });
+                break;
+            default:
+                break;
+        };
+
+        return this.objectFound;
+    };
+
+    async removeImageFromDisk(type: string): Promise<Boolean> {
+        try {
+            this.objectFound?.imageUrl &&
+                await fs.promises.unlink(`public/${type}/${this.objectFound.imageUrl}`);
+
+            return true;
+        } catch (error) {
+            console.log(error);
+            return false;
+        };
+    };
+
+    async saveToDatabase(fileName: string, type: string, id: number) {
+        try {
+            switch (type) {
+                case 'customers':
+                    await this.customerRepository.update(id, { imageUrl: fileName });
+                    break;
+                case 'staffs':
+                    await this.staffRepository.update(id, { imageUrl: fileName });
+                    break;
+                case 'warehouses':
+                    await this.warehouseRepository.update(id, { imageUrl: fileName });
+                    break;
+                default:
+                    break;
+            };
+        } catch (error) {
+            console.log(error);
+            return false;
+        };
+    };
+
+    async saveAvatar(file: Express.Multer.File, type: string, id: number): Promise<boolean> {
+        try {
+            await this.findByTypeAndId(type, id);
+
+            if (this.objectFound) {
+                await this.removeImageFromDisk(type);
+    
+                const dirName = `public/${type}/`;
+    
                 if (!fs.existsSync(dirName)) {
                     fs.mkdirSync(dirName, { recursive: true });
-                };
+                }
+    
+                const uniqueSuffix = uuidv4();
+                const ext = file.originalname.split('.').pop();
+                const filePath = `${dirName}${uniqueSuffix}.${ext}`;
+    
+                fs.writeFileSync(filePath, file.buffer);
+    
+                await this.saveToDatabase(`${uniqueSuffix}.${ext}`, type, id);
+    
+                return true;
+            }
 
-                save(null, dirName);
-            },
-            filename: (req, file, save) => {
-                const uniqueSuffix = uuidv4(); // Tạo một ID duy nhất cho file
-                const ext = file.originalname.split('.').pop(); // Lấy phần mở rộng của file
-                save(null, `${uniqueSuffix}.${ext}`); // Lưu file với tên duy nhất
-            },
-        });
-    };
-
-    handleFileUpload(file: Express.Multer.File) {
-        return { message: 'File uploaded successfully', filename: file.filename };
-    };
-}
+            return false;
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+    }
+};

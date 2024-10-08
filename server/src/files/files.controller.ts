@@ -1,29 +1,31 @@
-import { 
+import {
     Controller,
-    Param,
-    Post,  
+    Post,
+    Query,
     UploadedFile,
     UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { FilesService } from './files.service';
 import { Express } from 'express';
-
-const filesService = new FilesService();
+import { FilesService } from './files.service';
 
 @Controller('files')
 export class FilesController {
-    constructor(private readonly filesService: FilesService) { };
+    constructor(private readonly filesService: FilesService) { }
 
     @Post('upload')
-    @UseInterceptors(FileInterceptor('file', {
-        storage: filesService.getMulterStorage('staffs'),
-    }))
-    uploadFile(
+    @UseInterceptors(FileInterceptor('file'))
+    async uploadFile(
         @UploadedFile() file: Express.Multer.File,
+        @Query('type') type: string,
+        @Query('id') id: number,
     ) {
-        const fileName = this.filesService.handleFileUpload(file).filename;
+        const saveStatus = await this.filesService.saveAvatar(file, type, id);
 
-        return fileName;
+        if (saveStatus) {
+            return { message: 'Success' };
+        } else {
+            return { message: 'Failed' };
+        }
     }
 }

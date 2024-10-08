@@ -23,6 +23,9 @@ export class Customer {
     @Column("text")
     Address: string;
 
+    @Column({ type: 'varchar', nullable: true })
+    imageUrl: string;
+
     @OneToMany(() => DispatchSlip, dispatchSlips => dispatchSlips.customer)
     dispatchSlips: DispatchSlip[];
 

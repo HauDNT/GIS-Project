@@ -28,6 +28,9 @@ export class Staff {
     @Column("text")
     Address: string;
 
+    @Column({ type: 'varchar', nullable: true })
+    imageUrl: string;
+
     @Column({ default: false })
     isDeleted: boolean;
 
