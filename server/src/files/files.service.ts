@@ -71,7 +71,7 @@ export class FilesService {
         };
     };
 
-    async saveAvatar(file: Express.Multer.File, type: string, id: number): Promise<boolean> {
+    async saveAvatar(file: Express.Multer.File, type: string, id: number): Promise<{fileName: string, status: boolean}> {
         try {
             await this.findByTypeAndId(type, id);
 
@@ -92,13 +92,23 @@ export class FilesService {
     
                 await this.saveToDatabase(`${uniqueSuffix}.${ext}`, type, id);
     
-                return true;
-            }
+                return {
+                    fileName: `${uniqueSuffix}.${ext}`,
+                    status: true,
+                };
+            };
 
-            return false;
+            return {
+                fileName: "",
+                status: false,
+            };
         } catch (error) {
             console.log(error);
-            return false;
+            
+            return {
+                fileName: "",
+                status: false,
+            };
         }
     }
 };
