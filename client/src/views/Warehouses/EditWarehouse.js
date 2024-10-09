@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 import { Container as BootstrapContainer, Row, Col } from 'react-bootstrap';
@@ -8,6 +8,7 @@ import {
     Container,
     Typography,
 } from '@mui/material';
+import { WarehousesContext } from '../../context/WarehousesContext.js';
 import Loading from "../../components/Loading.js";
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import axiosInstance from "../../common/AxiosInstance";
@@ -18,6 +19,7 @@ import ImageWrapper from "../../components/ImageWrapper.js";
 
 function EditWarehouse() {
     const { id } = useParams();
+    const { updateValueOfWarehouseById } = useContext(WarehousesContext);
     const navigate = useNavigate();
     const [data, setData] = useState(null);
     const [isLoading, setLoading] = useState(true);
@@ -84,8 +86,11 @@ function EditWarehouse() {
                 <Row>
                     <Col md={4} sm={12} className="form-avatar">
                         <ImageWrapper
+                            objectId={id}
                             type={'warehouses'}
                             imgName={data.imageUrl}
+                            enableChange={true}
+                            afterChange={(fileName) => updateValueOfWarehouseById(id, 'imageUrl', fileName)}
                         />
                     </Col>
                     <Col md={8} sm={12} className="form-body">

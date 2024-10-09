@@ -24,13 +24,25 @@ const WarehousesProvider = ({ children }) => {
         setListWarehouses(prevData => ([...prevData, newWarehouse]));
     };
 
+    const updateValueOfWarehouseById = (id, key, value) => {
+        console.log(`ID: ${id} | Key: ${key} | Value: ${value}`);
+
+        listWarehouses.forEach(element => {
+            if (element.id == id) {
+                console.log("true");
+                
+                element[key] = value;
+            };
+        });
+    };
+
     const deleteWarehouse = (warehouseDeletedId) => {
         setListWarehouses(prevData => prevData.filter(warehouse => warehouse.id !== warehouseDeletedId))
     };
 
     return (
         <WarehousesContext.Provider
-            value={{ listWarehouses, loadWarehousesData, addToListWarehouses, deleteWarehouse }}
+            value={{ listWarehouses, loadWarehousesData, addToListWarehouses, updateValueOfWarehouseById, deleteWarehouse }}
         >
             { children }
         </WarehousesContext.Provider>

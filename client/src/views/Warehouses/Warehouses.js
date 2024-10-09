@@ -43,7 +43,7 @@ function Warehouses() {
                     <Loading/>
                 ) : (
                     <DataTable
-                        data={listWarehouses}
+                        data={listWarehouses.map(({['imageUrl']: _, ...rest}) => rest)}     // Remove column imageUrl
                         columnHeadersName={headerNames}
                         pageSize={listWarehouses.length}
                         onDelete={softDeleteWarehouses}

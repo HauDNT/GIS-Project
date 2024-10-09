@@ -1,26 +1,74 @@
+import { useState, useEffect } from 'react';
+import axiosInstance from '../common/AxiosInstance';
 import {
     Button,
     Container,
     Box,
 } from '@mui/material';
-import { Row, Col } from 'react-bootstrap';
+import { Col } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 
-const ImageWrapper = ({ type, imgName, enableSubmit = true }) => {
-    const handleFileChange = (event) => {
-        const files = event.target.files; // Lấy danh sách tệp chọn
-        console.log(files);
+const ImageWrapper = ({ objectId, type, imgName, enableChange = true, afterChange = () => { } }) => {
+    const [fileName, setFileName] = useState(imgName);
+
+    const handleFileChange = async (event) => {
+        const fileselected = event.target.files[0];
+
+        if (!fileselected) {
+            toast.warning("Vui lòng chọn một tệp.");
+            return;
+        };
+
+        const maxSizeInBytes = 2 * 1024 * 1024; // 2MB
+        if (fileselected.size > maxSizeInBytes) {
+            toast.warning("Kích thước tệp phải nhỏ hơn 2MB");
+            return;
+        };
+
+        const allowedTypes = ['image/jpeg', 'image/png'];
+        if (!allowedTypes.includes(fileselected.type)) {
+            toast.warning("Chỉ cho phép tệp hình ảnh JPEG hoặc PNG");
+            return;
+        };
+
+        await uploadImage(fileselected);
+    };
+
+    const uploadImage = async (file) => {
+        try {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const updateResult = await axiosInstance.post(
+                `/files/upload?type=${type}&id=${objectId}`,
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                }
+            );
+
+            if (updateResult.data.status) {
+                toast.success("Cập nhật ảnh thành công!");
+                setFileName(updateResult.data.fileName);
+                afterChange(updateResult.data.fileName);
+            };
+        } catch (error) {
+            console.log(error);
+            toast.error("Đã xảy ra lỗi trong quá trình cập nhật ảnh!");
+        }
     };
 
     return (
         <Container className='pt-1em px-0'>
             <Col className="avatar-wrapper scale-img-4-3">
                 <img
-                    src={`http://localhost:4000/${type}/${imgName}`}
+                    src={`http://localhost:4000/${type}/${fileName}`}
                 />
             </Col>
             {
-                enableSubmit &&
-
+                enableChange &&
                 <Col className="avatar-btn-wrapper mt-1em">
                     <input
                         type="file"
