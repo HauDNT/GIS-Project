@@ -1,6 +1,8 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { dataSourceOptions, typeOrmAsyncConfig } from '../db/data-source';
@@ -19,6 +21,9 @@ import { FilesModule } from './files/files.module';
 
 @Module({
     imports: [
+        ServeStaticModule.forRoot({
+            rootPath: join(__dirname, '../../', 'public'),
+        }),
         ConfigModule.forRoot({
             envFilePath: [
                 '.env.development',
