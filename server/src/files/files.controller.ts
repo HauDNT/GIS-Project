@@ -22,10 +22,6 @@ export class FilesController {
     ) {
         const saveStatus = await this.filesService.saveAvatar(file, type, id);
 
-        if (saveStatus) {
-            return { message: 'Success' };
-        } else {
-            return { message: 'Failed' };
-        }
+        return saveStatus;
     }
 }
