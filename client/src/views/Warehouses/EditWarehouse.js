@@ -7,8 +7,6 @@ import {
     Button,
     Container,
     Typography,
-    Avatar,
-    Box,
 } from '@mui/material';
 import Loading from "../../components/Loading.js";
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
@@ -16,6 +14,7 @@ import axiosInstance from "../../common/AxiosInstance";
 import { softDeleteStaffs } from "../Staffs/Staffs.js";
 import MiniMapComponent from "../../components/Mapbox/MiniMap/MiniMapComponent.js";
 import DataTable from "../../components/DataTable.js";
+import ImageWrapper from "../../components/ImageWrapper.js";
 
 function EditWarehouse() {
     const { id } = useParams();
@@ -84,21 +83,10 @@ function EditWarehouse() {
                 </Row>
                 <Row>
                     <Col md={4} sm={12} className="form-avatar">
-                        <Container>
-                            <Row>
-                                <Col className="avatar-wrapper">
-                                    <Box
-                                        component="img"
-                                        src="https://lsx.vn/wp-content/uploads/2022/06/Mau-don-xin-xay-dung-nha-kho-moi-2022-scaled.jpg"
-                                    />
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col className="avatar-btn-wrapper">
-                                    <Button variant="outlined" color="primary" type="submit">Đổi ảnh</Button>
-                                </Col>
-                            </Row>
-                        </Container>
+                        <ImageWrapper
+                            type={'warehouses'}
+                            imgName={data.imageUrl}
+                        />
                     </Col>
                     <Col md={8} sm={12} className="form-body">
                         <Container>
