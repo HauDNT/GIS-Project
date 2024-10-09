@@ -4,13 +4,11 @@ import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { join } from 'path';
 
 async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
     app.enableCors();
     app.useGlobalPipes(new ValidationPipe());
-    app.useStaticAssets(join(__dirname, '..', 'public'));
 
     const configService = app.get(ConfigService);
 
