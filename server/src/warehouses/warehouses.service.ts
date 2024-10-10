@@ -90,7 +90,7 @@ export class WarehousesService {
     };
 
     async update(id: number, data: CreateWarehouseDTO): Promise<Warehouse> {
-        const warehouse = await this.warehouseRepository.findOneBy({ id });
+        const warehouse = await this.warehouseRepository.findOneBy({ id, isDeleted: false });
 
         warehouse.Name = data.Name;
         warehouse.Address = data.Address;
