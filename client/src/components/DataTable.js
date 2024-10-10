@@ -10,6 +10,7 @@ const DataTable = ({
     action,   // { type: redirect | update | delete, icon, callback }
     disabledHeader = false,
     disabledFooter = false,
+    onCreate = !disabledHeader,
     onBack = !disabledHeader,
     onDelete = !disabledHeader,
     onRestore = !disabledHeader,
@@ -75,6 +76,17 @@ const DataTable = ({
                         </Grid>
                     }
                     <Grid item xs={ onBack ? 6 : 12 } justifyContent="flex-end" className='d-flex'>
+                        {
+                            onCreate &&
+                            <Button
+                                variant="contained"
+                                color="success"
+                                sx={{ mr: 2 }}
+                                onClick={() => onCreate()}
+                            >
+                                Thêm mới
+                            </Button>
+                        }
                         {
                             onRestore &&
                             <Button

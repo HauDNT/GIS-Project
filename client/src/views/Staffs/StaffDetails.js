@@ -43,7 +43,7 @@ function StaffDetails() {
     const handleSubmit = async (e) => {
         try {
             e.preventDefault();
-            
+
             const result = await axiosInstance.put(`/staffs/update/${id}`, staffData);
 
             if (result) {
