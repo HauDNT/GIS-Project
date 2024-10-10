@@ -1,7 +1,6 @@
 import { Body, Controller, Get, HttpException, HttpStatus, Param, ParseIntPipe, Patch, Post, Put, Query, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { WarehousesService } from './warehouses.service';
 import { Response } from 'express';
-import { FileInterceptor } from '@nestjs/platform-express';
 import { Warehouse } from './warehouse.entity';
 import { JWTGuard } from 'src/auth/jwt/jwt-guard';
 import { CreateWarehouseDTO } from './dto/createWarehouse.dto';

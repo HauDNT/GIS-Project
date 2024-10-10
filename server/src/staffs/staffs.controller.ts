@@ -1,7 +1,9 @@
-import { Body, ClassSerializerInterceptor, Controller, Get, HttpException, HttpStatus, Param, Patch, Post, Query, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Get, HttpException, HttpStatus, Param, ParseIntPipe, Patch, Put, Res, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Response } from 'express';
 import { Staff } from './staff.entity';
 import { StaffsService } from './staffs.service';
 import { JWTGuard } from 'src/auth/jwt/jwt-guard';
+import { UpdateStaffDTO } from './dto/updateStaff.dto';
 
 @Controller('staffs')
 @UseInterceptors(ClassSerializerInterceptor)    // Using with Exclude entities
@@ -14,10 +16,49 @@ export class StaffsController {
         return this.staffsService.getAll();
     };
 
+    @Get('details/:id')
+    @UseGuards(JWTGuard)
+    getDetail(
+        @Param(
+            'id',
+            new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE })
+        ) id: number,
+    ): Promise<Staff> {
+        return this.staffsService.getDetail(id);
+    };
+
     @Get('deleted')
     @UseGuards(JWTGuard)
     getStaffsDeleted(): Promise<Staff[]> {
         return this.staffsService.getStaffsDeleted();
+    };
+
+    @Put('update/:id')
+    async update(
+        @Param('id') id: number,
+        @Body() data: UpdateStaffDTO,
+        @Res() response: Response,
+    ): Promise<void> {
+        try {
+            const updateStatus = await this.staffsService.update(id, data);
+
+            if (updateStatus) {
+                response.status(HttpStatus.OK).json({
+                    status: 'success',
+                    message: 'Cập nhật thông tin nhân viên thành công.',
+                });
+            };
+
+            response.status(HttpStatus.BAD_REQUEST).json({
+                status: 'failed',
+                message: 'Cập nhật thông tin nhân viên thất bại.',
+            });
+        } catch (error) {
+            throw new HttpException({
+                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                message: 'Cập nhật thông tin nhân viên thất bại! Vui lòng thử lại sau.',
+            }, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     };
 
     @Patch('soft-delete/:id')
