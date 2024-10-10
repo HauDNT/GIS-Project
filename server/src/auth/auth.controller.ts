@@ -14,7 +14,9 @@ export class AuthController {
         @Body()
         data: SignupDTO,
     ) {
-        return this.authService.signup(data);
+        return this.authService.signup(data) ? 
+        'Tạo nhân viên mới thành công' : 
+        'Tạo nhân viên mới thất bại';
     }
 
     @Post('login')

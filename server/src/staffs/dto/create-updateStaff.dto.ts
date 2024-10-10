@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsNumber, IsEmail, IsString, Length, IsBoolean } from "class-validator";
 import { Warehouse } from "src/warehouses/warehouse.entity";
 
-export class UpdateStaffDTO {
+export class Create_UpdateStaffDTO {
     @IsString()
     @IsNotEmpty({ message: 'Họ tên nhân viên không được để trống' })
     @Length(3, 100, { message: 'Họ tên nhân viên phải có độ dài từ 3 đến 100 ký tự' })
