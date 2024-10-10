@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate, useHistory } from "react-router-dom";
 import { Container } from 'react-bootstrap';
+import BorderColorIcon from '@mui/icons-material/BorderColor';
 import axiosInstance from '../../common/AxiosInstance';
 import DataTable from "../../components/DataTable.js";
 import Loading from '../../components/Loading.js';
@@ -61,10 +62,17 @@ function Staffs() {
                         pageSize={staffs.length}
                         onDelete={(staffIds) => {
                             softDeleteStaffs(staffIds);
-
                             setStaffs(prevData => prevData.filter(staff => !staffIds.includes(staff.id)));
                         }}
                         onRestore={() => navigate('/staffs/restore')}
+                        action={{
+                            type: 'redirect',
+                            field: 'actions',
+                            name: 'Xem chi tiết',
+                            icon: <BorderColorIcon />,
+                            callback: (itemValue) => navigate(`/staffs/${itemValue}`)
+                        }}
+                        autoHeight={false}
                     />
                 )
             }

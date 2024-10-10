@@ -8,10 +8,11 @@ import {
     Dashboard,
     Customers,
     Staffs,
-    RestoreStaffs,
+    StaffDetails,
+    StaffsRestore,
     Warehouses,
+    WarehouseDetails,
     WarehousesRestore,
-    EditWarehouse,
     PageNotFound,
 } from './views/index';
 import './styles/index.scss';
@@ -53,10 +54,11 @@ function App() {
                             <Route path="/dashboard" element={<Dashboard />} />
                             <Route path="/customers" element={<Customers />} />
                             <Route path="/warehouses" element={<Warehouses />} />
-                            <Route path="/warehouses/:id" element={<EditWarehouse />} />
+                            <Route path="/warehouses/:id" element={<WarehouseDetails />} />
                             <Route path="/warehouses/restore" element={<WarehousesRestore />} />
                             <Route path="/staffs" element={<Staffs />} />
-                            <Route path="/staffs/restore" element={<RestoreStaffs />} />
+                            <Route path="/staffs/:id" element={<StaffDetails />} />
+                            <Route path="/staffs/restore" element={<StaffsRestore />} />
                         </Route>
                         <Route path="/*" exact element={<PageNotFound />} />
                     </Routes>
