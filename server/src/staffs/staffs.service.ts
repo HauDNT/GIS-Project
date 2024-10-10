@@ -5,7 +5,7 @@ import { Staff } from './staff.entity';
 import { Repository } from 'typeorm';
 import { SignupDTO } from 'src/auth/dto/signup.dto';
 import { omitFields } from '../utils/omit_field.utils';
-import { UpdateStaffDTO } from './dto/updateStaff.dto';
+import { Create_UpdateStaffDTO } from './dto/create-updateStaff.dto';
 
 @Injectable()
 export class StaffsService {
@@ -93,7 +93,7 @@ export class StaffsService {
         return plainToClass(Staff, this.staffRepository.save(data));
     };
 
-    async update(id: number, data: UpdateStaffDTO) {
+    async update(id: number, data: Create_UpdateStaffDTO) {
         let checkExist = false;
         const staff = await this.staffRepository.findOneBy({ id, isDeleted: false });
 

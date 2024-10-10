@@ -1,9 +1,9 @@
-import { Body, ClassSerializerInterceptor, Controller, Get, HttpException, HttpStatus, Param, ParseIntPipe, Patch, Put, Res, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Get, HttpException, HttpStatus, Param, ParseIntPipe, Patch, Post, Put, Res, UseGuards, UseInterceptors } from '@nestjs/common';
 import { Response } from 'express';
 import { Staff } from './staff.entity';
 import { StaffsService } from './staffs.service';
 import { JWTGuard } from 'src/auth/jwt/jwt-guard';
-import { UpdateStaffDTO } from './dto/updateStaff.dto';
+import { Create_UpdateStaffDTO } from './dto/create-updateStaff.dto';
 
 @Controller('staffs')
 @UseInterceptors(ClassSerializerInterceptor)    // Using with Exclude entities
@@ -36,7 +36,7 @@ export class StaffsController {
     @Put('update/:id')
     async update(
         @Param('id') id: number,
-        @Body() data: UpdateStaffDTO,
+        @Body() data: Create_UpdateStaffDTO,
         @Res() response: Response,
     ): Promise<void> {
         try {

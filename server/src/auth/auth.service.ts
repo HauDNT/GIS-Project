@@ -6,6 +6,7 @@ import { UserDataReponse } from './dto/userDataResponse.dto';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { JWTPayloadType } from './jwt/jwt-payload-type';
+import { Staff } from 'src/staffs/staff.entity';
 
 @Injectable()
 export class AuthService {
@@ -14,7 +15,7 @@ export class AuthService {
         private jwtService: JwtService,
     ) { }
 
-    async signup(data: SignupDTO) {
+    async signup(data: SignupDTO): Promise<boolean> {
         let existUser = await this.staffService.findOneByUsername(data.Email, true);
 
         if (!existUser) {
@@ -24,11 +25,15 @@ export class AuthService {
                 const salt = await bcrypt.genSalt();
                 data.Password = await bcrypt.hash(data.Password, salt);
     
-                return this.staffService.create(data);
-            }
+                await this.staffService.create(data);
+
+                return true;
+            };
+
+            return false;
         }
         else {
-            throw new UnauthorizedException("Email hoặc số điện thoại đã tồn tại. Hãy thử lại.")
+            return false;
         }
     }
 
