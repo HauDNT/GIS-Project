@@ -1,10 +1,11 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { useNavigate, useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Container } from 'react-bootstrap';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import axiosInstance from '../../common/AxiosInstance';
 import DataTable from "../../components/DataTable.js";
+import AddStaffModal from './AddStaffModal.js';
 import Loading from '../../components/Loading.js';
 
 const softDeleteStaffs = async (staffIds) => {
@@ -24,6 +25,7 @@ const softDeleteStaffs = async (staffIds) => {
 function Staffs() {
     const navigate = useNavigate();
     const [staffs, setStaffs] = useState([]);
+    const [enableAddModal, setEnableAddModal] = useState(false);
     const headerNames = ['Mã nhân viên', 'Họ và tên', 'Email', 'Số điện thoại', 'Giới tính', 'Địa chỉ'];
     const [isLoading, setLoading] = useState(true);
 
@@ -56,24 +58,34 @@ function Staffs() {
                 isLoading ? (
                     <Loading />
                 ) : (
-                    <DataTable
-                        data={staffs || []}
-                        columnHeadersName={headerNames}
-                        pageSize={staffs.length}
-                        onDelete={(staffIds) => {
-                            softDeleteStaffs(staffIds);
-                            setStaffs(prevData => prevData.filter(staff => !staffIds.includes(staff.id)));
-                        }}
-                        onRestore={() => navigate('/staffs/restore')}
-                        action={{
-                            type: 'redirect',
-                            field: 'actions',
-                            name: 'Xem chi tiết',
-                            icon: <BorderColorIcon />,
-                            callback: (itemValue) => navigate(`/staffs/${itemValue}`)
-                        }}
-                        autoHeight={false}
-                    />
+                    <>
+                        <DataTable
+                            data={staffs || []}
+                            columnHeadersName={headerNames}
+                            pageSize={staffs.length}
+                            onCreate={() => {
+                                setEnableAddModal(true);
+                            }}
+                            onDelete={(staffIds) => {
+                                softDeleteStaffs(staffIds);
+                                setStaffs(prevData => prevData.filter(staff => !staffIds.includes(staff.id)));
+                            }}
+                            onRestore={() => navigate('/staffs/restore')}
+                            action={{
+                                type: 'redirect',
+                                field: 'actions',
+                                name: 'Xem chi tiết',
+                                icon: <BorderColorIcon />,
+                                callback: (itemValue) => navigate(`/staffs/${itemValue}`)
+                            }}
+                            autoHeight={false}
+                        />
+                        <AddStaffModal
+                            isEnable={enableAddModal}
+                            handleClose={() => setEnableAddModal(false)}
+                            handleAdd={() => {}}
+                        />
+                    </>
                 )
             }
         </Container>

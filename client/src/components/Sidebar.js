@@ -17,6 +17,8 @@ import {
     PeopleAltOutlined,
     ExpandMore,
     ExpandLess,
+    ReceiptLongOutlined,
+    SpaOutlined,
 } from '@mui/icons-material';
 
 const menuItems = [
@@ -33,15 +35,35 @@ const menuItems = [
     {
         name: 'Nhân sự',
         icon: <AccountCircleOutlined />,
-        submenu: [
-            { name: 'Danh sách nhân sự', icon: <MapsHomeWorkOutlined />, routeName: 'staffs', },
-            { name: 'Trực kho', icon: <MapsHomeWorkOutlined />, routeName: 'staffs', },
-        ]
+        routeName: 'staffs',
     },
+    // {
+    //     name: 'Nhân sự',
+    //     icon: <AccountCircleOutlined />,
+    //     submenu: [
+    //         { name: 'Danh sách nhân sự', icon: <MapsHomeWorkOutlined />, routeName: 'staffs', },
+    //         { name: 'Trực kho', icon: <MapsHomeWorkOutlined />, routeName: 'staffs', },
+    //     ]
+    // },
     {
         name: 'Khách hàng',
         icon: <PeopleAltOutlined />,
         routeName: 'customers',
+    },
+    {
+        name: 'Lúa',
+        icon: <SpaOutlined />,
+        routeName: 'customers',
+    },
+    {
+        name: 'Nhập kho',
+        icon: <ReceiptLongOutlined />,
+        routeName: 'staffs',
+    },
+    {
+        name: 'Xuất kho',
+        icon: <ReceiptLongOutlined />,
+        routeName: 'staffs',
     },
 ];
 
