@@ -4,12 +4,13 @@ export { default as Dashboard } from './Dashboard/Dashboard';
 
 // Warehouses
 export { default as Warehouses } from './Warehouses/Warehouses';
-export { default as WarehousesRestore} from './Warehouses/RestoreWarehouse';
-export { default as EditWarehouse } from './Warehouses/EditWarehouse';
+export { default as WarehousesRestore} from './Warehouses/WarehousesRestore';
+export { default as WarehouseDetails } from './Warehouses/WarehouseDetails';
 
 // Staffs
 export { default as Staffs } from './Staffs/Staffs';
-export { default as RestoreStaffs } from './Staffs/RestoreStaffs';
+export { default as StaffsRestore } from './Staffs/StaffsRestore';
+export { default as StaffDetails } from './Staffs/StaffDetails';
 
 // Customers
 export { default as Customers } from './Customers/Customers';

@@ -31,7 +31,7 @@ function Warehouses() {
         if (listWarehouses.length === 0) {
             loadWarehousesData();
         };
-        
+
         const intervalId = setInterval(() => setLoading(false), 1000);
         return () => clearInterval(intervalId);
     }, []);
@@ -40,10 +40,10 @@ function Warehouses() {
         <Container fluid>
             {
                 isLoading ? (
-                    <Loading/>
+                    <Loading />
                 ) : (
                     <DataTable
-                        data={listWarehouses.map(({['imageUrl']: _, ...rest}) => rest)}     // Remove column imageUrl
+                        data={listWarehouses.map(({ ['imageUrl']: _, ...rest }) => rest)}     // Remove column imageUrl
                         columnHeadersName={headerNames}
                         pageSize={listWarehouses.length}
                         onDelete={softDeleteWarehouses}
@@ -52,7 +52,7 @@ function Warehouses() {
                             type: 'redirect',
                             field: 'actions',
                             name: 'Xem chi tiết',
-                            icon: <BorderColorIcon/>,
+                            icon: <BorderColorIcon />,
                             callback: (itemValue) => navigate(`/warehouses/${itemValue}`)
                         }}
                         autoHeight={false}

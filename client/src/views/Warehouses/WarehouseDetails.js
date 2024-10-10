@@ -11,17 +11,17 @@ import {
 import { WarehousesContext } from '../../context/WarehousesContext.js';
 import Loading from "../../components/Loading.js";
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-import axiosInstance from "../../common/AxiosInstance";
+import axiosInstance from "../../common/AxiosInstance.js";
 import { softDeleteStaffs } from "../Staffs/Staffs.js";
 import MiniMapComponent from "../../components/Mapbox/MiniMap/MiniMapComponent.js";
 import DataTable from "../../components/DataTable.js";
 import ImageWrapper from "../../components/ImageWrapper.js";
 
-function EditWarehouse() {
+function WarehouseDetails() {
     const { id } = useParams();
+    const [data, setData] = useState(null);
     const { updateValueOfWarehouseById } = useContext(WarehousesContext);
     const navigate = useNavigate();
-    const [data, setData] = useState(null);
     const [isLoading, setLoading] = useState(true);
     const headerStaffsTable = ['Mã nhân viên', 'Họ và tên', 'Email', 'Số điện thoại'];
 
@@ -37,7 +37,7 @@ function EditWarehouse() {
             };
         } catch (error) {
             console.log(error);
-            toast.error(`Đã xảy ra lỗi khi lấy dữ liệu của kho số ${id}`)
+            toast.error(`Đã xảy ra lỗi khi lấy dữ liệu của kho số ${id}`);
         };
     };
 
@@ -170,9 +170,9 @@ function EditWarehouse() {
                                                 />
                                             </Col>
                                         </Row>
-                                        <Row>
-                                            <Col md={12} className="text-end">
-                                                <Button variant="contained" color="primary" type="submit">
+                                        <Row style={{ flexDirection: 'row-reverse' }}>
+                                            <Col md={3} sm={12}>
+                                                <Button variant="contained" color="primary" type="submit" className="w-100">
                                                     Cập nhật
                                                 </Button>
                                             </Col>
@@ -223,4 +223,4 @@ function EditWarehouse() {
     );
 }
 
-export default EditWarehouse;
+export default WarehouseDetails;
