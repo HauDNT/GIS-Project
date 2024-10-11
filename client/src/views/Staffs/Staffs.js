@@ -83,7 +83,6 @@ function Staffs() {
                         <AddStaffModal
                             isEnable={enableAddModal}
                             handleClose={() => setEnableAddModal(false)}
-                            handleAdd={() => {}}
                         />
                     </>
                 )
