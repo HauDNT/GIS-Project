@@ -18,11 +18,20 @@ const DataTable = ({
     const [tableData, setTableData] = useState(data);
     const [selectedRows, setSelectedRows] = useState([]);
 
-    const columns = Object.keys(tableData[0] || {}).map((col, index) => ({
-        field: col,
-        headerName: columnHeadersName[index] || col.charAt(0).toUpperCase() + col.slice(1),
-        flex: 1,
-    }));
+    const columns = [
+        {
+            field: 'stt',
+            headerName: 'STT',
+            width: 100,
+            renderCell: (params) => params.row.stt,
+            hideable: false,
+        },
+        ...Object.keys(tableData[0] || {}).map((col, index) => ({
+            field: col,
+            headerName: columnHeadersName[index] || col.charAt(0).toUpperCase() + col.slice(1),
+            flex: 1,
+        }))
+    ];
 
     if (action) {
         columns.push({
@@ -52,11 +61,19 @@ const DataTable = ({
         });
     };
 
-    const rows = tableData.map((item) => ({ id: item.id, ...item }));
+    // const rows = tableData.map((item, index) => ({ id: item.id, ...item, stt: index + 1 }));
+    const rows = tableData.map((item, index) => {
+        return {
+            id: item.id,
+            ...item,
+            Gender: item.Gender === true ? 'Nam' : 'Nữ',
+            stt: index + 1,
+        };
+    });
 
     useEffect(() => {
         setTableData(data);
-    }, [data.length]);
+    }, [data]);
 
     return (
         <Paper sx={[{ width: '100%' }, !autoHeight && { height: 400 }]}>
@@ -75,7 +92,7 @@ const DataTable = ({
                             </Button>
                         </Grid>
                     }
-                    <Grid item xs={ onBack ? 6 : 12 } justifyContent="flex-end" className='d-flex'>
+                    <Grid item xs={onBack ? 6 : 12} justifyContent="flex-end" className='d-flex'>
                         {
                             onCreate &&
                             <Button
@@ -99,7 +116,7 @@ const DataTable = ({
                             </Button>
                         }
                         {
-                            onDelete && 
+                            onDelete &&
                             <Button
                                 variant="contained"
                                 color="error"
@@ -115,6 +132,9 @@ const DataTable = ({
             <DataGrid
                 rows={rows}
                 columns={columns}
+                columnVisibilityModel={{
+                    id: false
+                }}
                 pagination
                 paginationMode='client'
                 onPageChange={() => alert('Change page')}

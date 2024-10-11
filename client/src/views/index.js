@@ -14,5 +14,6 @@ export { default as StaffDetails } from './Staffs/StaffDetails';
 
 // Customers
 export { default as Customers } from './Customers/Customers';
+export { default as CustomersRestore } from './Customers/CustomersRestore';
 
 export { default as PageNotFound } from './PageNotFound';

@@ -29,41 +29,40 @@ const style = {
     maxWidth: '95%',
 };
 
-const AddCustomerModal = ({
+const UpdateCustomerModal = ({
     isEnable = false,
+    data,
     handleClose,
-    afterAdd,
+    afterUpdate,
 }) => {
-    const initValues = {
-        Fullname: '',
-        Email: '',
-        PhoneNumber: '',
-        Gender: true,
-        Address: '',
-    };
     const [show, setShow] = useState(isEnable);
-    const [values, setValues] = useState(initValues);
+    const [values, setValues] = useState(data);
 
-    useEffect(() => setShow(isEnable), [isEnable]);
+    useEffect(() => {
+        setShow(isEnable);
+        if (data) {
+            setValues(data);
+        }
+    }, [isEnable, data]);
 
     const handleSubmit = async (e) => {
         try {
             e.preventDefault();
 
-            const result = await axiosInstance.post('/customers/create', values);
+            const result = await axiosInstance.put(`/customers/update/${values.id}`, values);
 
-            if (result) {
-                toast.success('Tạo khách hàng mới thành công!');
-                setValues(initValues);
+            if (result.data.payload) {
+                toast.success('Cập nhật thông tin khách hàng thành công!');
                 handleClose();
-                afterAdd(result.data.payload);
+
+                afterUpdate(result.data.payload);
             }
             else {
-                toast.error('Tạo khách hàng mới thất bại!');
+                toast.error('Cập nhật thông tin khách hàng thất bại!');
             };
         } catch (error) {
             console.log(error);
-            toast.error('Đã xảy ra lỗi trong quá trình thêm khách hàng! Vui lòng thử lại sau.')
+            toast.error('Đã xảy ra lỗi trong quá trình cập nhật khách hàng! Vui lòng thử lại sau.')
         };
     };
 
@@ -73,21 +72,21 @@ const AddCustomerModal = ({
             aria-describedby="transition-modal-description"
             open={show}
             onClose={() => {
-                setValues(initValues);
+                setValues({});
                 handleClose();
             }}
             closeAfterTransition
             slots={{ backdrop: Backdrop }}
             slotProps={{
                 backdrop: {
-                    timeout: 500,
+                    timeout: 1000,
                 },
             }}
         >
             <Fade in={show}>
                 <Box sx={style}>
                     <Typography id="transition-modal-title" variant="h6" component="h2">
-                        Thêm khách hàng mới
+                        Thông tin khách hàng
                     </Typography>
                     <form onSubmit={(e) => handleSubmit(e)}>
                         <Row>
@@ -97,7 +96,7 @@ const AddCustomerModal = ({
                                     variant="outlined"
                                     fullWidth
                                     margin="normal"
-                                    value={values.Fullname}
+                                    value={values?.Fullname}
                                     onChange={(event) => setValues({ ...values, Fullname: event.target.value })}
                                     required
                                     InputLabelProps={{
@@ -114,7 +113,7 @@ const AddCustomerModal = ({
                                     fullWidth
                                     margin="normal"
                                     type="email"
-                                    value={values.Email}
+                                    value={values?.Email}
                                     onChange={(event) => setValues({ ...values, Email: event.target.value })}
                                     required
                                     InputLabelProps={{
@@ -131,7 +130,7 @@ const AddCustomerModal = ({
                                     fullWidth
                                     margin="normal"
                                     type="number"
-                                    value={values.PhoneNumber}
+                                    value={values?.PhoneNumber}
                                     onChange={(event) => setValues({ ...values, PhoneNumber: event.target.value })}
                                     required
                                     InputLabelProps={{
@@ -147,7 +146,7 @@ const AddCustomerModal = ({
                                     variant="outlined"
                                     fullWidth
                                     margin="normal"
-                                    value={values.Address}
+                                    value={values?.Address}
                                     onChange={(event) => setValues({ ...values, Address: event.target.value })}
                                     required
                                     InputLabelProps={{
@@ -163,7 +162,7 @@ const AddCustomerModal = ({
                                     <Select
                                         labelId="select-gender"
                                         id="demo-simple-select"
-                                        value={values.Gender}
+                                        value={values?.Gender}
                                         label="Giới tính"
                                         onChange={(event) => setValues({ ...values, Gender: event.target.value })}
                                     >
@@ -176,7 +175,7 @@ const AddCustomerModal = ({
                         <Row style={{ flexDirection: 'row-reverse', marginTop: '1em' }}>
                             <Col>
                                 <Button variant="contained" color="primary" type="submit" className="w-100">
-                                    Thêm
+                                    Cập nhật
                                 </Button>
                             </Col>
                         </Row>
@@ -187,4 +186,4 @@ const AddCustomerModal = ({
     );
 }
 
-export default AddCustomerModal;
+export default UpdateCustomerModal;
