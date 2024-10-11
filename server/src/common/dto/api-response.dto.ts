@@ -9,7 +9,7 @@ export class ApiResponseDto<T> {
 
     @IsOptional()
     @IsObject()
-    data?: T;
+    payload?: T;
 
     @IsOptional()
     @IsObject()

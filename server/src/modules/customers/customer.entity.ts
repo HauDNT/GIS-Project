@@ -15,7 +15,7 @@ export class Customer {
     Email: string;
 
     @Column()
-    PhoneNumber: number;
+    PhoneNumber: string;
 
     @Column()
     Gender: boolean;

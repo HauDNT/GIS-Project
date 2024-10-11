@@ -5,7 +5,7 @@ import { Warehouse } from './warehouse.entity';
 import { JWTGuard } from '../auth/jwt/jwt-guard';
 import { CreateWarehouseDTO } from './dto/createWarehouse.dto';
 import { ApiResponseDto } from 'src/common/dto/api-response.dto';
-import { createSuccessResponse } from 'src/common/helper/response.helper';
+import { createErrorResponse, createSuccessResponse } from 'src/common/helper/response.helper';
 
 @Controller('warehouses')
 export class WarehousesController {
@@ -60,13 +60,14 @@ export class WarehousesController {
     ): Promise<ApiResponseDto<any>> {
         try {
             await this.warehousesService.create(data);
-            
+
             return createSuccessResponse('Tạo kho thành công.');
         } catch (error) {
-            throw new HttpException({
-                status: HttpStatus.INTERNAL_SERVER_ERROR,
-                message: 'Tạo kho thất bại! Vui lòng thử lại sau.',
-            }, HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new HttpException(createErrorResponse(
+                HttpStatus.INTERNAL_SERVER_ERROR.toString(),
+                'Tạo kho thất bại!',
+                error.message,
+            ), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     };
 

@@ -4,7 +4,7 @@ function createSuccessResponse<T>(message: string, data?: T): ApiResponseDto<T> 
     return {
         status: 'success',
         message,
-        data,
+        payload: data,
         timestamp: new Date().toISOString(),
     };
 }
