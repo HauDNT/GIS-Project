@@ -1,7 +1,7 @@
-import { Warehouse } from "src/warehouses/warehouse.entity";
-import { Staff } from "src/staffs/staff.entity";
-import { Customer } from "src/customers/customer.entity";
-import { RicePlant } from "src/riceplants/riceplant.entity";
+import { Warehouse } from "../../src/modules/warehouses/warehouse.entity";
+import { Staff } from "../../src/modules/staffs/staff.entity";
+import { Customer } from "../../src/modules/customers/customer.entity";
+import { RicePlant } from "../../src/modules/riceplants/riceplant.entity";
 import { EntityManager } from "typeorm";
 import { v4 as uuid4 } from "uuid";
 import * as bcrypt from "bcryptjs";
