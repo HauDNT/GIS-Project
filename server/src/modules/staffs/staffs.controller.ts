@@ -64,7 +64,7 @@ export class StaffsController {
     @Patch('soft-delete/:id')
     @UseGuards(JWTGuard)
     async softDelete(
-        @Param('id') id: number
+        @Param('id') id: number,
     ): Promise<{ message: string; }> {
         try {
             await this.staffsService.softDelete(id);
