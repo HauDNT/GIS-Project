@@ -7,6 +7,7 @@ import {
     Home,
     Dashboard,
     Customers,
+    CustomersRestore,
     Staffs,
     StaffDetails,
     StaffsRestore,
@@ -53,6 +54,7 @@ function App() {
                         <Route element={<Home />}>
                             <Route path="/dashboard" element={<Dashboard />} />
                             <Route path="/customers" element={<Customers />} />
+                            <Route path="/customers/restore" element={<CustomersRestore />} />
                             <Route path="/warehouses" element={<Warehouses />} />
                             <Route path="/warehouses/:id" element={<WarehouseDetails />} />
                             <Route path="/warehouses/restore" element={<WarehousesRestore />} />

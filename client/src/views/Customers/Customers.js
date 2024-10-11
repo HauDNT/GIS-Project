@@ -1,16 +1,20 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import { Container } from 'react-bootstrap';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import axiosInstance from '../../common/AxiosInstance.js';
 import DataTable from "../../components/DataTable.js";
 import AddCustomerModal from "./AddCustomerModal.js";
+import UpdateCustomerModal from "./UpdateCustomerModal.js";
 import Loading from '../../components/Loading.js';
 
 function Customers() {
+    const navigate = useNavigate();
     const [customers, setCustomers] = useState([]);
+    const [customersSelected, setCustomerSelected] = useState(null);
     const [enableAddModal, setEnableAddModal] = useState(false);
+    const [enableUpdateModal, setEnableUpdateModal] = useState(false);
     const headerNames = ['Mã khách hàng', 'Họ và tên', 'Email', 'Số điện thoại', 'Giới tính', 'Địa chỉ'];
     const [isLoading, setLoading] = useState(true);
 
@@ -18,12 +22,23 @@ function Customers() {
         const result = await axiosInstance.get('/customers/all');
 
         if (result.data) {
-            result.data.payload.forEach(customer => {
-                customer.Gender = customer.Gender ? 'Nam' : 'Nữ';
-            });
-            
             setCustomers(result.data.payload);
         };
+    };
+
+    const softDeleteCustomers = async (customerIds) => {
+        try {
+            await Promise.all(
+                customerIds.map(id => {
+                    axiosInstance.patch(`/customers/soft-delete/${id}`);
+                }),
+            );
+
+            toast.success('Xoá khách hàng thành công');
+        } catch (error) {
+            console.log(error);
+            toast.error('Đã xảy ra lỗi trong quá trình xoá khách hàng. Vui lòng kiểm tra lại.');
+        }
     };
 
     useEffect(() => {
@@ -39,7 +54,7 @@ function Customers() {
     }, []);
 
     return (
-        <Container>
+        <Container fluid>
             {
                 isLoading ? (
                     <Loading />
@@ -50,14 +65,20 @@ function Customers() {
                             columnHeadersName={headerNames}
                             pageSize={customers.length}
                             onCreate={() => setEnableAddModal(true)}
-                            onDelete={() => { }}
-                            onRestore={() => { }}
+                            onDelete={(customerIds) => {
+                                softDeleteCustomers(customerIds);
+                                setCustomers(prevData => prevData.filter(customer => !customerIds.includes(customer.id)));
+                            }}
+                            onRestore={() => navigate('/customers/restore')}
                             action={{
                                 type: 'redirect',
                                 field: 'actions',
                                 name: 'Xem chi tiết',
                                 icon: <BorderColorIcon />,
-                                callback: (itemValue) => console.log(`/staffs/${itemValue}`)
+                                callback: (customerId) => {
+                                    setCustomerSelected(customers.find(customer => customer.id === customerId));
+                                    setEnableUpdateModal(true);
+                                }
                             }}
                             autoHeight={false}
                         />
@@ -65,6 +86,20 @@ function Customers() {
                             isEnable={enableAddModal}
                             handleClose={() => setEnableAddModal(false)}
                             afterAdd={(newCustomer) => setCustomers((prevCustomers) => [...prevCustomers, newCustomer])}
+                        />
+                        <UpdateCustomerModal
+                            data={customersSelected}
+                            isEnable={enableUpdateModal}
+                            handleClose={() => setEnableUpdateModal(false)}
+                            afterUpdate={(customerUpdated) => {
+                                setCustomers(prevCustomers =>
+                                    prevCustomers.map(customer =>
+                                        customer.id === customerUpdated.id
+                                            ? { ...customer, ...customerUpdated }
+                                            : customer
+                                    )
+                                );
+                            }}
                         />
                     </>
                 )

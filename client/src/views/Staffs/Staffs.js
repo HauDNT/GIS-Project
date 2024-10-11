@@ -33,10 +33,6 @@ function Staffs() {
         const result = await axiosInstance.get('/staffs/all');
 
         if (result.data) {
-            result.data.forEach(staff => {
-                staff.Gender = staff.Gender ? 'Nam' : 'Nữ';
-            });
-
             setStaffs(result.data);
         };
     };
