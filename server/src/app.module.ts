@@ -8,16 +8,16 @@ import { AppService } from './app.service';
 import { dataSourceOptions, typeOrmAsyncConfig } from '../db/data-source';
 import configuration from './config/configuration';
 import { LoggerMiddleware } from './middlewares/LoggerMiddleware';
-import { WarehousesModule } from './warehouses/warehouses.module';
-import { StaffsModule } from './staffs/staffs.module';
-import { RiceplantsModule } from './riceplants/riceplants.module';
-import { CustomersModule } from './customers/customers.module';
-import { ReceivingSlipsModule } from './receiving_slips/receiving_slips.module';
-import { DispatchSlipsModule } from './dispatch_slips/dispatch_slips.module';
-import { ReceivingRicesModule } from './receiving_rices/receiving_rices.module';
-import { DispatchRicesModule } from './dispatch_rices/dispatch_rices.module';
-import { AuthModule } from './auth/auth.module';
-import { FilesModule } from './files/files.module';
+import { WarehousesModule } from './modules/warehouses/warehouses.module';
+import { StaffsModule } from './modules/staffs/staffs.module';
+import { RiceplantsModule } from './modules/riceplants/riceplants.module';
+import { CustomersModule } from './modules/customers/customers.module';
+import { ReceivingSlipsModule } from './modules/receiving_slips/receiving_slips.module';
+import { DispatchSlipsModule } from './modules/dispatch_slips/dispatch_slips.module';
+import { ReceivingRicesModule } from './modules/receiving_rices/receiving_rices.module';
+import { DispatchRicesModule } from './modules/dispatch_rices/dispatch_rices.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { FilesModule } from './modules/files/files.module';
 
 @Module({
     imports: [
