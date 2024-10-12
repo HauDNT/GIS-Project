@@ -4,6 +4,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { SeedService } from "./seed/seed.service";
 
 async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -12,6 +13,7 @@ async function bootstrap() {
 
     const configService = app.get(ConfigService);
 
+    // Swagger config:
     const config = new DocumentBuilder()
         .setTitle('GIS APIs Documents')
         .setVersion('1.0')
@@ -19,6 +21,10 @@ async function bootstrap() {
 
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api', app, document);
+
+    // Seeder:
+    // const seedService = app.get(SeedService);
+    // await seedService.seed();
 
     await app.listen(configService.get<number>('port'));
 }
