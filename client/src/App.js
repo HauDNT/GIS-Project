@@ -14,6 +14,7 @@ import {
     Warehouses,
     WarehouseDetails,
     WarehousesRestore,
+    Riceplants,
     PageNotFound,
 } from './views/index';
 import './styles/index.scss';
@@ -61,6 +62,7 @@ function App() {
                             <Route path="/staffs" element={<Staffs />} />
                             <Route path="/staffs/:id" element={<StaffDetails />} />
                             <Route path="/staffs/restore" element={<StaffsRestore />} />
+                            <Route path="/riceplants" element={<Riceplants />} />
                         </Route>
                         <Route path="/*" exact element={<PageNotFound />} />
                     </Routes>
