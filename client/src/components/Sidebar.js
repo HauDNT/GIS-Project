@@ -53,7 +53,7 @@ const menuItems = [
     {
         name: 'Lúa',
         icon: <SpaOutlined />,
-        routeName: 'customers',
+        routeName: 'riceplants',
     },
     {
         name: 'Nhập kho',

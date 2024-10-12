@@ -16,4 +16,7 @@ export { default as StaffDetails } from './Staffs/StaffDetails';
 export { default as Customers } from './Customers/Customers';
 export { default as CustomersRestore } from './Customers/CustomersRestore';
 
+// Riceplants
+export { default as Riceplants } from './Riceplants/Riceplants';
+
 export { default as PageNotFound } from './PageNotFound';
