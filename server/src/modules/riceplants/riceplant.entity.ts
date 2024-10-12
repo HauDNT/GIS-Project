@@ -2,13 +2,16 @@ import { DispatchRice } from "../dispatch_rices/dispatch_rice.entity";
 import { ReceivingRice } from "../receiving_rices/receiving_rice.entity";
 import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity("riceplants")
+@Entity('riceplants')
 export class RicePlant {
     @PrimaryGeneratedColumn()
     id: number;
 
     @Column()
     Name: string;
+
+    @Column({ type: 'varchar', nullable: true })
+    Description: string;
 
     @Column({ type: 'varchar', nullable: true })
     imageUrl: string;
