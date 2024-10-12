@@ -18,6 +18,7 @@ export class DispatchRice {
     UnitPrice: number;
 
     @ManyToOne(() => DispatchSlip, dispatchSlip => dispatchSlip.dispatchRices)
+    @JoinColumn({ name: "ID_DispatchSlip" })
     dispatchSlip: DispatchSlip;
 
     @OneToOne(() => RicePlant, ricePlant => ricePlant.dispatchRice)

@@ -33,6 +33,6 @@ export class ReceivingSlip {
     @JoinColumn({ name: "ID_Warehouse" })
     warehouse: Warehouse;
 
-    @OneToMany(() => ReceivingRice, receiveRices => receiveRices.receiveSlip)
+    @OneToMany(() => ReceivingRice, receiveRices => receiveRices.receivingSlip)
     receiveRices: ReceivingRice[];
 }

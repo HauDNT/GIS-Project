@@ -54,7 +54,8 @@ export class CustomersService {
     };
 
     async create(data: Create_UpdateCustomerDTO): Promise<Customer> {
-        const newCustomer = this.customerRepository.create(data);
+        let newCustomer = this.customerRepository.create(data);
+        newCustomer = omitFields(newCustomer, ['isDeleted', 'deletedAt']);
 
         return await this.customerRepository.save(newCustomer);
     };

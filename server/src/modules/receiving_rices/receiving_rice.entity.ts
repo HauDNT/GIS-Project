@@ -6,7 +6,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryColumn } from "
 @Entity("receiving_rice")
 export class ReceivingRice {
     @PrimaryColumn()
-    ID_DispatchSlip: number;
+    ID_ReceivingSlip: number;
 
     @PrimaryColumn()
     ID_RicePlant: number;
@@ -18,7 +18,8 @@ export class ReceivingRice {
     UnitPrice: number;
 
     @ManyToOne(() => ReceivingSlip, receiveSlip => receiveSlip.receiveRices)
-    receiveSlip: ReceivingSlip;
+    @JoinColumn({ name: "ID_ReceivingSlip" })
+    receivingSlip: ReceivingSlip;
 
     @OneToOne(() => RicePlant, ricePlant => ricePlant.receiveRice)
     @JoinColumn({ name: "ID_RicePlant" })

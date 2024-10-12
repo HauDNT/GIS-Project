@@ -49,11 +49,13 @@ export class WarehousesService {
         page: number,
         limit: number,
     ): Promise<{ data: Warehouse[], total: number }> {
-        const [data, total] = await this.warehouseRepository.findAndCount({
+        let [data, total] = await this.warehouseRepository.findAndCount({
             skip: (page - 1) * limit,
             take: limit,
             where: { isDeleted: false }
         });
+
+        data = omitFields(data, ['deletedAt', 'isDeleted'])
 
         return {
             data,
