@@ -18,6 +18,7 @@ import { ReceivingRicesModule } from './modules/receiving_rices/receiving_rices.
 import { DispatchRicesModule } from './modules/dispatch_rices/dispatch_rices.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { FilesModule } from './modules/files/files.module';
+import { SeedModule } from './seed/seed.module';
 
 @Module({
     imports: [
@@ -44,6 +45,7 @@ import { FilesModule } from './modules/files/files.module';
         DispatchRicesModule,
         AuthModule,
         FilesModule,
+        SeedModule,
     ],
     controllers: [AppController],
     providers: [

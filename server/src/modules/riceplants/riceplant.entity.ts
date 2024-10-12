@@ -8,7 +8,16 @@ export class RicePlant {
     id: number;
 
     @Column()
-    Type: string;
+    Name: string;
+
+    @Column({ type: 'varchar', nullable: true })
+    imageUrl: string;
+
+    @Column({ default: false })
+    isDeleted: boolean;
+
+    @Column({ type: 'timestamp', nullable: true })
+    deletedAt: Date | null;
 
     @OneToOne(() => ReceivingRice, receiveRice => receiveRice.ricePlant)
     receiveRice: ReceivingRice;
