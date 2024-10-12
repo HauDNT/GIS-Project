@@ -79,6 +79,7 @@ function Staffs() {
                         <AddStaffModal
                             isEnable={enableAddModal}
                             handleClose={() => setEnableAddModal(false)}
+                            afterAdd={(newStaff) => setStaffs((prevStaffs) => [...prevStaffs, newStaff])}
                         />
                     </>
                 )

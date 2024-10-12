@@ -34,6 +34,7 @@ const style = {
 const AddStaffModal = ({
     isEnable = false,
     handleClose,
+    afterAdd,
 }) => {
     const initValues = {
         Fullname: '',
@@ -54,12 +55,13 @@ const AddStaffModal = ({
         try {
             e.preventDefault();
 
-            const result = await axiosInstance.post('/auth/signup', values);
+            const result = await axiosInstance.post('/staffs/create', values);
 
-            if (result) {
+            if (result.data.payload) {
                 toast.success('Tạo nhân viên mới thành công!');
                 setValues(initValues);
                 handleClose();
+                afterAdd(result.data.payload);
             }
             else {
                 toast.error('Tạo nhân viên mới thất bại!');
