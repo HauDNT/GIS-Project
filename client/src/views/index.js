@@ -19,4 +19,7 @@ export { default as CustomersRestore } from './Customers/CustomersRestore';
 // Riceplants
 export { default as Riceplants } from './Riceplants/Riceplants';
 
+// Bills
+export { default as AddBillPage } from './Bills/AddBill';
+
 export { default as PageNotFound } from './PageNotFound';

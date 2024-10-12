@@ -46,3 +46,11 @@
 .pb-1em {
     padding-bottom: 1em;
 }
+
+.zoom {
+    transition: transform .3s ease !important;
+    
+    &:hover {
+        transform: scale(1.08) !important;
+    }
+}

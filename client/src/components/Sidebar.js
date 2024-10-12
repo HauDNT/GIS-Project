@@ -19,6 +19,10 @@ import {
     ExpandLess,
     ReceiptLongOutlined,
     SpaOutlined,
+    AddCircleOutline,
+    ViewListOutlined,
+    WrapTextSharp,
+    PlaylistAddSharp,
 } from '@mui/icons-material';
 
 const menuItems = [
@@ -37,14 +41,6 @@ const menuItems = [
         icon: <AccountCircleOutlined />,
         routeName: 'staffs',
     },
-    // {
-    //     name: 'Nhân sự',
-    //     icon: <AccountCircleOutlined />,
-    //     submenu: [
-    //         { name: 'Danh sách nhân sự', icon: <MapsHomeWorkOutlined />, routeName: 'staffs', },
-    //         { name: 'Trực kho', icon: <MapsHomeWorkOutlined />, routeName: 'staffs', },
-    //     ]
-    // },
     {
         name: 'Khách hàng',
         icon: <PeopleAltOutlined />,
@@ -56,14 +52,13 @@ const menuItems = [
         routeName: 'riceplants',
     },
     {
-        name: 'Nhập kho',
+        name: 'Nhập - Xuất',
         icon: <ReceiptLongOutlined />,
-        routeName: 'staffs',
-    },
-    {
-        name: 'Xuất kho',
-        icon: <ReceiptLongOutlined />,
-        routeName: 'staffs',
+        submenu: [
+            { name: 'Nhập đơn', icon: <AddCircleOutline />, routeName: 'bills/add', },
+            { name: 'Đơn nhập', icon: <PlaylistAddSharp />, routeName: 'staffs', },
+            { name: 'Đơn xuất', icon: <WrapTextSharp />, routeName: 'staffs', },
+        ]
     },
 ];
 
@@ -82,7 +77,7 @@ function Sidebar({ sidebarState, toggleSidebar }) {
 
     const handleRedirect = (item, routeName) => {
         if (!item.submenu) {
-            navigate(routeName);
+            navigate(routeName || 'page-not-found');
         }
         else return;
     };
@@ -92,8 +87,8 @@ function Sidebar({ sidebarState, toggleSidebar }) {
             <List>
                 {
                     menuItems.map((item, index) => (
-                        <div 
-                            key={index} 
+                        <div
+                            key={index}
                             onClick={() => handleRedirect(item, item.routeName)}
                         >
                             <ListItem disablePadding>
@@ -107,7 +102,7 @@ function Sidebar({ sidebarState, toggleSidebar }) {
                             </ListItem>
                             {
                                 item.submenu && openSubmenuIndex === index && (
-                                    <List component="div" style={{padding: 0, paddingLeft: 15}}>
+                                    <List component="div" style={{ padding: 0, paddingLeft: 15 }}>
                                         {item.submenu.map((subItem, subIndex) => (
                                             <ListItem key={subIndex} disablePadding onClick={() => handleRedirect(subItem, subItem.routeName)}>
                                                 <ListItemButton>
