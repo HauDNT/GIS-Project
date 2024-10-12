@@ -113,10 +113,13 @@ export const seedData = async (manager: EntityManager): Promise<void> => {
             'Chua tan',
         ];
 
-        for (const type of riceTypes) {
+        for (const [index, type] of riceTypes.entries()) {
             const ricePlant = manager.create(RicePlant, {
+                id: index + 1, // Nếu ID là tự tăng, bạn không cần chỉ định ID
                 Name: type,
+                Description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.',
             });
+
             await manager.save(ricePlant);
         }
     }

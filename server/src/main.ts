@@ -22,10 +22,10 @@ async function bootstrap() {
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api', app, document);
 
-    // Seeder:
-    // const seedService = app.get(SeedService);
-    // await seedService.seed();
-
+    // Seeder: 
+    const seedService = app.get(SeedService);
+    await seedService.seed();
+ 
     await app.listen(configService.get<number>('port'));
 }
 bootstrap();
