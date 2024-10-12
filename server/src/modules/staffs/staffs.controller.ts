@@ -3,7 +3,10 @@ import { Response } from 'express';
 import { Staff } from './staff.entity';
 import { StaffsService } from './staffs.service';
 import { JWTGuard } from '../auth/jwt/jwt-guard';
-import { Create_UpdateStaffDTO } from './dto/create-updateStaff.dto';
+import { CreateStaffDTO } from './dto/createStaff.dto';
+import { UpdateStaffDTO } from './dto/updateStaff.dto';
+import { ApiResponseDto } from 'src/common/dto/api-response.dto';
+import { createErrorResponse, createSuccessResponse } from 'src/common/helper/response.helper';
 
 @Controller('staffs')
 @UseInterceptors(ClassSerializerInterceptor)    // Using with Exclude entities
@@ -33,10 +36,29 @@ export class StaffsController {
         return this.staffsService.getStaffsDeleted();
     };
 
+    @Post('create')
+    // @UseGuards(JWTGuard)
+    async create(
+        @Body() data: CreateStaffDTO,
+    ): Promise<ApiResponseDto<Staff>> {
+        try {
+            const newStaff = await this.staffsService.create(data);
+
+            return createSuccessResponse('Thêm nhân viên mới thành công!', newStaff);
+        } catch (error) {
+            throw new HttpException(createErrorResponse(
+                HttpStatus.INTERNAL_SERVER_ERROR.toString(),
+                'Thêm nhân viên mới thất bại!',
+                error.message,
+            ), HttpStatus.INTERNAL_SERVER_ERROR);
+        };
+    };
+
+
     @Put('update/:id')
     async update(
         @Param('id') id: number,
-        @Body() data: Create_UpdateStaffDTO,
+        @Body() data: UpdateStaffDTO,
         @Res() response: Response,
     ): Promise<void> {
         try {

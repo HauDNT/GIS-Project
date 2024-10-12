@@ -5,7 +5,7 @@ import { Staff } from './staff.entity';
 import { Repository } from 'typeorm';
 import { SignupDTO } from '../auth/dto/signup.dto';
 import { omitFields } from '../../common/helper/omit_field.helper';
-import { Create_UpdateStaffDTO } from './dto/create-updateStaff.dto';
+import { UpdateStaffDTO } from './dto/updateStaff.dto';
 
 @Injectable()
 export class StaffsService {
@@ -90,10 +90,12 @@ export class StaffsService {
     };
 
     async create(data: SignupDTO): Promise<Staff> {
-        return plainToClass(Staff, this.staffRepository.save(data));
+        let staff = omitFields(await this.staffRepository.save(data), ['isDeleted', 'deletedAt']);
+
+        return plainToClass(Staff, staff);
     };
 
-    async update(id: number, data: Create_UpdateStaffDTO) {
+    async update(id: number, data: UpdateStaffDTO) {
         let checkExist = false;
         const staff = await this.staffRepository.findOneBy({ id, isDeleted: false });
 

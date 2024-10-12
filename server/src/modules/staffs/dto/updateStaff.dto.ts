@@ -1,7 +1,7 @@
-import { IsString, IsNotEmpty, IsEmail, IsPhoneNumber, Length, IsBoolean, IsNumber } from "class-validator";
+import { IsNotEmpty, IsNumber, IsEmail, IsString, Length, IsBoolean, IsStrongPassword, IsOptional } from "class-validator";
 import { Warehouse } from "../../warehouses/warehouse.entity";
 
-export class SignupDTO {
+export class UpdateStaffDTO {
     @IsString()
     @IsNotEmpty({ message: 'Họ tên nhân viên không được để trống' })
     @Length(3, 100, { message: 'Họ tên nhân viên phải có độ dài từ 3 đến 100 ký tự' })
@@ -17,9 +17,7 @@ export class SignupDTO {
     @Length(10, 10, { message: 'Số điện thoại phải có độ dài 10 ký tự' })
     PhoneNumber: string;
 
-    @IsString()
-    @IsNotEmpty({ message: 'Mật khẩu không được để trống' })
-    @Length(8, 16, { message: 'Mật khẩu phải có độ dài từ 8 đến 16 ký tự' })
+    @IsOptional()
     Password: string;
 
     @IsBoolean()
