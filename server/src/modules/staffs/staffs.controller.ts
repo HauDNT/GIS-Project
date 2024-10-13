@@ -15,8 +15,17 @@ export class StaffsController {
 
     @Get('all')
     @UseGuards(JWTGuard)
-    getAll(): Promise<Staff[]> {
-        return this.staffsService.getAll();
+    async getAll(): Promise<ApiResponseDto<Staff[]>> {
+        try {
+            const customers = await this.staffsService.getAll();
+            return createSuccessResponse('Lấy danh sách nhân viên thành công.', customers);
+        } catch (error) {
+            throw new HttpException(createErrorResponse(
+                HttpStatus.INTERNAL_SERVER_ERROR.toString(),
+                'Lấy danh sách nhân viên thất bại!',
+                error.message,
+            ), HttpStatus.INTERNAL_SERVER_ERROR);
+        };
     };
 
     @Get('details/:id')
