@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
-import { Container } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
+import { Typography } from "@mui/material";
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import axiosInstance from '../../common/AxiosInstance.js';
 import DataTable from "../../components/DataTable.js";
@@ -60,6 +61,13 @@ function Customers() {
                     <Loading />
                 ) : (
                     <>
+                        <Row>
+                            <Col>
+                                <Typography gutterBottom variant="h5" component="div" className="heading-page">
+                                    Danh sách khách hàng
+                                </Typography>
+                            </Col>
+                        </Row>
                         <DataTable
                             data={customers || []}
                             columnHeadersName={headerNames}

@@ -30,10 +30,15 @@ function Staffs() {
     const [isLoading, setLoading] = useState(true);
 
     const fetchAllStaffs = async () => {
-        const result = await axiosInstance.get('/staffs/all');
-
-        if (result.data) {
-            setStaffs(result.data);
+        try {
+            const result = await axiosInstance.get('/staffs/all');
+    
+            if (result.data.payload) {
+                setStaffs(result.data.payload);
+            };
+        } catch (error) {
+            console.log(error);
+            toast.error('Xảy ra lỗi trong quá trình lấy dữ liệu nhân viên');
         };
     };
 
