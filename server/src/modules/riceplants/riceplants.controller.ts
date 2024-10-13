@@ -9,8 +9,23 @@ import { createErrorResponse, createSuccessResponse } from 'src/common/helper/re
 export class RiceplantsController {
     constructor(private readonly riceplantsService: RiceplantsService) { }
     
+    @Get('all')
+    @UseGuards(JWTGuard)
+    async getAll(): Promise<ApiResponseDto<RicePlant[]>> {
+        try {
+            const ricePlants = await this.riceplantsService.getAll();
+            return createSuccessResponse('Lấy danh sách lúa thành công', ricePlants);
+        } catch (error) {
+            throw new HttpException(createErrorResponse(
+                HttpStatus.INTERNAL_SERVER_ERROR.toString(),
+                'Lấy danh sách lúa thất bại!',
+                error.message,
+            ), HttpStatus.INTERNAL_SERVER_ERROR);
+        };
+    };  
+
     @Get()
-    // @UseGuards(JWTGuard)
+    @UseGuards(JWTGuard)
     async getByPage(
         @Query('page') page: number = 1,
         @Query('limit') limit: number = 10,

@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import * as fs from 'fs';
+import * as sharp from 'sharp';
 import { Warehouse } from '../warehouses/warehouse.entity';
 import { Staff } from '../staffs/staff.entity';
 import { Customer } from '../customers/customer.entity';
@@ -87,8 +88,12 @@ export class FilesService {
                 const uniqueSuffix = uuidv4();
                 const ext = file.originalname.split('.').pop();
                 const filePath = `${dirName}${uniqueSuffix}.${ext}`;
+
+                await sharp(file.buffer)
+                    .resize(1200, 800, { fit: 'cover'})
+                    .toFile(filePath);
     
-                fs.writeFileSync(filePath, file.buffer);
+                // fs.writeFileSync(filePath, file.buffer);
     
                 await this.saveToDatabase(`${uniqueSuffix}.${ext}`, type, id);
     
@@ -110,5 +115,5 @@ export class FilesService {
                 status: false,
             };
         }
-    }
+    };
 };

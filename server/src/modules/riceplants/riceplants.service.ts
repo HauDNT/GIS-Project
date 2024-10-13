@@ -11,6 +11,16 @@ export class RiceplantsService {
         private ricePlantRepository: Repository<RicePlant>,
     ) { };
 
+    async getAll(): Promise<RicePlant[]> {
+        let ricePlants = await this.ricePlantRepository.find();
+
+        ricePlants.forEach((item, index) => {
+            ricePlants[index] = omitFields(item, ['isDeleted', 'deletedAt']);
+        });
+
+        return ricePlants;
+    };
+
     async getByPage(page: number, limit: number): Promise<RicePlant[]> {
         const offset = (page - 1) * limit;
 
