@@ -25,12 +25,8 @@ const WarehousesProvider = ({ children }) => {
     };
 
     const updateValueOfWarehouseById = (id, key, value) => {
-        console.log(`ID: ${id} | Key: ${key} | Value: ${value}`);
-
         listWarehouses.forEach(element => {
             if (element.id == id) {
-                console.log("true");
-                
                 element[key] = value;
             };
         });
