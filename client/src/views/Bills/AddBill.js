@@ -18,16 +18,17 @@ function AddBillPage() {
         staffs: [],
         customers: [],
         riceplants: [],
+        billType: null,
         staffSelectedId: null,
         customerSelectedId: null,
         warehouseSelectedId: null,
-        receiDispatchInfo: {
+        riceSelectInfo: {
             id: 0,
             Name: '',
             Amount: 0,
             UnitPrice: 0,
         },
-        tableData: [],
+        listRicesOfBill: [],
     });
     const { listWarehouses, loadWarehousesData } = useContext(WarehousesContext);
 
@@ -84,11 +85,12 @@ function AddBillPage() {
         };
     };
 
-    const resetStates = () => {
-        updateStatesData("staffSelectedId", null);
-        updateStatesData("customerSelectedId", null);
-        updateStatesData("warehouseSelectedId", null);
-        updateStatesData("receiDispatchInfo", {
+    const resetStatesAfterCreateBill = () => {
+        // updateStatesData("staffSelectedId", null);
+        // updateStatesData("customerSelectedId", null);
+        // updateStatesData("warehouseSelectedId", null);
+        updateStatesData("listRicesOfBill", []);
+        updateStatesData("riceSelectInfo", {
             id: 0,
             Name: '',
             Amount: 0,
@@ -102,8 +104,8 @@ function AddBillPage() {
             return;
         };
 
-        updateStatesData("tableData", [...states.tableData, newData]);
-        updateStatesData("receiDispatchInfo", {
+        updateStatesData("listRicesOfBill", [...states.listRicesOfBill, newData]);
+        updateStatesData("riceSelectInfo", {
             id: 0,
             Name: '',
             Amount: 0,
@@ -111,12 +113,103 @@ function AddBillPage() {
         });
     };
 
+    const validateDataBeforeCreateBill = (data) => {
+        const values = Object.values(data);
+
+        const hasNullValue = values.some(value => {
+            return value === null;
+        });
+
+        return !hasNullValue;
+    };
+
+    const createReceiveBill = async (billInfo, listRices) => {
+        try {
+            const result_1 = await axiosInstance.post(
+                '/receiving-slips/create',
+                billInfo
+            );
+
+            if (result_1.data.payload) {
+                const receiveBillIdCreated = result_1.data.payload.id;
+                const result_2 = await axiosInstance.post(
+                    '/receiving-rices/create',
+                    {
+                        receiveSlipId: receiveBillIdCreated,
+                        listRices,
+                    }
+                );
+
+                if (result_2.data.payload === true) {
+                    resetStatesAfterCreateBill();
+                    toast.success('Tạo hoá đơn thành công');
+                };
+            };
+        } catch (error) {
+            console.log(error);
+            toast.error('Đã xảy ra lỗi trong quá trình tạo hoá đơn nhận');
+        };
+    };
+
+    const createDispatchBill = async (billInfo, listRices) => {
+        try {
+            const result_1 = await axiosInstance.post(
+                '/dispatch-slips/create',
+                billInfo
+            );
+
+            if (result_1.data.payload) {
+                const dispatchBillIdCreated = result_1.data.payload.id;
+                const result_2 = await axiosInstance.post(
+                    '/dispatch-rices/create',
+                    {
+                        dispatchSlipId: dispatchBillIdCreated,
+                        listRices,
+                    }
+                );
+
+                if (result_2.data.payload === true) {
+                    resetStatesAfterCreateBill();
+                    toast.success('Tạo hoá đơn thành công');
+                };
+            };
+        } catch (error) {
+            console.log(error);
+            toast.error('Đã xảy ra lỗi trong quá trình tạo hoá đơn xuất');
+        };
+    };
+
+    const handleCreateBill = async () => {
+        const billInfo = {
+            billType: states.billType,
+            staffId: states.staffSelectedId,
+            customerId: states.customerSelectedId,
+            warehouseId: states.warehouseSelectedId,
+        };
+
+        if (validateDataBeforeCreateBill(billInfo)) {
+            switch (billInfo.billType) {
+                case 1:     // Đơn nhập
+                    await createReceiveBill(billInfo, states.listRicesOfBill);
+                    break;
+                case 2:     // Đơn xuất
+                    await createDispatchBill(billInfo, states.listRicesOfBill);
+                    break;
+                default:
+                    break;
+            };
+        }
+        else {
+            toast.error('Phải điền đủ thông tin hoá đơn trước khi tạo!');
+        };
+    };
+
     useEffect(() => {
         fetchCustomers();
         fetchStaffs();
         fetchRiceplants();
 
-        if (listWarehouses.length == 0) loadWarehousesData();
+        if (listWarehouses.length === 0) loadWarehousesData();
     }, []);
 
     return (
@@ -133,7 +226,7 @@ function AddBillPage() {
                     <Typography gutterBottom variant="body1" component="div" className="bill-subheading">
                         Thông tin khách hàng
                     </Typography>
-                    <Col md={4} sm={12} className="pt-1em">
+                    <Col md={3} sm={12} className="pt-1em">
                         <Autocomplete
                             id="customer-select"
                             options={states.customers}
@@ -168,7 +261,7 @@ function AddBillPage() {
                             )}
                         />
                     </Col>
-                    <Col md={4} sm={12} className="pt-1em">
+                    <Col md={3} sm={12} className="pt-1em">
                         <Autocomplete
                             id="warehouse-select"
                             options={listWarehouses}
@@ -210,7 +303,7 @@ function AddBillPage() {
                             )}
                         />
                     </Col>
-                    <Col md={4} sm={12} className="pt-1em">
+                    <Col md={3} sm={12} className="pt-1em">
                         <Autocomplete
                             id="staff-select"
                             options={states.staffs}
@@ -252,6 +345,43 @@ function AddBillPage() {
                             )}
                         />
                     </Col>
+                    <Col md={3} sm={12} className="pt-1em">
+                        <Autocomplete
+                            id="bill-type-select"
+                            options={[
+                                { type: 'Nhập lúa', value: 1 },
+                                { type: 'Xuất lúa', value: 2 }
+                            ]}
+                            autoHighlight
+                            getOptionLabel={(option) => option.type}
+                            clearIcon={false}
+                            onChange={(e, newValue) => { updateStatesData('billType', newValue.value) }}
+                            renderOption={(props, option) => {
+                                const { key, ...optionProps } = props;
+                                return (
+                                    <Box
+                                        key={key}
+                                        component="li"
+                                        {...optionProps}
+                                    >
+                                        {option.type}
+                                    </Box>
+                                );
+                            }}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    label="Loại hoá đơn"
+                                    slotProps={{
+                                        htmlInput: {
+                                            ...params.inputProps,
+                                            autoComplete: 'new-password',
+                                        },
+                                    }}
+                                />
+                            )}
+                        />
+                    </Col>
                 </Row>
                 <Row>
                     <Col>
@@ -275,7 +405,7 @@ function AddBillPage() {
                             clearIcon={false}
                             onChange={(e, newValue) => {
                                 updateStateNestFieldChildData(
-                                    "receiDispatchInfo",
+                                    "riceSelectInfo",
                                     () => ({
                                         id: newValue.id,
                                         Name: newValue.Name,
@@ -323,9 +453,9 @@ function AddBillPage() {
                             label="Số lượng"
                             sx={{ width: '100%' }}
                             type="number"
-                            value={states.receiDispatchInfo.Amount}
+                            value={states.riceSelectInfo.Amount}
                             onChange={(e) => updateStateNestFieldChildData(
-                                "receiDispatchInfo",
+                                "riceSelectInfo",
                                 () => ({ Amount: e.target.value })
                             )}
                         />
@@ -335,9 +465,9 @@ function AddBillPage() {
                             label="Đơn giá"
                             sx={{ width: '100%' }}
                             type="number"
-                            value={states.receiDispatchInfo.UnitPrice}
+                            value={states.riceSelectInfo.UnitPrice}
                             onChange={(e) => updateStateNestFieldChildData(
-                                "receiDispatchInfo",
+                                "riceSelectInfo",
                                 () => ({ UnitPrice: e.target.value })
                             )}
                         />
@@ -348,7 +478,7 @@ function AddBillPage() {
                             sx={{ width: '100%' }}
                             type="number"
                             disabled
-                            value={states.receiDispatchInfo.UnitPrice * states.receiDispatchInfo.Amount}
+                            value={states.riceSelectInfo.UnitPrice * states.riceSelectInfo.Amount}
                         />
                     </Col>
                     <Col md={2} sm={12} className="pt-1em">
@@ -357,7 +487,7 @@ function AddBillPage() {
                             color="success"
                             type="button"
                             sx={{ width: '100%', height: '100%', borderRadius: '100px' }}
-                            onClick={() => addBillDataToTableData(states.receiDispatchInfo)}
+                            onClick={() => addBillDataToTableData(states.riceSelectInfo)}
                         >
                             <Typography gutterBottom variant="body1" component="div" className="bill-subheading" sx={{ textAlign: 'center' }}>
                                 Thêm
@@ -369,7 +499,7 @@ function AddBillPage() {
                     <Col>
                         <DynamicTable
                             headers={['STT', 'Loại lúa', 'Số lượng', 'Đơn giá', 'Thành tiền']}
-                            data={states.tableData}
+                            data={states.listRicesOfBill}
                         />
                     </Col>
                 </Row>
@@ -380,7 +510,7 @@ function AddBillPage() {
                             color="info"
                             type="button"
                             sx={{ width: '100%', height: '100%', borderRadius: '100px' }}
-                        // onClick={() => addBillDataToTableData(states.receiDispatchInfo)}
+                            onClick={handleCreateBill}
                         >
                             Tạo hoá đơn
                         </Button>
