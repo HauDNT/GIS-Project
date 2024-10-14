@@ -9,7 +9,7 @@ import { ApiResponseDto } from 'src/common/dto/api-response.dto';
 import { createErrorResponse, createSuccessResponse } from 'src/common/helper/response.helper';
 
 @Controller('staffs')
-@UseInterceptors(ClassSerializerInterceptor)    // Using with Exclude entities
+@UseInterceptors(ClassSerializerInterceptor)
 export class StaffsController {
     constructor(private readonly staffsService: StaffsService) { }
 
@@ -17,8 +17,8 @@ export class StaffsController {
     @UseGuards(JWTGuard)
     async getAll(): Promise<ApiResponseDto<Staff[]>> {
         try {
-            const customers = await this.staffsService.getAll();
-            return createSuccessResponse('Lấy danh sách nhân viên thành công.', customers);
+            const staffs = await this.staffsService.getAll();
+            return createSuccessResponse('Lấy danh sách nhân viên thành công.', staffs);
         } catch (error) {
             throw new HttpException(createErrorResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR.toString(),

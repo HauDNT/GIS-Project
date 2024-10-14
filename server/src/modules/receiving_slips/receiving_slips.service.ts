@@ -9,7 +9,37 @@ export class ReceivingSlipsService {
     constructor(
         @InjectRepository(ReceivingSlip)
         private receiveSlipRepository: Repository<ReceivingSlip>,
-    ) { }
+    ) { };
+
+    async getByPage(page: number, limit: number): Promise<ReceivingSlip[]> {
+        const offset = (page - 1) * limit;
+        const bills = await this.receiveSlipRepository.find({
+            take: limit,
+            skip: offset,
+            relations: [
+                'customer',
+                'staff',
+                'warehouse',
+                'receiveRices',
+            ],
+            select: {
+                id: true,
+                customer: {
+                    Fullname: true,
+                },
+                staff: {
+                    Fullname: true,
+                },
+                warehouse: {
+                    Name: true,
+                },
+                receiveRices: true,
+                CreatedAt: true,
+            },
+        });
+
+        return bills;
+    };
 
     async create(data: CreateReceiveSlipDTO): Promise<ReceivingSlip> {
         const newReceiveBill = new ReceivingSlip();
@@ -20,5 +50,5 @@ export class ReceivingSlipsService {
         newReceiveBill.CreatedAt = new Date();
 
         return await this.receiveSlipRepository.save(newReceiveBill);
-    }
+    };
 }
