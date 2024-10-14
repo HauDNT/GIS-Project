@@ -15,7 +15,7 @@ export class StaffsService {
   ) { }
 
   async findOneByUsername(username: string, isEmail: boolean): Promise<Staff> {
-    let staff = undefined;
+    let staff = null;
 
     if (isEmail) {
       staff = await this.staffRepository.findOneBy({
@@ -58,9 +58,12 @@ export class StaffsService {
     staffs = staffs.map((staff) => {
       return plainToClass(
         Staff,
-        omitFields(staff, ['deletedAt', 'isDeleted']),
+        omitFields(staff, ['deletedAt', 'isDeleted', 'imageUrl']),
       );
     });
+
+    console.log(staffs);
+    
 
     return staffs;
   }
