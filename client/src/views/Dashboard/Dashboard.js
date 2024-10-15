@@ -3,7 +3,7 @@ import axiosInstance from '../../common/AxiosInstance.js';
 import { WarehousesContext } from '../../context/WarehousesContext.js';
 import { Container, Row, Col } from 'react-bootstrap';
 import MapComponent from "../../components/Mapbox/MainMap/MapComponent.js";
-import CardComponent from '../../components/CardComponent';
+import DashboardCard from '../../components/Cards/DashboardCard.js';
 import Loading from '../../components/Loading.js';
 
 function Dashboard() {
@@ -33,18 +33,18 @@ function Dashboard() {
                             <Col sm={5} xs={12}>
                                 <Row>
                                     <Col className='pt-1-5em'>
-                                        <CardComponent />
+                                        <DashboardCard />
                                     </Col>
                                     <Col className='pt-1-5em'>
-                                        <CardComponent />
+                                        <DashboardCard />
                                     </Col>
                                 </Row>
                                 <Row>
                                     <Col className='pt-1-5em'>
-                                        <CardComponent />
+                                        <DashboardCard />
                                     </Col>
                                     <Col className='pt-1-5em'>
-                                        <CardComponent />
+                                        <DashboardCard />
                                     </Col>
                                 </Row>
                             </Col>
