@@ -5,7 +5,8 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { dataSourceOptions, typeOrmAsyncConfig } from '../db/data-source';
+// import { dataSourceOptions, typeOrmAsyncConfig } from '../db/data-source';
+import { typeOrmAsyncConfig } from '../db/data-source';
 import configuration from './config/configuration';
 import { LoggerMiddleware } from './middlewares/LoggerMiddleware';
 import { WarehousesModule } from './modules/warehouses/warehouses.module';
@@ -19,6 +20,7 @@ import { DispatchRicesModule } from './modules/dispatch_rices/dispatch_rices.mod
 import { AuthModule } from './modules/auth/auth.module';
 import { FilesModule } from './modules/files/files.module';
 import { SeedModule } from './seed/seed.module';
+import * as mysql from 'mysql2/promise';
 
 @Module({
     imports: [
@@ -34,7 +36,6 @@ import { SeedModule } from './seed/seed.module';
             load: [configuration],
         }),
         TypeOrmModule.forRootAsync(typeOrmAsyncConfig),
-        TypeOrmModule.forRoot(dataSourceOptions),
         WarehousesModule,
         StaffsModule,
         RiceplantsModule,

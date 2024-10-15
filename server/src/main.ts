@@ -26,6 +26,6 @@ async function bootstrap() {
     // const seedService = app.get(SeedService);
     // await seedService.seed();
 
-    await app.listen(configService.get<number>('port'));
+    await app.listen(configService.get<number>('port') || 3000);
 }
 bootstrap();
