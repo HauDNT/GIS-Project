@@ -7,7 +7,7 @@ import {
     CircularProgress,
 } from '@mui/material';
 import { Container, Row, Col } from 'react-bootstrap';
-import RicePlantCard from '../../components/RicePlantCard';
+import RicePlantCard from '../../components/Cards/RicePlantCard';
 import axiosInstance from '../../common/AxiosInstance';
 
 function Riceplants() {

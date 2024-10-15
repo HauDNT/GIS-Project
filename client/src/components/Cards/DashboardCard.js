@@ -2,7 +2,7 @@ import {
     Image
 } from '@mui/icons-material';
 
-const CardComponent = () => {
+const DashboardCard = () => {
     return (
         <div className='card-container'>
             <div className='w-100 card-header d-flex'>
@@ -18,4 +18,4 @@ const CardComponent = () => {
     )
 }
 
-export default CardComponent;
+export default DashboardCard;
