@@ -58,12 +58,12 @@ export class StaffsService {
     staffs = staffs.map((staff) => {
       return plainToClass(
         Staff,
-        omitFields(staff, ['deletedAt', 'isDeleted', 'imageUrl']),
+        omitFields(staff, ['deletedAt', 'isDeleted']),
       );
     });
 
     console.log(staffs);
-    
+
 
     return staffs;
   }

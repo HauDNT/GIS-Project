@@ -9,7 +9,60 @@ export class DispatchSlipsService {
     constructor(
         @InjectRepository(DispatchSlip)
         private readonly dispatchSlipRepository: Repository<DispatchSlip>,
-    ) { }
+    ) { };
+
+    calTotalPrice(dispatchRices: any): number {
+        const total = dispatchRices.reduce((
+            sum: number,
+            item: { Amount: number, UnitPrice: number }
+        ) => {
+            return sum + (item.Amount * item.UnitPrice)
+        }, 0);
+
+        return total;
+    };
+
+    async getByPage(page: number, limit: number): Promise<{ billInfo: DispatchSlip; totalBill: number; }[]> {
+        const offset = (page - 1) * limit;
+        const bills = await this.dispatchSlipRepository.find({
+            take: limit,
+            skip: offset,
+            relations: [
+                'customer',
+                'staff',
+                'warehouse',
+                'dispatchRices',
+            ],
+            select: {
+                id: true,
+                customer: {
+                    id: true,
+                    Fullname: true,
+                },
+                staff: {
+                    id: true,
+                    Fullname: true,
+                },
+                warehouse: {
+                    id: true,
+                    Name: true,
+                },
+                dispatchRices: true,
+                CreatedAt: true,
+            },
+        });
+
+        const result = bills.map((bill) => {
+            const totalBill = this.calTotalPrice(bill.dispatchRices);
+
+            return {
+                billInfo: bill,
+                totalBill,
+            };
+        });
+
+        return result;
+    };
 
     async create(data: CreateDispatchSlipDTO): Promise<DispatchSlip> {
         const newDispatchBill = new DispatchSlip();

@@ -10,18 +10,19 @@ import { JWTGuard } from '../auth/jwt/jwt-guard';
 export class ReceivingSlipsController {
     constructor(private readonly receivingSlipsService: ReceivingSlipsService) { }
 
+    @UseGuards(JWTGuard)
     @Get()
     async getByPage(
         @Query('page') page: number,
         @Query('limit') limit: number = 10,
-    ): Promise<ApiResponseDto<ReceivingSlip[]>> {
+    ): Promise<ApiResponseDto<{ billInfo: ReceivingSlip; totalBill: number; }[]>> {
         try {
             const bills = await this.receivingSlipsService.getByPage(page, limit);
-            return createSuccessResponse('Lấy dữ liệu hoá đơn nhận thành công', bills);
+            return createSuccessResponse('Lấy dữ liệu hoá đơn nhập kho thành công', bills);
         } catch (error) {
             throw new HttpException(createErrorResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR.toString(),
-                'Lấy dữ liệu hoá đơn nhận thất bại!',
+                'Lấy dữ liệu hoá đơn nhập kho thất bại!',
                 error.message,
             ), HttpStatus.INTERNAL_SERVER_ERROR);
         };

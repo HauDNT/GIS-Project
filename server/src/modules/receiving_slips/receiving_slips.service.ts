@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ReceivingSlip } from './receiving_slip.entity';
-import { Repository } from 'typeorm';
+import { Int32, Repository } from 'typeorm';
 import { CreateReceiveSlipDTO } from './dto/createReceiveSlip.dto';
 
 @Injectable()
@@ -11,7 +11,18 @@ export class ReceivingSlipsService {
         private receiveSlipRepository: Repository<ReceivingSlip>,
     ) { };
 
-    async getByPage(page: number, limit: number): Promise<ReceivingSlip[]> {
+    calTotalPrice(receiveRices: any): number {
+        const total = receiveRices.reduce((
+            sum: number,
+            item: { Amount: number, UnitPrice: number }
+        ) => {
+            return sum + (item.Amount * item.UnitPrice)
+        }, 0);
+
+        return total;
+    };
+
+    async getByPage(page: number, limit: number): Promise<{ billInfo: ReceivingSlip; totalBill: number; }[]> {
         const offset = (page - 1) * limit;
         const bills = await this.receiveSlipRepository.find({
             take: limit,
@@ -25,12 +36,15 @@ export class ReceivingSlipsService {
             select: {
                 id: true,
                 customer: {
+                    id: true,
                     Fullname: true,
                 },
                 staff: {
+                    id: true,
                     Fullname: true,
                 },
                 warehouse: {
+                    id: true,
                     Name: true,
                 },
                 receiveRices: true,
@@ -38,7 +52,16 @@ export class ReceivingSlipsService {
             },
         });
 
-        return bills;
+        const result = bills.map((bill) => {
+            const totalBill = this.calTotalPrice(bill.receiveRices);
+
+            return {
+                billInfo: bill,
+                totalBill,
+            };
+        });
+
+        return result;
     };
 
     async create(data: CreateReceiveSlipDTO): Promise<ReceivingSlip> {
