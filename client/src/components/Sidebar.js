@@ -56,7 +56,8 @@ const menuItems = [
         icon: <ReceiptLongOutlined />,
         submenu: [
             { name: 'Nhập đơn', icon: <AddCircleOutline />, routeName: 'bills/add', },
-            { name: 'Danh sách hoá đơn', icon: <ViewListOutlined />, routeName: 'bills', },
+            { name: 'Danh sách đơn nhập', icon: <ViewListOutlined />, routeName: 'bills-receive', },
+            { name: 'Danh sách đơn xuất', icon: <ViewListOutlined />, routeName: 'bills-dispatch', },
         ]
     },
 ];

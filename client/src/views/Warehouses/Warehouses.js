@@ -5,6 +5,7 @@ import { Container } from 'react-bootstrap';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import axiosInstance from '../../common/AxiosInstance';
 import { WarehousesContext } from '../../context/WarehousesContext.js';
+import { hideField } from '../../utils/HideFieldInData.js';
 import DataTable from "../../components/DataTable.js";
 import Loading from '../../components/Loading.js';
 
@@ -43,7 +44,7 @@ function Warehouses() {
                     <Loading />
                 ) : (
                     <DataTable
-                        data={listWarehouses.map(({ ['imageUrl']: _, ...rest }) => rest)}     // Remove column imageUrl
+                        data={hideField(listWarehouses, 'imageUrl') || []}     // Remove column imageUrl
                         columnHeadersName={headerNames}
                         pageSize={listWarehouses.length}
                         onDelete={softDeleteWarehouses}

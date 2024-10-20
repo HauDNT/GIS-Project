@@ -9,7 +9,7 @@ import CardActions from '@mui/material/CardActions';
 
 const RicePlantCard = ({ id, Name, Description, imageUrl }) => {
     return (
-        <Card className='rice-card-container zoom'>
+        <Card className='rice-card-container zoom' key={id}>
             <CardActionArea>
                 <CardMedia
                     component="img"

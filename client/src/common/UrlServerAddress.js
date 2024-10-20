@@ -1,1 +1,3 @@
-export const ServerAddress = 'http://localhost:4000';
+import { SERVER_URL } from '../config/config';
+
+export const ServerAddress = SERVER_URL;

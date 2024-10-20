@@ -5,6 +5,7 @@ import { Container } from 'react-bootstrap';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import axiosInstance from '../../common/AxiosInstance';
 import DataTable from "../../components/DataTable.js";
+import { hideField } from "../../utils/HideFieldInData.js";
 import AddStaffModal from './AddStaffModal.js';
 import Loading from '../../components/Loading.js';
 
@@ -61,7 +62,7 @@ function Staffs() {
                 ) : (
                     <>
                         <DataTable
-                            data={staffs || []}
+                            data={hideField(staffs, 'imageUrl') || []}
                             columnHeadersName={headerNames}
                             pageSize={staffs.length}
                             onCreate={() => {

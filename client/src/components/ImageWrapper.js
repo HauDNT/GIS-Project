@@ -12,8 +12,6 @@ import { toast } from 'react-toastify';
 const ImageWrapper = ({ objectId, type, imgName, enableChange = true, afterChange = () => { } }) => {
     const [fileName, setFileName] = useState(imgName);
 
-    console.log("SERVER_URL:", SERVER_URL);
-
     const handleFileChange = async (event) => {
         const fileselected = event.target.files[0];
 

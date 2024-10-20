@@ -1,11 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { toast } from 'react-toastify';
-import {
-    Card,
-    CardContent,
-    Typography,
-    CircularProgress,
-} from '@mui/material';
+import { CircularProgress } from '@mui/material';
 import { Container, Row, Col } from 'react-bootstrap';
 import RicePlantCard from '../../components/Cards/RicePlantCard';
 import axiosInstance from '../../common/AxiosInstance';
@@ -63,7 +58,7 @@ function Riceplants() {
                 observer.unobserve(loader.current);
             }
         };
-    }, [lazyLoading])
+    }, [lazyLoading]);
 
     return (
         <Container fluid style={{ padding: '1.5em' }}>
