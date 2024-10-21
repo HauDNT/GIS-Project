@@ -29,6 +29,21 @@ export class ReceivingSlipsController {
     };
 
     @UseGuards(JWTGuard)
+    @Get('amount')
+    async getAmount(): Promise<ApiResponseDto<number>> {
+        try {
+            const amount = await this.receivingSlipsService.getAmount();
+            return createSuccessResponse('Lấy số lượng hoá đơn nhập kho thành công', amount);
+        } catch (error) {
+            throw new HttpException(createErrorResponse(
+                HttpStatus.INTERNAL_SERVER_ERROR.toString(),
+                'Lấy số lượng hoá đơn nhập kho thất bại!',
+                error.message,
+            ), HttpStatus.INTERNAL_SERVER_ERROR);
+        };
+    };
+
+    @UseGuards(JWTGuard)
     @Post('create')
     async create(
         @Body() data: CreateReceiveSlipDTO,

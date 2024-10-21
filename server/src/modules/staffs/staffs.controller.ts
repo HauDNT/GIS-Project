@@ -45,8 +45,23 @@ export class StaffsController {
         return this.staffsService.getStaffsDeleted();
     };
 
-    @Post('create')
+    @Get('amount')
     // @UseGuards(JWTGuard)
+    async getAmount(): Promise<ApiResponseDto<number>> {
+        try {
+            const amount = await this.staffsService.getAmount();
+            return createSuccessResponse('Lấy số lượng nhân viên thành công', amount);
+        } catch (error) {
+            throw new HttpException(createErrorResponse(
+                HttpStatus.INTERNAL_SERVER_ERROR.toString(),
+                'Lấy số lượng nhân viên thất bại!',
+                error.message,
+            ), HttpStatus.INTERNAL_SERVER_ERROR);
+        };
+    };
+
+    @Post('create')
+    @UseGuards(JWTGuard)
     async create(
         @Body() data: CreateStaffDTO,
     ): Promise<ApiResponseDto<Staff>> {

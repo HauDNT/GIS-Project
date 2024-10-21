@@ -64,6 +64,12 @@ export class ReceivingSlipsService {
         return result;
     };
 
+    async getAmount(): Promise<number> {
+        const amount = await this.receiveSlipRepository.findAndCount();
+
+        return amount[1];
+    };
+
     async create(data: CreateReceiveSlipDTO): Promise<ReceivingSlip> {
         const newReceiveBill = new ReceivingSlip();
 

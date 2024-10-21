@@ -44,13 +44,30 @@ export class WarehousesController {
     };
 
     @Get('newest')
+    @UseGuards(JWTGuard)
     getNewestWarehouse(): Promise<Warehouse> {
         return this.warehousesService.getNewestWarehouse();
     };
 
     @Get('deleted')
+    @UseGuards(JWTGuard)
     getWarehousesDeleted(): Promise<Warehouse[]> {
         return this.warehousesService.getWarehousesDeleted();
+    };
+
+    @Get('amount')
+    @UseGuards(JWTGuard)
+    async getAmount(): Promise<ApiResponseDto<number>> {
+        try {
+            const amount = await this.warehousesService.getAmount();
+            return createSuccessResponse('Lấy số lượng kho thành công', amount);
+        } catch (error) {
+            throw new HttpException(createErrorResponse(
+                HttpStatus.INTERNAL_SERVER_ERROR.toString(),
+                'Lấy số lượng kho thất bại!',
+                error.message,
+            ), HttpStatus.INTERNAL_SERVER_ERROR);
+        };
     };
 
     @Post('create')

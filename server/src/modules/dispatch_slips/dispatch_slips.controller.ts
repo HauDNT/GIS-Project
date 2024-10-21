@@ -10,7 +10,7 @@ import { DispatchSlip } from './dispatch_slip.entity';
 export class DispatchSlipsController {
     constructor(private readonly dispatchSlipsService: DispatchSlipsService) {}
 
-    // @UseGuards(JWTGuard)
+    @UseGuards(JWTGuard)
     @Get()
     async getByPage(
         @Query('page') page: number,
@@ -23,6 +23,21 @@ export class DispatchSlipsController {
             throw new HttpException(createErrorResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR.toString(),
                 'Lấy dữ liệu hoá đơn xuất kho thất bại!',
+                error.message,
+            ), HttpStatus.INTERNAL_SERVER_ERROR);
+        };
+    };
+
+    @UseGuards(JWTGuard)
+    @Get('amount')
+    async getAmount(): Promise<ApiResponseDto<number>> {
+        try {
+            const amount = await this.dispatchSlipsService.getAmount();
+            return createSuccessResponse('Lấy số lượng hoá đơn xuất kho thành công', amount);
+        } catch (error) {
+            throw new HttpException(createErrorResponse(
+                HttpStatus.INTERNAL_SERVER_ERROR.toString(),
+                'Lấy số lượng hoá đơn xuất kho thất bại!',
                 error.message,
             ), HttpStatus.INTERNAL_SERVER_ERROR);
         };

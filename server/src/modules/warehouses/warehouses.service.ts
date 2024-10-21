@@ -80,6 +80,12 @@ export class WarehousesService {
         return omitFields(result, ['isDeleted']);
     };
 
+    async getAmount(): Promise<number> {
+        const amount = await this.warehouseRepository.findAndCount();
+
+        return amount[1];
+    };
+
     async create(data: CreateWarehouseDTO): Promise<Warehouse> {
         const newWarehouse = new Warehouse();
 

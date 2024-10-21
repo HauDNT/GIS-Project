@@ -97,6 +97,12 @@ export class StaffsService {
     return staffsDeleted;
   }
 
+  async getAmount(): Promise<number> {
+    const amount = await this.staffRepository.findAndCount();
+
+    return amount[1];
+  };
+
   async create(data: CreateStaffDTO): Promise<Staff> {
     const staff = omitFields(await this.staffRepository.save(data), [
       'isDeleted',

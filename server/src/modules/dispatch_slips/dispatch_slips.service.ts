@@ -64,6 +64,12 @@ export class DispatchSlipsService {
         return result;
     };
 
+    async getAmount(): Promise<number> {
+        const amount = await this.dispatchSlipRepository.findAndCount();
+
+        return amount[1];
+    };
+
     async create(data: CreateDispatchSlipDTO): Promise<DispatchSlip> {
         const newDispatchBill = new DispatchSlip();
 
