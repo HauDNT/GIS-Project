@@ -5,21 +5,11 @@ import { ConfigService } from '@nestjs/config';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { SeedService } from "./seed/seed.service";
-import dataSource from '../db/data-source';
 
 async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
     app.enableCors();
     app.useGlobalPipes(new ValidationPipe());
-
-    // Initialize dataSource:
-    // await dataSource.initialize()
-    //     .then(() => {
-    //         console.log("Data Source has been initialized!");
-    //     })
-    //     .catch((err) => {
-    //         console.error("Error during Data Source initialization:", err);
-    //     });
 
     const configService = app.get(ConfigService);
 

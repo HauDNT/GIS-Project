@@ -5,7 +5,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { dataSourceOptions, typeOrmAsyncConfig } from '../db/data-source';
+import { typeOrmAsyncConfig } from '../db/data-source';
 // import { typeOrmAsyncConfig } from '../db/data-source';
 import configuration from './config/configuration';
 import { LoggerMiddleware } from './middlewares/LoggerMiddleware';
