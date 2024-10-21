@@ -21,8 +21,6 @@ import {
     SpaOutlined,
     AddCircleOutline,
     ViewListOutlined,
-    WrapTextSharp,
-    PlaylistAddSharp,
 } from '@mui/icons-material';
 
 const menuItems = [

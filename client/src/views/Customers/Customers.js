@@ -46,8 +46,8 @@ function Customers() {
         try {
             fetchCustomers();
 
-            const intervalId = setInterval(() => setLoading(false), 1000);
-            return () => clearInterval(intervalId);
+            const intervalId = setTimeout(() => setLoading(false), 1000);
+            return () => clearTimeout(intervalId);
         } catch (error) {
             console.log(error);
             toast.error('Xảy ra lỗi trong quá trình tải dữ liệu khách hàng!');

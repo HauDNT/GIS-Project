@@ -41,7 +41,7 @@ const BillCard = ({
     };
 
     return (
-        <Card sx={{ marginBottom: '1.5em', paddingBottom: '1.5em' }}>
+        <Card className='zoom' sx={{ marginBottom: '1.5em', paddingBottom: '1.5em' }}>
             <CardHeader
                 avatar={
                     <Avatar sx={{ bgcolor: blue['A400'] }} aria-label="recipe">
