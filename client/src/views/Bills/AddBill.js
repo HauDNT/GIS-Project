@@ -9,7 +9,7 @@ import { SERVER_URL } from '../../config/config';
 import { WarehousesContext } from '../../context/WarehousesContext';
 import axiosInstance from '../../common/AxiosInstance';
 import { toast } from 'react-toastify';
-import DynamicTable from "../../components/DynamicDataTable";
+import DynamicDataTableCreateBill from "../../components/DynamicDataTableCreateBill";
 
 function AddBillPage() {
     const [states, setStates] = useState({
@@ -495,7 +495,7 @@ function AddBillPage() {
                 </Row>
                 <Row className="mt-1em mb-1-5em">
                     <Col>
-                        <DynamicTable
+                        <DynamicDataTableCreateBill
                             headers={['STT', 'Loại lúa', 'Số lượng', 'Đơn giá', 'Thành tiền']}
                             data={states.listRicesOfBill}
                         />
