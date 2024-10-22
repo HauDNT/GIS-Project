@@ -44,6 +44,43 @@ export class DispatchSlipsController {
     };
 
     @UseGuards(JWTGuard)
+    @Get('amount-by-range-days')
+    async getAmountByRangeDays(
+        @Query('timeStart') timeStart: string,
+        @Query('timeEnd') timeEnd: string,
+    ): Promise<ApiResponseDto<any>> {
+        try {
+            const amount = await this.dispatchSlipsService.getAmountByRangeDays(timeStart, timeEnd);
+            return createSuccessResponse('Lấy số lượng hoá đơn xuất theo ngày thành công', amount);
+        } catch (error) {
+            throw new HttpException(createErrorResponse(
+                HttpStatus.INTERNAL_SERVER_ERROR.toString(),
+                'Lấy số lượng hoá đơn xuất theo ngày thất bại!',
+                error.message,
+            ), HttpStatus.INTERNAL_SERVER_ERROR);
+        };
+    };
+
+    @UseGuards(JWTGuard)
+    @Get('amount-by-range-days-id')
+    async getAmountByRangeDaysId(
+        @Query('id') id: number,
+        @Query('timeStart') timeStart: string,
+        @Query('timeEnd') timeEnd: string,
+    ): Promise<ApiResponseDto<any>> {
+        try {
+            const amount = await this.dispatchSlipsService.getAmountByRangeDaysId(id, timeStart, timeEnd);
+            return createSuccessResponse(`Lấy số lượng hoá đơn xuất theo ngày của kho ${id} thành công`, amount);
+        } catch (error) {
+            throw new HttpException(createErrorResponse(
+                HttpStatus.INTERNAL_SERVER_ERROR.toString(),
+                `Lấy số lượng hoá đơn xuất theo ngày của kho ${id} thất bại!`,
+                error.message,
+            ), HttpStatus.INTERNAL_SERVER_ERROR);
+        };
+    };
+
+    @UseGuards(JWTGuard)
     @Post('create')
     async create(
         @Body() data: CreateDispatchSlipDTO,

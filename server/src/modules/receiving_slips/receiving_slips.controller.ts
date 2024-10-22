@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { ReceivingSlipsService } from './receiving_slips.service';
 import { ApiResponseDto } from 'src/common/dto/api-response.dto';
 import { ReceivingSlip } from './receiving_slip.entity';
@@ -10,7 +10,7 @@ import { JWTGuard } from '../auth/jwt/jwt-guard';
 export class ReceivingSlipsController {
     constructor(private readonly receivingSlipsService: ReceivingSlipsService) { }
 
-    // @UseGuards(JWTGuard)
+    @UseGuards(JWTGuard)
     @Get()
     async getByPage(
         @Query('page') page: number,
@@ -38,6 +38,43 @@ export class ReceivingSlipsController {
             throw new HttpException(createErrorResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR.toString(),
                 'Lấy số lượng hoá đơn nhập kho thất bại!',
+                error.message,
+            ), HttpStatus.INTERNAL_SERVER_ERROR);
+        };
+    };
+
+    @UseGuards(JWTGuard)
+    @Get('amount-by-range-days')
+    async getAmountByRangeDays(
+        @Query('timeStart') timeStart: string,
+        @Query('timeEnd') timeEnd: string,
+    ): Promise<ApiResponseDto<any>> {
+        try {
+            const amount = await this.receivingSlipsService.getAmountByRangeDays(timeStart, timeEnd);
+            return createSuccessResponse('Lấy số lượng hoá đơn nhập theo ngày thành công', amount);
+        } catch (error) {
+            throw new HttpException(createErrorResponse(
+                HttpStatus.INTERNAL_SERVER_ERROR.toString(),
+                'Lấy số lượng hoá đơn nhập theo ngày thất bại!',
+                error.message,
+            ), HttpStatus.INTERNAL_SERVER_ERROR);
+        };
+    };
+
+    @UseGuards(JWTGuard)
+    @Get('amount-by-range-days-id')
+    async getAmountByRangeDaysId(
+        @Query('id') id: number,
+        @Query('timeStart') timeStart: string,
+        @Query('timeEnd') timeEnd: string,
+    ): Promise<ApiResponseDto<any>> {
+        try {
+            const amount = await this.receivingSlipsService.getAmountByRangeDaysId(id, timeStart, timeEnd);
+            return createSuccessResponse(`Lấy số lượng hoá đơn nhập theo ngày của kho ${id} thành công`, amount);
+        } catch (error) {
+            throw new HttpException(createErrorResponse(
+                HttpStatus.INTERNAL_SERVER_ERROR.toString(),
+                `Lấy số lượng hoá đơn nhập theo ngày của kho ${id} thất bại!`,
                 error.message,
             ), HttpStatus.INTERNAL_SERVER_ERROR);
         };

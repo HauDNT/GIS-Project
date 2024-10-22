@@ -73,6 +73,39 @@ export class DispatchSlipsService {
         return amount[1];
     };
 
+    async getAmountByRangeDays(timeStart: string, timeEnd: string): Promise<any> {
+        if (!timeStart || !timeEnd) return false;
+        
+        const data = await this.dispatchSlipRepository.createQueryBuilder('amountByPerDay')
+            .select("DATE(amountByPerDay.CreatedAt) AS time, COUNT(amountByPerDay.id) AS amount")
+            .where("amountByPerDay.CreatedAt BETWEEN :startDate AND :endDate", {
+                startDate: timeStart,
+                endDate: timeEnd,
+            })
+            .groupBy("DATE(amountByPerDay.CreatedAt)")
+            .orderBy("time", "ASC")
+            .getRawMany();
+
+        return data;
+    };
+
+    async getAmountByRangeDaysId(id: number, timeStart: string, timeEnd: string): Promise<any> {
+        if (!timeStart || !timeEnd) return false;
+        
+        const data = await this.dispatchSlipRepository.createQueryBuilder('amountByPerDay')
+            .select("DATE(amountByPerDay.CreatedAt) AS time, COUNT(amountByPerDay.id) AS amount")
+            .where("amountByPerDay.CreatedAt BETWEEN :startDate AND :endDate AND ID_Warehouse = :idWarehouse", {
+                startDate: timeStart,
+                endDate: timeEnd,
+                idWarehouse: id,
+            })
+            .groupBy("DATE(amountByPerDay.CreatedAt)")
+            .orderBy("time", "ASC")
+            .getRawMany();
+
+        return data;
+    };
+
     async create(data: CreateDispatchSlipDTO): Promise<DispatchSlip> {
         const newDispatchBill = new DispatchSlip();
 

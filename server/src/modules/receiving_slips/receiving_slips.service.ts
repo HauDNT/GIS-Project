@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ReceivingSlip } from './receiving_slip.entity';
-import { Int32, Repository } from 'typeorm';
+import { Between, Int32, Repository } from 'typeorm';
 import { CreateReceiveSlipDTO } from './dto/createReceiveSlip.dto';
 
 @Injectable()
@@ -71,6 +71,39 @@ export class ReceivingSlipsService {
         const amount = await this.receiveSlipRepository.findAndCount();
 
         return amount[1];
+    };
+
+    async getAmountByRangeDays(timeStart: string, timeEnd: string): Promise<any> {
+        if (!timeStart || !timeEnd) return false;
+        
+        const data = await this.receiveSlipRepository.createQueryBuilder('amountByPerDay')
+            .select("DATE(amountByPerDay.CreatedAt) AS time, COUNT(amountByPerDay.id) AS amount")
+            .where("amountByPerDay.CreatedAt BETWEEN :startDate AND :endDate", {
+                startDate: timeStart,
+                endDate: timeEnd,
+            })
+            .groupBy("DATE(amountByPerDay.CreatedAt)")
+            .orderBy("time", "ASC")
+            .getRawMany();
+
+        return data;
+    };
+
+    async getAmountByRangeDaysId(id: number, timeStart: string, timeEnd: string): Promise<any> {
+        if (!timeStart || !timeEnd) return false;
+        
+        const data = await this.receiveSlipRepository.createQueryBuilder('amountByPerDay')
+            .select("DATE(amountByPerDay.CreatedAt) AS time, COUNT(amountByPerDay.id) AS amount")
+            .where("amountByPerDay.CreatedAt BETWEEN :startDate AND :endDate AND ID_Warehouse = :idWarehouse", {
+                startDate: timeStart,
+                endDate: timeEnd,
+                idWarehouse: id,
+            })
+            .groupBy("DATE(amountByPerDay.CreatedAt)")
+            .orderBy("time", "ASC")
+            .getRawMany();
+
+        return data;
     };
 
     async create(data: CreateReceiveSlipDTO): Promise<ReceivingSlip> {
