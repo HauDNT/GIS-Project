@@ -46,7 +46,7 @@ export class StaffsController {
     };
 
     @Get('amount')
-    // @UseGuards(JWTGuard)
+    @UseGuards(JWTGuard)
     async getAmount(): Promise<ApiResponseDto<number>> {
         try {
             const amount = await this.staffsService.getAmount();

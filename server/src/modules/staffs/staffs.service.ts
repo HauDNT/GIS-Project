@@ -12,7 +12,7 @@ export class StaffsService {
   constructor(
     @InjectRepository(Staff)
     private staffRepository: Repository<Staff>,
-  ) { }
+  ) { };
 
   async findOneByUsername(username: string, isEmail: boolean): Promise<Staff> {
     let staff = null;
@@ -30,7 +30,7 @@ export class StaffsService {
     }
 
     return staff;
-  }
+  };
 
   async checkExistWithEmail(email: string): Promise<boolean> {
     const staff = await this.staffRepository.findOneBy({
@@ -39,7 +39,7 @@ export class StaffsService {
     });
 
     return staff ? true : false;
-  }
+  };
 
   async checkExistWithPhone(phone: string): Promise<boolean> {
     const staff = await this.staffRepository.findOneBy({
@@ -48,7 +48,7 @@ export class StaffsService {
     });
 
     return staff ? true : false;
-  }
+  };
 
   async getAll(): Promise<Staff[]> {
     let staffs = await this.staffRepository.find({
@@ -66,7 +66,7 @@ export class StaffsService {
 
 
     return staffs;
-  }
+  };
 
   async getDetail(id: number): Promise<Staff> {
     const result = await this.staffRepository.findOne({
@@ -83,7 +83,7 @@ export class StaffsService {
       Staff,
       omitFields(fomatResult, ['deletedAt', 'isDeleted']),
     );
-  }
+  };
 
   async getStaffsDeleted(): Promise<Staff[]> {
     const staffsDeleted = await this.staffRepository.find({
@@ -95,7 +95,7 @@ export class StaffsService {
     });
 
     return staffsDeleted;
-  }
+  };
 
   async getAmount(): Promise<number> {
     const amount = await this.staffRepository.findAndCount();
@@ -110,7 +110,7 @@ export class StaffsService {
     ]);
 
     return plainToClass(Staff, staff);
-  }
+  };
 
   async update(id: number, data: UpdateStaffDTO) {
     let checkExist = false;
@@ -139,7 +139,7 @@ export class StaffsService {
     staff.warehouse = data.warehouse;
 
     return this.staffRepository.save(staff);
-  }
+  };
 
   async softDelete(id: number): Promise<Staff> {
     const staff = await this.staffRepository.findOneBy({ id });
@@ -148,7 +148,7 @@ export class StaffsService {
     staff.deletedAt = new Date();
 
     return this.staffRepository.save(staff);
-  }
+  };
 
   async restore(id: number): Promise<Staff> {
     const staff = await this.staffRepository.findOneBy({ id });
@@ -157,5 +157,5 @@ export class StaffsService {
     staff.deletedAt = null;
 
     return this.staffRepository.save(staff);
-  }
+  };
 }
