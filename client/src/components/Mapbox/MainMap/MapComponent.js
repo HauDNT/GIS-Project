@@ -8,6 +8,7 @@ import MarkerPopupCard from '../MarkerPopupCard';
 import MapToolbar from './MapToolbar';
 import AddWarehouseModal from '../Modals/AddWarehouseModal';
 import FindPlaceModal from '../Modals/FindPlaceModal';
+import StatisticsModal from '../../Modals/StatisticsModal';
 import GeocoderMarker from './GeocoderMarkerComponent';
 import { FindCoordinates } from './FindCoordinates';
 
@@ -25,6 +26,7 @@ const MapComponent = ({ placesData = [], reloadData = () => { } }) => {
     const [places, setNewPlaces] = useState(placesData);
     const [isEnableModalAddPlace, setEnableModalAddPlace] = useState(false);
     const [isEnableModalFindPlace, setEnableModalFindPlace] = useState(false);
+    const [isEnableStatisticsModal, setEnableStatisticsModal] = useState(false);
     const [selectedCoordinates, setSelectedCoordinates] = useState(null);
     const [markerSelected, setMarkerSelected] = useState(null);
 
@@ -171,10 +173,11 @@ const MapComponent = ({ placesData = [], reloadData = () => { } }) => {
                     findPlace={() => setEnableModalFindPlace(true)}
                 />
                 {
-                    markerSelected && 
+                    markerSelected &&
                     <MarkerPopupCard
                         data={markerSelected}
                         onClose={() => setMarkerSelected(null)}
+                        onShowStatisticsModal={() => setEnableStatisticsModal(true)}
                     />
                 }
             </div>
@@ -202,6 +205,15 @@ const MapComponent = ({ placesData = [], reloadData = () => { } }) => {
                 handleFindPlace={findPlace}
                 handleCancelFind={() => setEnableModalFindPlace(false)}
             />
+
+            {
+                isEnableStatisticsModal &&
+                <StatisticsModal
+                    data={markerSelected}
+                    isEnable={isEnableStatisticsModal}
+                    handleClose={() => setEnableStatisticsModal(false)}
+                />
+            }
         </>
     );
 }

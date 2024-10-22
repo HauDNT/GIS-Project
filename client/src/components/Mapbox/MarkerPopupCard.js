@@ -13,7 +13,11 @@ import {
 } from '@mui/material';
 import { SERVER_URL } from '../../config/config';
 
-const MarkerPopupCard = ({ data, onClose }) => {
+const MarkerPopupCard = ({ 
+    data, 
+    onShowStatisticsModal,
+    onClose,
+}) => {
     const navigate = useNavigate();
 
     return (
@@ -52,7 +56,7 @@ const MarkerPopupCard = ({ data, onClose }) => {
                 <Button size="small" color="error" variant="contained" style={{ marginTop: '0.5em' }} onClick={onClose}>
                     Đóng
                 </Button>
-                <Button size="small" color="primary" variant="contained">
+                <Button size="small" color="primary" variant="contained" onClick={onShowStatisticsModal}>
                     Xem thống kê
                 </Button>
             </CardActions>

@@ -1,11 +1,10 @@
 import { useEffect, useState, useContext } from 'react';
-import { Container as BootstrapContainer, Row, Col } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import {
     TextField,
     InputLabel,
     Select,
     Button,
-    Container,
     Typography,
     MenuItem,
     FormControl,
@@ -15,7 +14,7 @@ import {
     Fade,
 } from '@mui/material';
 import { WarehousesContext } from '../../context/WarehousesContext.js';
-import axiosInstance from '../../common/AxiosInstance';
+import axiosInstance from '../../common/AxiosInstance.js';
 import { toast } from 'react-toastify';
 
 const style = {

@@ -6,7 +6,7 @@ import { Typography } from "@mui/material";
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import axiosInstance from '../../common/AxiosInstance.js';
 import DataTable from "../../components/DataTable.js";
-import AddCustomerModal from "./AddCustomerModal.js";
+import AddCustomerModal from "../../components/Modals/AddCustomerModal.js";
 import UpdateCustomerModal from "./UpdateCustomerModal.js";
 import Loading from '../../components/Loading.js';
 
