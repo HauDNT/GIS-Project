@@ -10,7 +10,7 @@ import { JWTGuard } from '../auth/jwt/jwt-guard';
 export class ReceivingSlipsController {
     constructor(private readonly receivingSlipsService: ReceivingSlipsService) { }
 
-    @UseGuards(JWTGuard)
+    // @UseGuards(JWTGuard)
     @Get()
     async getByPage(
         @Query('page') page: number,

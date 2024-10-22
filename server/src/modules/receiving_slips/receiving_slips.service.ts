@@ -50,6 +50,9 @@ export class ReceivingSlipsService {
                 receiveRices: true,
                 CreatedAt: true,
             },
+            order: {
+                CreatedAt: "DESC",
+            },
         });
 
         const result = bills.map((bill) => {
