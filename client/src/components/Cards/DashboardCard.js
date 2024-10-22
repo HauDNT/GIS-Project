@@ -17,9 +17,9 @@ const DashboardCard = ({
                     </div>
                 </div>
                 <div className="card-content">
-                    <h3>
+                    <h1>
                         {number}
-                    </h3>
+                    </h1>
                 </div>
             </div>
         </Col>

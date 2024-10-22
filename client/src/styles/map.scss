@@ -3,10 +3,21 @@
 .map-wrapper {
     position: relative;
     width: 100%;
-    height: 45em;
+    height: 50em;
     margin: 20px 0;
     border: 1px solid #ccc;
     border-radius: 10px;
+    
+    .marker-popup-card {
+        position: absolute;
+        margin-left: 10px;
+        margin-bottom: 10px;
+        bottom: 0;
+        left: 0;
+        z-index: 1000;
+        width: 300px;
+        background-color: rgba(255, 255, 255, 0.9);
+    }
 
     .map-container {
         width: 100%;
@@ -16,68 +27,6 @@
 
         .mapboxgl-marker {
             cursor: pointer;
-        }
-    }
-
-    .mapboxgl-popup {
-        opacity: 0; // Bắt đầu ở trạng thái trong suốt
-        transform: translateY(-20px); // Đẩy popup lên 10px
-        transition: opacity 0.4s ease, transform 0.4s ease; // Thiết lập các hiệu ứng chuyển động
-
-        &.open {
-            opacity: 1; // Đưa opacity về 1 khi mở
-        }
-
-        .mapboxgl-popup-content {
-            max-height: 200px;
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border-radius: 5px;
-            background-color: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
-            z-index: 100;
-            overflow: scroll;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-
-            .popup-header {
-                display: flex;
-                align-items: center;
-    
-                h6 {
-                    margin: 0;
-                    font-weight: bold;
-                }
-        
-                .popup-close-btn {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    width: 25px;
-                    height: 25px;
-                    margin-left: auto;
-                    outline: none;
-                    border: none;
-                    border-radius: 100px;
-                    background-color: red;
-        
-                    svg {
-                        width: 15px;
-                        height: 15px;
-                    }
-                }
-            }
-
-            .popup-content {
-                margin: 0 3px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                border-top-left-radius: 4px;
-                border-bottom-left-radius: 4px;
-                border-left: 4px solid #78B7D0;
-            }
         }
     }
 

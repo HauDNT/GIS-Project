@@ -4,6 +4,7 @@ import mapboxgl from 'mapbox-gl';
 import { toast } from 'react-toastify';
 import { MapboxAPIKey } from '../../../common/MapboxApiKey';
 import Marker from '../Marker';
+import MarkerPopupCard from '../MarkerPopupCard';
 import MapToolbar from './MapToolbar';
 import AddWarehouseModal from '../Modals/AddWarehouseModal';
 import FindPlaceModal from '../Modals/FindPlaceModal';
@@ -12,7 +13,7 @@ import { FindCoordinates } from './FindCoordinates';
 
 mapboxgl.accessToken = MapboxAPIKey;
 
-const MapComponent = ({ placesData = [], reloadData = () => {} }) => {
+const MapComponent = ({ placesData = [], reloadData = () => { } }) => {
     const mapContainer = useRef(null);
     const map = useRef(null);
     const geocoderMarkerRef = useRef();
@@ -25,6 +26,7 @@ const MapComponent = ({ placesData = [], reloadData = () => {} }) => {
     const [isEnableModalAddPlace, setEnableModalAddPlace] = useState(false);
     const [isEnableModalFindPlace, setEnableModalFindPlace] = useState(false);
     const [selectedCoordinates, setSelectedCoordinates] = useState(null);
+    const [markerSelected, setMarkerSelected] = useState(null);
 
     const addNewMarker = (lngLat) => {
         setNewPlaces(prevPlaces => [
@@ -101,6 +103,10 @@ const MapComponent = ({ placesData = [], reloadData = () => {} }) => {
         }
     };
 
+    const handleShowMarkerModalInfo = (markerData) => {
+        setMarkerSelected(markerData);
+    };
+
     useEffect(() => {
         if (map.current) return;
 
@@ -126,7 +132,7 @@ const MapComponent = ({ placesData = [], reloadData = () => {} }) => {
         });
 
         return () => {
-            map.current.off('click'); // Cleanup sự kiện khi component bị unmount
+            map.current.off('click');
         }
     }, [lat, lng, zoom, map.current]);
 
@@ -145,18 +151,7 @@ const MapComponent = ({ placesData = [], reloadData = () => {} }) => {
                             id={`marker-${index + 1}`}
                             currentMap={map.current}
                             placeData={place}
-                            // onClick={() => {
-                            //     setLat(place.Latitude);
-                            //     setLng(place.Longitude);
-                            //     map.current.flyTo({
-                            //         center: [
-                            //             place.Longitude, 
-                            //             place.Latitude,
-                            //         ],
-                            //         zoom: 14,
-                            //         essential: true,
-                            //     });
-                            // }}
+                            handleShowModalInfo={(data) => setMarkerSelected(data)}
                         />
                     ))
                 }
@@ -175,6 +170,13 @@ const MapComponent = ({ placesData = [], reloadData = () => {} }) => {
                     }}
                     findPlace={() => setEnableModalFindPlace(true)}
                 />
+                {
+                    markerSelected && 
+                    <MarkerPopupCard
+                        data={markerSelected}
+                        onClose={() => setMarkerSelected(null)}
+                    />
+                }
             </div>
 
             {
@@ -182,8 +184,8 @@ const MapComponent = ({ placesData = [], reloadData = () => {} }) => {
                     <AddWarehouseModal
                         key={isEnableModalAddPlace ? 'enabled' : 'disabled'}
                         isEnable={isEnableModalAddPlace}
-                        latitude={selectedCoordinates.Latitude} // Sử dụng tọa độ đã chọn
-                        longitude={selectedCoordinates.Longitude} // Sử dụng tọa độ đã chọn
+                        latitude={selectedCoordinates.Latitude}
+                        longitude={selectedCoordinates.Longitude}
                         afterAddAction={() => {
                             places.filter((_, index) => index !== places.length - 1);
                             setEnableModalAddPlace(false);

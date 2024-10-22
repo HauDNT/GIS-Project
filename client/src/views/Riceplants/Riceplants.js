@@ -8,6 +8,7 @@ import axiosInstance from '../../common/AxiosInstance';
 function Riceplants() {
     const [rices, setRices] = useState([]);
     const [lazyLoading, setLazyLoading] = useState(true);
+    const [stopLoading, setStopLoading] = useState(false);
     const [page, setPage] = useState(1);
     const loader = useRef(null);
 
@@ -20,7 +21,13 @@ function Riceplants() {
             const result = await axiosInstance.get(`/riceplants?page=${page}&limit=12`);
 
             if (result.data.payload) {
-                setRices((prevData) => [...prevData, ...result.data.payload]);
+                if (result.data.payload.length > 0) {
+                    setRices((prevData) => [...prevData, ...result.data.payload]);
+                }
+                else {
+                    setStopLoading(true);
+                    toast.info('Đã tải hết dữ liệu');
+                };
             };
         } catch (error) {
             console.log(error);
@@ -31,7 +38,9 @@ function Riceplants() {
     };
 
     useEffect(() => {
-        fetchCustomers();
+        if (!stopLoading) {
+            fetchCustomers();
+        };
     }, [page]);
 
     useEffect(() => {

@@ -11,7 +11,6 @@ function ReceiveBills() {
     const [bills, setBills] = useState([]);
     const [stopLoading, setStopLoading] = useState(false);
 
-    // Lazy load:
     const [lazyLoad, setLazyLoad] = useState(true);
     const [page, setPage] = useState(1);
     const loader = useRef(null);

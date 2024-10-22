@@ -53,7 +53,7 @@ function Dashboard() {
             .catch(error => {
                 console.log(error);
                 toast.error('Đã xảy ra lỗi trong quá trình tải dữ liệu!');
-            })
+            });
     };
  
     const getNewestWarehouseJustAdded = async () => {
@@ -105,7 +105,7 @@ function Dashboard() {
                                 number={states.staffs}
                             />
                         </Row>
-                        <Row>
+                        {/* <Row>
                             <Col md={12} sm={12}>
                                 <div className="wrapper mt-1-5em">
                                     <img
@@ -115,7 +115,7 @@ function Dashboard() {
                                     />
                                 </div>
                             </Col>
-                        </Row>
+                        </Row> */}
                         <Row>
                             <Col sm={12} xs={12}>
                                 <MapComponent

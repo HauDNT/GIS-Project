@@ -9,9 +9,7 @@ import { SERVER_URL } from '../../config/config';
 import { WarehousesContext } from '../../context/WarehousesContext';
 import axiosInstance from '../../common/AxiosInstance';
 import { toast } from 'react-toastify';
-
-// import DynamicDataTable from "../../components/DynamicDataTable";
-import DynamicTable from "../../components/DynamicTable";
+import DynamicTable from "../../components/DynamicDataTable";
 
 function AddBillPage() {
     const [states, setStates] = useState({
@@ -189,10 +187,10 @@ function AddBillPage() {
 
         if (validateDataBeforeCreateBill(billInfo)) {
             switch (billInfo.billType) {
-                case 1:     // Đơn nhập
+                case 1:
                     await createReceiveBill(billInfo, states.listRicesOfBill);
                     break;
-                case 2:     // Đơn xuất
+                case 2:
                     await createDispatchBill(billInfo, states.listRicesOfBill);
                     break;
                 default:

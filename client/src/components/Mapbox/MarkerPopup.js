@@ -3,9 +3,11 @@ import {
     Col,
     Row,
     Button,
-    DropdownDivider
+    DropdownDivider,
+    Image,
 } from 'react-bootstrap';
-import { Timer, Close } from '@mui/icons-material';
+import { Close } from '@mui/icons-material';
+import { SERVER_URL } from '../../config/config';
 
 const MarkerPopup = ({ data, onClose }) => {
     return (
@@ -22,14 +24,21 @@ const MarkerPopup = ({ data, onClose }) => {
             </Row>
             <DropdownDivider className='p-0' />
             <Row className='popup-content'>
-                <Col md={12}>
-                    <p>Địa chỉ: {data.Address}</p>
+                <Col>
+                    <Image className='w-100' src={SERVER_URL + '/warehouses/' + data.imageUrl} />
                 </Col>
-                <Col md={12}>
-                    <p>Kinh độ: {data.Latitude}</p>
-                </Col>
-                <Col md={12}>
-                    <p>Vĩ độ: {data.Longitude}</p>
+                <Col>
+                    <Row>
+                        <Col md={12}>
+                            <p>Địa chỉ: {data.Address}</p>
+                        </Col>
+                        <Col md={12}>
+                            <p>Kinh độ: {data.Latitude}</p>
+                        </Col>
+                        <Col md={12}>
+                            <p>Vĩ độ: {data.Longitude}</p>
+                        </Col>
+                    </Row>
                 </Col>
             </Row>
 

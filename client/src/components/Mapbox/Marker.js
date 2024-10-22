@@ -2,20 +2,18 @@ import { useRef, useEffect } from "react";
 import ReactDOM from 'react-dom';
 import mapboxgl from 'mapbox-gl';
 import { usePopupContext } from '../../context/PopupMapContext';
-import MarkerPopup from './MarkerPopup';
+import MarkerPopupCard from "./MarkerPopupCard";
 
-const Marker = ({ id, currentMap, placeData, enableClick = true }) => {
+const Marker = ({ id, currentMap, placeData, handleShowModalInfo }) => {
     const markerRef = useRef();
     const popupRef = useRef();
     const { activeMarkerId, updatePopupContext } = usePopupContext();
 
     const createPopup = () => {
-        // Tạo phần tử DOM cho Popup
         const popupElement = document.createElement('div');
 
-        // Render component vào phần tử DOM
         ReactDOM.render(
-            <MarkerPopup
+            <MarkerPopupCard
                 onClose={() => {
                     popupRef.current.remove();
                     updatePopupContext(null);
@@ -25,7 +23,6 @@ const Marker = ({ id, currentMap, placeData, enableClick = true }) => {
             popupElement
         );
 
-        // Sau đó tạo Popup
         const newPopup = new mapboxgl.Popup({
             closeOnClick: false,
             closeButton: false,
@@ -36,7 +33,6 @@ const Marker = ({ id, currentMap, placeData, enableClick = true }) => {
             .setDOMContent(popupElement)
             .addTo(currentMap);
 
-        // Lưu popup vào ref
         popupRef.current = newPopup;
 
         setTimeout(() => {
@@ -46,33 +42,16 @@ const Marker = ({ id, currentMap, placeData, enableClick = true }) => {
     };
 
     const handleClick = () => {
-        /*
-        * Xử lý sự kiện:
-        *   - Nếu hiện tại usePopupContext đã có lưu id của Marker:
-        *       + Nếu id đó === với id hiện tại xảy ra sự kiện click 
-        *           => Loại bỏ popup này khỏi map,
-        *           => Xóa bỏ id khỏi usePopupContext.
-        *       + Nếu id đó !== với id hiện tại xảy ra sự kiện click 
-        *           => Loại bỏ popup cũ, 
-        *           => Tạo popup mới -> hiển thị, 
-        *           => Cập nhật lại cho usePopupContext.
-        *   - Nếu hiện tại usePopupContext chưa lưu id nào: 
-        *       + Tạo popup mới -> hiển thị,
-        *       + Cập nhật id mới này cho usePopupContext.
-        */
+        currentMap.flyTo({
+            center: [
+                placeData.Longitude,
+                placeData.Latitude,
+            ],
+            zoom: 14,
+            essential: true,
+        });
 
-        // onClick();
-
-        if (popupRef.current) {
-            popupRef.current.remove(); // Đóng popup nếu đã tồn tại
-        };
-
-        if (activeMarkerId === id) {
-            updatePopupContext(null); // Nếu marker đang hoạt động, xóa id
-        } else {
-            createPopup(); // Tạo popup cho marker mới
-            updatePopupContext(id); // Cập nhật id mới
-        };
+        handleShowModalInfo(placeData);
     };
 
     useEffect(() => {
@@ -85,17 +64,14 @@ const Marker = ({ id, currentMap, placeData, enableClick = true }) => {
 
         markerRef.current = marker;
 
-        if (enableClick) {
-            marker.getElement().addEventListener('click', handleClick);
-        };
+        marker.getElement().addEventListener('click', handleClick);
 
-        // Cleanup khi component bị unmount hoặc khi marker thay đổi
         return () => {
             marker.getElement().removeEventListener('click', handleClick);
-            marker.remove();  // Xóa marker khỏi map
+            marker.remove();
 
             if (popupRef.current) {
-                popupRef.current.remove(); // Xóa Popup
+                popupRef.current.remove();
             }
         }
     }, [currentMap, placeData, id]);
