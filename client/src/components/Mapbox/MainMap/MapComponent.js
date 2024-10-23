@@ -9,7 +9,7 @@ import MapToolbar from './MapToolbar';
 import AddWarehouseModal from '../Modals/AddWarehouseModal';
 import FindPlaceModal from '../Modals/FindPlaceModal';
 import FindWarehouseModal from '../Modals/FindWarehouseModal';
-import StatisticsModal from '../../Modals/StatisticsModal';
+import StatisticsModal from '../Modals/StatisticsModal';
 import GeocoderMarker from './GeocoderMarkerComponent';
 import { FindCoordinates } from './FindCoordinates';
 

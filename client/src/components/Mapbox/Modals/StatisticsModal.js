@@ -14,11 +14,11 @@ import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import axiosInstance from '../../common/AxiosInstance.js';
+import axiosInstance from '../../../common/AxiosInstance.js';
 import { toast } from 'react-toastify';
-import PieChartReceiveRiceTypes from "../Charts/PieChartReceiveRiceTypes.js";
-import PieChartDispatchRiceTypes from "../Charts/PieChartDispatchRiceTypes.js";
-import LineChartReceiveAndDispatchBills from "../Charts/LineChartReceiveAndDispatchBills.js";
+import PieChartReceiveRiceTypes from "../../Charts/PieChartReceiveRiceTypes.js";
+import PieChartDispatchRiceTypes from "../../Charts/PieChartDispatchRiceTypes.js";
+import LineChartReceiveAndDispatchBills from "../../Charts/LineChartReceiveAndDispatchBills.js";
 
 const style = {
     position: 'absolute',

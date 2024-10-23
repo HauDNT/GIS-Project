@@ -20,6 +20,8 @@ function DispatchBills() {
         try {
             setLazyLoad(true);
 
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
             const result = await axiosInstance.get(`/dispatch-slips?page=${page}`);
             if (result.data.payload.length > 0) {
                 setBills((prevData) => [...prevData, ...result.data.payload]);

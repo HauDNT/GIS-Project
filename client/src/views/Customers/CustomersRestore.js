@@ -3,10 +3,12 @@ import { toast } from 'react-toastify';
 import axiosInstance from '../../common/AxiosInstance.js';
 import DataTable from "../../components/DataTable.js";
 import { formatDatetime } from "../../utils/FormatDateTime.js";
+import Loading from '../../components/Loading.js';
 
 function CustomersRestore() {
     const [customers, setCustomers] = useState([]);
     const headerNames = ['STT', 'Họ và tên', 'Email', 'Số điện thoại', 'Giới tính', 'Địa chỉ', 'Thời điểm xoá'];
+    const [isLoading, setLoading] = useState(true);
 
     const fetchCustomersDeleted = async () => {
         try {
@@ -45,15 +47,22 @@ function CustomersRestore() {
 
     useEffect(() => {
         fetchCustomersDeleted();
+
+        const timeoutId = setTimeout(() => setLoading(false), 1000);
+        return () => clearTimeout(timeoutId);
     }, []);
 
     return (
-        <DataTable
-            data={customers || []}
-            columnHeadersName={headerNames}
-            pageSize={customers.length}
-            onRestore={restoreCustomers}
-        />
+        isLoading ? (
+            <Loading />
+        ) : (
+            <DataTable
+                data={customers || []}
+                columnHeadersName={headerNames}
+                pageSize={customers.length}
+                onRestore={restoreCustomers}
+            />
+        )
     )
 }
 

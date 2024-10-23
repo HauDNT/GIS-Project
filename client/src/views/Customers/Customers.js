@@ -16,7 +16,7 @@ function Customers() {
     const [customersSelected, setCustomerSelected] = useState(null);
     const [enableAddModal, setEnableAddModal] = useState(false);
     const [enableUpdateModal, setEnableUpdateModal] = useState(false);
-    const headerNames = ['Họ và tên', 'Email', 'Số điện thoại', 'Giới tính', 'Địa chỉ'];
+    const headerNames = ['Mã khách hàng', 'Họ và tên', 'Email', 'Số điện thoại', 'Giới tính', 'Địa chỉ'];
     const [isLoading, setLoading] = useState(true);
 
     const fetchCustomers = async () => {

@@ -171,7 +171,7 @@ function WarehouseDetails() {
                                             </Col>
                                         </Row>
                                         <Row style={{ flexDirection: 'row-reverse' }}>
-                                            <Col md={3} sm={12}>
+                                            <Col md={4} sm={12}>
                                                 <Button variant="contained" color="primary" type="submit" className="w-100">
                                                     Cập nhật
                                                 </Button>
@@ -199,7 +199,7 @@ function WarehouseDetails() {
                                         field: 'actions',
                                         name: 'Chi tiết',
                                         icon: <SearchOutlinedIcon />,
-                                        callback: () => alert('Nothing'),
+                                        callback: (id) => navigate(`/staffs/${id}`),
                                     }}
                                     onBack={false}
                                     onRestore={() => navigate('/staffs/restore')}
@@ -211,7 +211,7 @@ function WarehouseDetails() {
                                             staffs: prevData.staffs.filter(staff => !staffIds.includes(staff.id)),
                                         }));
                                     }}
-                                    disabledHeader={false}
+                                    disabledHeader={true}
                                     disabledFooter={true}
                                 />
                             </Col>

@@ -47,8 +47,8 @@ function Staffs() {
         try {
             fetchAllStaffs();
 
-            const intervalId = setInterval(() => setLoading(false), 1000);
-            return () => clearInterval(intervalId);
+            const timeoutId = setTimeout(() => setLoading(false), 1000);
+            return () => clearTimeout(timeoutId);
         } catch (error) {
             toast.error('Đã xảy ra lỗi trong quá trình lấy dữ liệu nhân viên.');
         }
