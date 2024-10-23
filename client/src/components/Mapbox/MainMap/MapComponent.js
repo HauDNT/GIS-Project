@@ -8,6 +8,7 @@ import MarkerPopupCard from '../MarkerPopupCard';
 import MapToolbar from './MapToolbar';
 import AddWarehouseModal from '../Modals/AddWarehouseModal';
 import FindPlaceModal from '../Modals/FindPlaceModal';
+import FindWarehouseModal from '../Modals/FindWarehouseModal';
 import StatisticsModal from '../../Modals/StatisticsModal';
 import GeocoderMarker from './GeocoderMarkerComponent';
 import { FindCoordinates } from './FindCoordinates';
@@ -26,6 +27,7 @@ const MapComponent = ({ placesData = [], reloadData = () => { } }) => {
     const [places, setNewPlaces] = useState(placesData);
     const [isEnableModalAddPlace, setEnableModalAddPlace] = useState(false);
     const [isEnableModalFindPlace, setEnableModalFindPlace] = useState(false);
+    const [isEnableModalFindWarehouse, setEnableModalFindWarehouse] = useState(false);
     const [isEnableStatisticsModal, setEnableStatisticsModal] = useState(false);
     const [selectedCoordinates, setSelectedCoordinates] = useState(null);
     const [markerSelected, setMarkerSelected] = useState(null);
@@ -79,7 +81,6 @@ const MapComponent = ({ placesData = [], reloadData = () => { } }) => {
             const lat = coordinates[1];
             const lng = coordinates[0];
 
-            // Create marker:
             if (geocoderMarkerRef.current) geocoderMarkerRef.current.remove();
 
             const geocoderMarker = document.createElement('div');
@@ -105,8 +106,24 @@ const MapComponent = ({ placesData = [], reloadData = () => { } }) => {
         }
     };
 
-    const handleShowMarkerModalInfo = (markerData) => {
-        setMarkerSelected(markerData);
+    const findWarehouse = (warehouseName) => {
+        const result = places.filter(warehouse => warehouse.Name === warehouseName)[0];
+
+        if (result) {
+            setLat(result.Latitude);
+            setLng(result.Longitude);
+            setZoom(14);
+            map.current.flyTo({
+                center: [lng, lat],
+                zoom: 14,
+                essential: true,
+            });
+
+            setMarkerSelected(result);
+        }
+        else {
+            toast.error('Không tìm thấy kho này trên bản đồ');
+        }
     };
 
     useEffect(() => {
@@ -171,6 +188,7 @@ const MapComponent = ({ placesData = [], reloadData = () => { } }) => {
                         }
                     }}
                     findPlace={() => setEnableModalFindPlace(true)}
+                    findWarehouse={() => setEnableModalFindWarehouse(true)}
                 />
                 {
                     markerSelected &&
@@ -204,6 +222,13 @@ const MapComponent = ({ placesData = [], reloadData = () => { } }) => {
                 apiKey={mapboxgl.accessToken}
                 handleFindPlace={findPlace}
                 handleCancelFind={() => setEnableModalFindPlace(false)}
+            />
+
+            <FindWarehouseModal
+                isEnable={isEnableModalFindWarehouse}
+                apiKey={mapboxgl.accessToken}
+                handleFindPlace={findWarehouse}
+                handleCancelFind={() => setEnableModalFindWarehouse(false)}
             />
 
             {
