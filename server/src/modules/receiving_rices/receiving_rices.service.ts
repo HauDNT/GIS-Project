@@ -24,7 +24,7 @@ export class ReceivingRicesService {
         return result;
     };
 
-    async getAmountByTypeRicesAndWarehouseId(warehouseId: number): Promise<any[]> {
+    async getAmountByTypeRicesAndWarehouseId(warehouseId: number, timeStart: string, timeEnd: string): Promise<any[]> {
         const result = await this.receiveRiceRepository
             .createQueryBuilder('receiveRices')
             .select('SUM(receiveRices.Amount)', 'total')
@@ -34,6 +34,10 @@ export class ReceivingRicesService {
             .innerJoin('receiveRices.ricePlant', 'rice')
             .where('receivingSlip.ID_Warehouse = :id', {
                 id: warehouseId,
+            })
+            .andWhere('receivingSlip.CreatedAt BETWEEN :startDate AND :endDate', {
+                startDate: timeStart,
+                endDate: timeEnd,
             })
             .groupBy('receiveRices.ID_RicePlant')
             .getRawMany();

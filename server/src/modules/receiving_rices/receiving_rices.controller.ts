@@ -25,12 +25,14 @@ export class ReceivingRicesController {
     };
 
     @UseGuards(JWTGuard)
-    @Get('amount-by-type-warehouseId')
+    @Get('amount-by-type-warehouseId-rangedays')
     async getAmountByTypeRicesAndWarehouseId(
-        @Query('warehouseId') warehouseId: number
+        @Query('warehouseId') warehouseId: number,
+        @Query('timeStart') timeStart: string,
+        @Query('timeEnd') timeEnd: string,
     ): Promise<ApiResponseDto<any[]>> {
         try {
-            const amountTypes = await this.receivingRicesService.getAmountByTypeRicesAndWarehouseId(warehouseId);
+            const amountTypes = await this.receivingRicesService.getAmountByTypeRicesAndWarehouseId(warehouseId, timeStart, timeEnd);
             return createSuccessResponse('Lấy số lượng lúa theo loại hiện có trong kho nhập thành công', amountTypes);
         } catch (error) {
             throw new HttpException(createErrorResponse(
