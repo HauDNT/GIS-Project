@@ -14,9 +14,11 @@ import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-
 import axiosInstance from '../../common/AxiosInstance.js';
 import { toast } from 'react-toastify';
+import PieChartReceiveRiceTypes from "../Charts/PieChartReceiveRiceTypes.js";
+import PieChartDispatchRiceTypes from "../Charts/PieChartDispatchRiceTypes.js";
+import LineChartReceiveAndDispatchBills from "../Charts/LineChartReceiveAndDispatchBills.js";
 
 const style = {
     position: 'absolute',
@@ -30,7 +32,7 @@ const style = {
     bgcolor: 'background.paper',
     boxShadow: 24,
     transform: 'translate(-50%, -50%)',
-    overflow: 'hidden',
+    overflowY: 'scroll',
 };
 
 const StatisticsModal = ({
@@ -44,6 +46,8 @@ const StatisticsModal = ({
         endDate: dayjs(new Date()),
         receiveBillsByRangeDays: [],
         dispatchBillsByRangeDays: [],
+        amountTypesRiceOfReceive: [],
+        amountTypesRiceOfDispatch: [],
     });
 
     const updateStatesData = (key, value) => {
@@ -91,10 +95,47 @@ const StatisticsModal = ({
         };
     };
 
+    const handleFetchingAmountRiceByTypeAndWarehouseIdOfReceiveBills = async () => {
+        const timeStart = `${states.startDate.format('YYYY-MM-DD')} 0:00:00`;
+        const timeEnd = `${states.endDate.format('YYYY-MM-DD')} 23:59:59`;
+
+        try {
+            const result = await axiosInstance.get(
+                `/receiving-rices/amount-by-type-warehouseId-rangedays?warehouseId=${data.id}&timeStart=${timeStart}&timeEnd=${timeEnd}`
+            );
+
+            if (result.data.payload) {
+                updateStatesData('amountTypesRiceOfReceive', result.data.payload);
+            };
+        } catch (error) {
+            console.log(error);
+            toast.error('Đã xảy ra lỗi khi tải số lượng lúa theo loại trong đơn nhập');
+        };
+    };
+
+    const handleFetchingAmountRiceByTypeAndWarehouseIdOfDispatchBills = async () => {
+        const timeStart = `${states.startDate.format('YYYY-MM-DD')} 0:00:00`;
+        const timeEnd = `${states.endDate.format('YYYY-MM-DD')} 23:59:59`;
+
+        try {
+            const result = await axiosInstance.get(
+                `/dispatch-rices/amount-by-type-warehouseId-rangedays?warehouseId=${data.id}&timeStart=${timeStart}&timeEnd=${timeEnd}`
+            );
+
+            if (result.data.payload) {
+                updateStatesData('amountTypesRiceOfDispatch', result.data.payload);
+            };
+        } catch (error) {
+            console.log(error);
+            toast.error('Đã xảy ra lỗi khi tải số lượng lúa theo loại trong đơn xuất');
+        };
+    };
 
     const handleFetchingData = async () => {
         await handleFetchingReceiveBillsByRangeDays();
         await handleFetchingDispatchBillsByRangeDays();
+        await handleFetchingAmountRiceByTypeAndWarehouseIdOfReceiveBills();
+        await handleFetchingAmountRiceByTypeAndWarehouseIdOfDispatchBills();
     };
 
     return (
@@ -153,10 +194,10 @@ const StatisticsModal = ({
                                         />
                                     </Col>
                                     <Col md={12} sm={12}>
-                                        <Button 
-                                            variant="contained" 
-                                            color="primary" 
-                                            type="button" 
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            type="button"
                                             className="w-100"
                                             onClick={handleFetchingData}
                                         >
@@ -170,9 +211,18 @@ const StatisticsModal = ({
                             </Row>
                         </Col>
                         <Col md={9} sm={12} className="statistics-modal--right">
-                            {'receiveBillsByRangeDays: ' + states.receiveBillsByRangeDays.length}
-                            <br/>
-                            {'dispatchBillsByRangeDays: ' + states.dispatchBillsByRangeDays.length}
+                            <Row>
+                                <Col md={8} sm={12}>
+                                    <LineChartReceiveAndDispatchBills
+                                        receiveBillsData={states.receiveBillsByRangeDays}
+                                        dispatchBillsData={states.dispatchBillsByRangeDays}
+                                    />
+                                </Col>
+                                <Col md={4} sm={12}>
+                                    <PieChartReceiveRiceTypes plainData={states.amountTypesRiceOfReceive} />
+                                    <PieChartDispatchRiceTypes plainData={states.amountTypesRiceOfDispatch} />
+                                </Col>
+                            </Row>
                         </Col>
                     </Row>
                 </Box>
