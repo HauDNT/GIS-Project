@@ -40,5 +40,5 @@ export class RiceplantsController {
                 error.message,
             ), HttpStatus.INTERNAL_SERVER_ERROR);
         };
-    };  
+    };
 }

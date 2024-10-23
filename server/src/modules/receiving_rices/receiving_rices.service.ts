@@ -11,6 +11,36 @@ export class ReceivingRicesService {
         private receiveRiceRepository: Repository<ReceivingRice>,
     ) { };
 
+    async getAmountByTypeRices(): Promise<any[]> {
+        const result = await this.receiveRiceRepository
+            .createQueryBuilder('receiveRices')
+            .select('SUM(receiveRices.Amount)', 'total')
+            .addSelect('rice.Name', 'riceName')
+            .addSelect('rice.id', 'riceId')
+            .innerJoin('receiveRices.ricePlant', 'rice')
+            .groupBy('receiveRices.ID_RicePlant')
+            .getRawMany();
+
+        return result;
+    };
+
+    async getAmountByTypeRicesAndWarehouseId(warehouseId: number): Promise<any[]> {
+        const result = await this.receiveRiceRepository
+            .createQueryBuilder('receiveRices')
+            .select('SUM(receiveRices.Amount)', 'total')
+            .addSelect('rice.Name', 'riceName')
+            .addSelect('rice.id', 'riceId')
+            .innerJoin('receiveRices.receivingSlip', 'receivingSlip')
+            .innerJoin('receiveRices.ricePlant', 'rice')
+            .where('receivingSlip.ID_Warehouse = :id', {
+                id: warehouseId,
+            })
+            .groupBy('receiveRices.ID_RicePlant')
+            .getRawMany();
+
+        return result;
+    };
+
     async create(data: CreateReceiveRicesDTO): Promise<boolean> {
         try {
             for (const riceplant of data.listRices) {

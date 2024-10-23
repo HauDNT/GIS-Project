@@ -11,6 +11,36 @@ export class DispatchRicesService {
         private dispatchRiceRepository: Repository<DispatchRice>,
     ) { };
 
+    async getAmountByTypeRices(): Promise<any[]> {
+        const result = await this.dispatchRiceRepository
+            .createQueryBuilder('dispatchRices')
+            .select('SUM(dispatchRices.Amount)', 'total')
+            .addSelect('rice.Name', 'riceName')
+            .addSelect('rice.id', 'riceId')
+            .innerJoin('dispatchRices.ricePlant', 'rice')
+            .groupBy('dispatchRices.ID_RicePlant')
+            .getRawMany();
+
+        return result;
+    };
+
+    async getAmountByTypeRicesAndWarehouseId(warehouseId: number): Promise<any[]> {
+        const result = await this.dispatchRiceRepository
+            .createQueryBuilder('dispatchRices')
+            .select('SUM(dispatchRices.Amount)', 'total')
+            .addSelect('rice.Name', 'riceName')
+            .addSelect('rice.id', 'riceId')
+            .innerJoin('dispatchRices.dispatchSlip', 'dispatchSlip')
+            .innerJoin('dispatchRices.ricePlant', 'rice')
+            .where('dispatchSlip.ID_Warehouse = :id', {
+                id: warehouseId,
+            })
+            .groupBy('dispatchRices.ID_RicePlant')
+            .getRawMany();
+
+        return result;
+    };
+
     async create(data: CreateDispatchRicesDTO): Promise<boolean> {
         try {
             for (const riceplant of data.listRices) {
