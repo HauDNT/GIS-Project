@@ -6,7 +6,6 @@ import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { typeOrmAsyncConfig } from '../db/data-source';
-// import { typeOrmAsyncConfig } from '../db/data-source';
 import configuration from './config/configuration';
 import { LoggerMiddleware } from './middlewares/LoggerMiddleware';
 import { WarehousesModule } from './modules/warehouses/warehouses.module';
@@ -34,7 +33,6 @@ import { SeedModule } from './seed/seed.module';
             isGlobal: true,
             load: [configuration],
         }),
-        // TypeOrmModule.forRoot(dataSourceOptions),
         TypeOrmModule.forRootAsync(typeOrmAsyncConfig),
         WarehousesModule,
         StaffsModule,
