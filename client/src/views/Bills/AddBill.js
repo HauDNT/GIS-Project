@@ -9,13 +9,7 @@ import { SERVER_URL } from '../../config/config';
 import { WarehousesContext } from '../../context/WarehousesContext';
 import axiosInstance from '../../common/AxiosInstance';
 import { toast } from 'react-toastify';
-<<<<<<< HEAD
-
-// import DynamicDataTable from "../../components/DynamicDataTable";
-import DynamicTable from "../../components/DynamicTable";
-=======
 import DynamicDataTableCreateBill from "../../components/DynamicDataTableCreateBill";
->>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
 
 function AddBillPage() {
     const [states, setStates] = useState({
@@ -193,17 +187,10 @@ function AddBillPage() {
 
         if (validateDataBeforeCreateBill(billInfo)) {
             switch (billInfo.billType) {
-<<<<<<< HEAD
-                case 1:     // Đơn nhập
-                    await createReceiveBill(billInfo, states.listRicesOfBill);
-                    break;
-                case 2:     // Đơn xuất
-=======
                 case 1:
                     await createReceiveBill(billInfo, states.listRicesOfBill);
                     break;
                 case 2:
->>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
                     await createDispatchBill(billInfo, states.listRicesOfBill);
                     break;
                 default:
@@ -508,11 +495,7 @@ function AddBillPage() {
                 </Row>
                 <Row className="mt-1em mb-1-5em">
                     <Col>
-<<<<<<< HEAD
-                        <DynamicTable
-=======
                         <DynamicDataTableCreateBill
->>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
                             headers={['STT', 'Loại lúa', 'Số lượng', 'Đơn giá', 'Thành tiền']}
                             data={states.listRicesOfBill}
                         />

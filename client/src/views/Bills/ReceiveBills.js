@@ -11,10 +11,6 @@ function ReceiveBills() {
     const [bills, setBills] = useState([]);
     const [stopLoading, setStopLoading] = useState(false);
 
-<<<<<<< HEAD
-    // Lazy load:
-=======
->>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
     const [lazyLoad, setLazyLoad] = useState(true);
     const [page, setPage] = useState(1);
     const loader = useRef(null);
@@ -23,11 +19,8 @@ function ReceiveBills() {
         try {
             setLazyLoad(true);
 
-<<<<<<< HEAD
-=======
             await new Promise(resolve => setTimeout(resolve, 1000));
 
->>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
             const result = await axiosInstance.get(`/receiving-slips?page=${page}`);
             if (result.data.payload.length > 0) {
                 setBills((prevData) => [...prevData, ...result.data.payload]);

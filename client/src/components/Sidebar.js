@@ -21,11 +21,6 @@ import {
     SpaOutlined,
     AddCircleOutline,
     ViewListOutlined,
-<<<<<<< HEAD
-    WrapTextSharp,
-    PlaylistAddSharp,
-=======
->>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
 } from '@mui/icons-material';
 
 const menuItems = [

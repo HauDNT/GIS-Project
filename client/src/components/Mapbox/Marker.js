@@ -2,33 +2,18 @@ import { useRef, useEffect } from "react";
 import ReactDOM from 'react-dom';
 import mapboxgl from 'mapbox-gl';
 import { usePopupContext } from '../../context/PopupMapContext';
-<<<<<<< HEAD
-import MarkerPopup from './MarkerPopup';
-
-const Marker = ({ id, currentMap, placeData, enableClick = true }) => {
-=======
 import MarkerPopupCard from "./MarkerPopupCard";
 
 const Marker = ({ id, currentMap, placeData, handleShowModalInfo }) => {
->>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
     const markerRef = useRef();
     const popupRef = useRef();
     const { activeMarkerId, updatePopupContext } = usePopupContext();
 
     const createPopup = () => {
-<<<<<<< HEAD
-        // Tạo phần tử DOM cho Popup
-        const popupElement = document.createElement('div');
-
-        // Render component vào phần tử DOM
-        ReactDOM.render(
-            <MarkerPopup
-=======
         const popupElement = document.createElement('div');
 
         ReactDOM.render(
             <MarkerPopupCard
->>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
                 onClose={() => {
                     popupRef.current.remove();
                     updatePopupContext(null);
@@ -38,10 +23,6 @@ const Marker = ({ id, currentMap, placeData, handleShowModalInfo }) => {
             popupElement
         );
 
-<<<<<<< HEAD
-        // Sau đó tạo Popup
-=======
->>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
         const newPopup = new mapboxgl.Popup({
             closeOnClick: false,
             closeButton: false,
@@ -52,10 +33,6 @@ const Marker = ({ id, currentMap, placeData, handleShowModalInfo }) => {
             .setDOMContent(popupElement)
             .addTo(currentMap);
 
-<<<<<<< HEAD
-        // Lưu popup vào ref
-=======
->>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
         popupRef.current = newPopup;
 
         setTimeout(() => {
@@ -65,35 +42,6 @@ const Marker = ({ id, currentMap, placeData, handleShowModalInfo }) => {
     };
 
     const handleClick = () => {
-<<<<<<< HEAD
-        /*
-        * Xử lý sự kiện:
-        *   - Nếu hiện tại usePopupContext đã có lưu id của Marker:
-        *       + Nếu id đó === với id hiện tại xảy ra sự kiện click 
-        *           => Loại bỏ popup này khỏi map,
-        *           => Xóa bỏ id khỏi usePopupContext.
-        *       + Nếu id đó !== với id hiện tại xảy ra sự kiện click 
-        *           => Loại bỏ popup cũ, 
-        *           => Tạo popup mới -> hiển thị, 
-        *           => Cập nhật lại cho usePopupContext.
-        *   - Nếu hiện tại usePopupContext chưa lưu id nào: 
-        *       + Tạo popup mới -> hiển thị,
-        *       + Cập nhật id mới này cho usePopupContext.
-        */
-
-        // onClick();
-
-        if (popupRef.current) {
-            popupRef.current.remove(); // Đóng popup nếu đã tồn tại
-        };
-
-        if (activeMarkerId === id) {
-            updatePopupContext(null); // Nếu marker đang hoạt động, xóa id
-        } else {
-            createPopup(); // Tạo popup cho marker mới
-            updatePopupContext(id); // Cập nhật id mới
-        };
-=======
         currentMap.flyTo({
             center: [
                 placeData.Longitude,
@@ -104,7 +52,6 @@ const Marker = ({ id, currentMap, placeData, handleShowModalInfo }) => {
         });
 
         handleShowModalInfo(placeData);
->>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
     };
 
     useEffect(() => {
@@ -117,19 +64,6 @@ const Marker = ({ id, currentMap, placeData, handleShowModalInfo }) => {
 
         markerRef.current = marker;
 
-<<<<<<< HEAD
-        if (enableClick) {
-            marker.getElement().addEventListener('click', handleClick);
-        };
-
-        // Cleanup khi component bị unmount hoặc khi marker thay đổi
-        return () => {
-            marker.getElement().removeEventListener('click', handleClick);
-            marker.remove();  // Xóa marker khỏi map
-
-            if (popupRef.current) {
-                popupRef.current.remove(); // Xóa Popup
-=======
         marker.getElement().addEventListener('click', handleClick);
 
         return () => {
@@ -138,7 +72,6 @@ const Marker = ({ id, currentMap, placeData, handleShowModalInfo }) => {
 
             if (popupRef.current) {
                 popupRef.current.remove();
->>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
             }
         }
     }, [currentMap, placeData, id]);

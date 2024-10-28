@@ -4,28 +4,18 @@ import mapboxgl from 'mapbox-gl';
 import { toast } from 'react-toastify';
 import { MapboxAPIKey } from '../../../common/MapboxApiKey';
 import Marker from '../Marker';
-<<<<<<< HEAD
-import MapToolbar from './MapToolbar';
-import AddWarehouseModal from '../Modals/AddWarehouseModal';
-import FindPlaceModal from '../Modals/FindPlaceModal';
-=======
 import MarkerPopupCard from '../MarkerPopupCard';
 import MapToolbar from './MapToolbar';
 import AddWarehouseModal from '../Modals/AddWarehouseModal';
 import FindPlaceModal from '../Modals/FindPlaceModal';
 import FindWarehouseModal from '../Modals/FindWarehouseModal';
 import StatisticsModal from '../Modals/StatisticsModal';
->>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
 import GeocoderMarker from './GeocoderMarkerComponent';
 import { FindCoordinates } from './FindCoordinates';
 
 mapboxgl.accessToken = MapboxAPIKey;
 
-<<<<<<< HEAD
-const MapComponent = ({ placesData = [], reloadData = () => {} }) => {
-=======
 const MapComponent = ({ placesData = [], reloadData = () => { } }) => {
->>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
     const mapContainer = useRef(null);
     const map = useRef(null);
     const geocoderMarkerRef = useRef();
@@ -37,14 +27,10 @@ const MapComponent = ({ placesData = [], reloadData = () => { } }) => {
     const [places, setNewPlaces] = useState(placesData);
     const [isEnableModalAddPlace, setEnableModalAddPlace] = useState(false);
     const [isEnableModalFindPlace, setEnableModalFindPlace] = useState(false);
-<<<<<<< HEAD
-    const [selectedCoordinates, setSelectedCoordinates] = useState(null);
-=======
     const [isEnableModalFindWarehouse, setEnableModalFindWarehouse] = useState(false);
     const [isEnableStatisticsModal, setEnableStatisticsModal] = useState(false);
     const [selectedCoordinates, setSelectedCoordinates] = useState(null);
     const [markerSelected, setMarkerSelected] = useState(null);
->>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
 
     const addNewMarker = (lngLat) => {
         setNewPlaces(prevPlaces => [
@@ -95,10 +81,6 @@ const MapComponent = ({ placesData = [], reloadData = () => { } }) => {
             const lat = coordinates[1];
             const lng = coordinates[0];
 
-<<<<<<< HEAD
-            // Create marker:
-=======
->>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
             if (geocoderMarkerRef.current) geocoderMarkerRef.current.remove();
 
             const geocoderMarker = document.createElement('div');
@@ -124,8 +106,6 @@ const MapComponent = ({ placesData = [], reloadData = () => { } }) => {
         }
     };
 
-<<<<<<< HEAD
-=======
     const findWarehouse = (warehouseName) => {
         const result = places.filter(warehouse => warehouse.Name === warehouseName)[0];
 
@@ -146,7 +126,6 @@ const MapComponent = ({ placesData = [], reloadData = () => { } }) => {
         }
     };
 
->>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
     useEffect(() => {
         if (map.current) return;
 
@@ -172,11 +151,7 @@ const MapComponent = ({ placesData = [], reloadData = () => { } }) => {
         });
 
         return () => {
-<<<<<<< HEAD
-            map.current.off('click'); // Cleanup sự kiện khi component bị unmount
-=======
             map.current.off('click');
->>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
         }
     }, [lat, lng, zoom, map.current]);
 
@@ -195,22 +170,7 @@ const MapComponent = ({ placesData = [], reloadData = () => { } }) => {
                             id={`marker-${index + 1}`}
                             currentMap={map.current}
                             placeData={place}
-<<<<<<< HEAD
-                            // onClick={() => {
-                            //     setLat(place.Latitude);
-                            //     setLng(place.Longitude);
-                            //     map.current.flyTo({
-                            //         center: [
-                            //             place.Longitude, 
-                            //             place.Latitude,
-                            //         ],
-                            //         zoom: 14,
-                            //         essential: true,
-                            //     });
-                            // }}
-=======
                             handleShowModalInfo={(data) => setMarkerSelected(data)}
->>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
                         />
                     ))
                 }
@@ -228,9 +188,6 @@ const MapComponent = ({ placesData = [], reloadData = () => { } }) => {
                         }
                     }}
                     findPlace={() => setEnableModalFindPlace(true)}
-<<<<<<< HEAD
-                />
-=======
                     findWarehouse={() => setEnableModalFindWarehouse(true)}
                 />
                 {
@@ -241,7 +198,6 @@ const MapComponent = ({ placesData = [], reloadData = () => { } }) => {
                         onShowStatisticsModal={() => setEnableStatisticsModal(true)}
                     />
                 }
->>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
             </div>
 
             {
@@ -249,13 +205,8 @@ const MapComponent = ({ placesData = [], reloadData = () => { } }) => {
                     <AddWarehouseModal
                         key={isEnableModalAddPlace ? 'enabled' : 'disabled'}
                         isEnable={isEnableModalAddPlace}
-<<<<<<< HEAD
-                        latitude={selectedCoordinates.Latitude} // Sử dụng tọa độ đã chọn
-                        longitude={selectedCoordinates.Longitude} // Sử dụng tọa độ đã chọn
-=======
                         latitude={selectedCoordinates.Latitude}
                         longitude={selectedCoordinates.Longitude}
->>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
                         afterAddAction={() => {
                             places.filter((_, index) => index !== places.length - 1);
                             setEnableModalAddPlace(false);
@@ -272,8 +223,6 @@ const MapComponent = ({ placesData = [], reloadData = () => { } }) => {
                 handleFindPlace={findPlace}
                 handleCancelFind={() => setEnableModalFindPlace(false)}
             />
-<<<<<<< HEAD
-=======
 
             <FindWarehouseModal
                 isEnable={isEnableModalFindWarehouse}
@@ -290,7 +239,6 @@ const MapComponent = ({ placesData = [], reloadData = () => { } }) => {
                     handleClose={() => setEnableStatisticsModal(false)}
                 />
             }
->>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
         </>
     );
 }

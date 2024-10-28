@@ -171,11 +171,7 @@ function WarehouseDetails() {
                                             </Col>
                                         </Row>
                                         <Row style={{ flexDirection: 'row-reverse' }}>
-<<<<<<< HEAD
-                                            <Col md={3} sm={12}>
-=======
                                             <Col md={4} sm={12}>
->>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
                                                 <Button variant="contained" color="primary" type="submit" className="w-100">
                                                     Cập nhật
                                                 </Button>
@@ -203,11 +199,7 @@ function WarehouseDetails() {
                                         field: 'actions',
                                         name: 'Chi tiết',
                                         icon: <SearchOutlinedIcon />,
-<<<<<<< HEAD
-                                        callback: () => alert('Nothing'),
-=======
                                         callback: (id) => navigate(`/staffs/${id}`),
->>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
                                     }}
                                     onBack={false}
                                     onRestore={() => navigate('/staffs/restore')}
@@ -219,11 +211,7 @@ function WarehouseDetails() {
                                             staffs: prevData.staffs.filter(staff => !staffIds.includes(staff.id)),
                                         }));
                                     }}
-<<<<<<< HEAD
-                                    disabledHeader={false}
-=======
                                     disabledHeader={true}
->>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
                                     disabledFooter={true}
                                 />
                             </Col>

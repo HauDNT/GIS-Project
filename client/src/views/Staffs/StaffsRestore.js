@@ -3,27 +3,16 @@ import { toast } from 'react-toastify';
 import axiosInstance from '../../common/AxiosInstance.js';
 import DataTable from "../../components/DataTable.js";
 import { formatDatetime } from "../../utils/FormatDateTime.js";
-<<<<<<< HEAD
-=======
 import Loading from '../../components/Loading.js';
->>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
 
 function RestoreStaffs() {
     const [staffsData, setStaffsData] = useState([]);
     const headerNames = ['Mã nhân viên', 'Họ và tên', 'Email', 'Số điện thoại', 'Giới tính', 'Địa chỉ', 'Thời điểm xoá'];
-<<<<<<< HEAD
-=======
     const [isLoading, setLoading] = useState(true);
->>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
 
     const fetchStaffsDeleted = async () => {
         try {
             const result = await axiosInstance.get(`/staffs/deleted`);
-<<<<<<< HEAD
-            
-=======
-
->>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
             if (result) {
                 result.data.forEach(staff => {
                     staff.Gender = staff.Gender ? 'Nam' : 'Nữ';
@@ -56,17 +45,6 @@ function RestoreStaffs() {
 
     useEffect(() => {
         fetchStaffsDeleted();
-<<<<<<< HEAD
-    }, []);
-
-    return (
-        <DataTable
-            data={staffsData || []}
-            columnHeadersName={headerNames}
-            pageSize={staffsData.length}
-            onRestore={restoreStaffs}
-        />
-=======
 
         const timeoutId = setTimeout(() => setLoading(false), 1000);
         return () => clearTimeout(timeoutId);
@@ -83,7 +61,6 @@ function RestoreStaffs() {
                 onRestore={restoreStaffs}
             />
         )
->>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
     )
 }
 
