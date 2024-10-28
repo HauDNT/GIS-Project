@@ -105,17 +105,6 @@ function Dashboard() {
                                 number={states.staffs}
                             />
                         </Row>
-                        {/* <Row>
-                            <Col md={12} sm={12}>
-                                <div className="wrapper mt-1-5em">
-                                    <img
-                                        src="https://www.chartjs.org/docs/latest/assets/img/usage-2.9f9eb8e8.png"
-                                        alt=""
-                                        style={{ width: "100%", height: "100%" }}
-                                    />
-                                </div>
-                            </Col>
-                        </Row> */}
                         <Row>
                             <Col sm={12} xs={12}>
                                 <MapComponent

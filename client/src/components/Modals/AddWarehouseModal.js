@@ -2,19 +2,17 @@ import { useEffect, useState } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import {
     TextField,
-    InputLabel,
-    Select,
     Button,
     Typography,
-    MenuItem,
-    FormControl,
     Backdrop,
     Box,
     Modal,
     Fade,
+    Divider,
 } from '@mui/material';
-import axiosInstance from '../../common/AxiosInstance';
 import { toast } from 'react-toastify';
+import axiosInstance from '../../common/AxiosInstance';
+import MiniMapComponent from '../Mapbox/MiniMap/MiniMapComponent';
 
 const style = {
     position: 'absolute',
@@ -26,19 +24,19 @@ const style = {
     boxShadow: 24,
     p: 4,
     width: 500,
-    maxWidth: '95%',
+    height: '95%',
+    overflowY: 'scroll',
 };
 
-const AddCustomerModal = ({
+const AddWarehouseModal = ({
     isEnable = false,
     handleClose,
     afterAdd,
 }) => {
     const initValues = {
-        Fullname: '',
-        Email: '',
-        PhoneNumber: '',
-        Gender: true,
+        Name: '',
+        Latitude: 9.97032002433383,
+        Longitude: 105.11054875065781,
         Address: '',
     };
     const [show, setShow] = useState(isEnable);
@@ -46,24 +44,31 @@ const AddCustomerModal = ({
 
     useEffect(() => setShow(isEnable), [isEnable]);
 
+    const updateAddress = (lngLat) => {
+        setValues(
+            prevData => ({
+                ...prevData,
+                Latitude: lngLat.lat,
+                Longitude: lngLat.lng,
+            }),
+        );
+    };
+
     const handleSubmit = async (e) => {
         try {
             e.preventDefault();
 
-            const result = await axiosInstance.post('/customers/create', values);
+            const result = await axiosInstance.post('/warehouses/create', values);
 
-            if (result) {
-                toast.success('Tạo khách hàng mới thành công!');
-                setValues(initValues);
-                handleClose();
+            if (result.data.payload) {
+                toast.success('Thêm thông tin kho mới thành công!');
+
                 afterAdd(result.data.payload);
+                handleClose();
             }
-            else {
-                toast.error('Tạo khách hàng mới thất bại!');
-            };
         } catch (error) {
             console.log(error);
-            toast.error('Đã xảy ra lỗi trong quá trình thêm khách hàng! Vui lòng thử lại sau.')
+            toast.error('Đã xảy ra lỗi trong quá trình thêm kho! Vui lòng thử lại sau.')
         };
     };
 
@@ -87,18 +92,19 @@ const AddCustomerModal = ({
             <Fade in={show}>
                 <Box sx={style}>
                     <Typography id="transition-modal-title" variant="h6" component="h2">
-                        Thêm khách hàng mới
+                        Thêm kho mới
                     </Typography>
+                    <Divider style={{ margin: '10px 0 5px'}}/>
                     <form onSubmit={(e) => handleSubmit(e)}>
                         <Row>
                             <Col>
                                 <TextField
-                                    label="Họ và tên"
+                                    label="Tên kho"
                                     variant="outlined"
                                     fullWidth
                                     margin="normal"
-                                    value={values.Fullname}
-                                    onChange={(event) => setValues({ ...values, Fullname: event.target.value })}
+                                    value={values.Name}
+                                    onChange={(event) => setValues({ ...values, Name: event.target.value })}
                                     required
                                     InputLabelProps={{
                                         shrink: true,
@@ -108,35 +114,11 @@ const AddCustomerModal = ({
                         </Row>
                         <Row>
                             <Col>
-                                <TextField
-                                    label="Email"
-                                    variant="outlined"
-                                    fullWidth
-                                    margin="normal"
-                                    type="email"
-                                    value={values.Email}
-                                    onChange={(event) => setValues({ ...values, Email: event.target.value })}
-                                    required
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                />
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                <TextField
-                                    label="Số điện thoại"
-                                    variant="outlined"
-                                    fullWidth
-                                    margin="normal"
-                                    type="number"
-                                    value={values.PhoneNumber}
-                                    onChange={(event) => setValues({ ...values, PhoneNumber: event.target.value })}
-                                    required
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
+                                <MiniMapComponent
+                                    lat={values.Latitude}
+                                    lng={values.Longitude}
+                                    zoom={14}
+                                    updateLatLngData={(lngLat) => updateAddress(lngLat)}
                                 />
                             </Col>
                         </Row>
@@ -147,6 +129,7 @@ const AddCustomerModal = ({
                                     variant="outlined"
                                     fullWidth
                                     margin="normal"
+                                    type="text"
                                     value={values.Address}
                                     onChange={(event) => setValues({ ...values, Address: event.target.value })}
                                     required
@@ -158,19 +141,36 @@ const AddCustomerModal = ({
                         </Row>
                         <Row>
                             <Col>
-                                <FormControl className="mt-1em" fullWidth>
-                                    <InputLabel id="select-gender">Giới tính</InputLabel>
-                                    <Select
-                                        labelId="select-gender"
-                                        id="demo-simple-select"
-                                        value={values.Gender}
-                                        label="Giới tính"
-                                        onChange={(event) => setValues({ ...values, Gender: event.target.value })}
-                                    >
-                                        <MenuItem value={true}>Nam</MenuItem>
-                                        <MenuItem value={false}>Nữ</MenuItem>
-                                    </Select>
-                                </FormControl>
+                                <TextField
+                                    label="Vĩ độ"
+                                    variant="outlined"
+                                    fullWidth
+                                    margin="normal"
+                                    type="number"
+                                    value={values.Latitude}
+                                    onChange={(event) => setValues({ ...values, Latitude: event.target.value })}
+                                    disabled
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <TextField
+                                    label="Kinh độ"
+                                    variant="outlined"
+                                    fullWidth
+                                    margin="normal"
+                                    type="number"
+                                    value={values.Longitude}
+                                    onChange={(event) => setValues({ ...values, Longitude: event.target.value })}
+                                    disabled
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                />
                             </Col>
                         </Row>
                         <Row style={{ flexDirection: 'row-reverse', marginTop: '1em' }}>
@@ -184,7 +184,7 @@ const AddCustomerModal = ({
                 </Box>
             </Fade>
         </Modal>
-    );
+    )
 }
 
-export default AddCustomerModal;
+export default AddWarehouseModal
