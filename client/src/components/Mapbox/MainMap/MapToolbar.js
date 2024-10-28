@@ -7,6 +7,12 @@ import {
     ArrowBackIosNew,
     ArrowForwardIos,
     TravelExplore,
+<<<<<<< HEAD
+} from '@mui/icons-material';
+import { useState } from 'react';
+
+const MapToolbar = ({ onZoomIn, onZoomOut, onResetView, findPlace, addNewPlace }) => {
+=======
     Search,
 } from '@mui/icons-material';
 import { useState } from 'react';
@@ -19,6 +25,7 @@ const MapToolbar = ({
     addNewPlace,
     findWarehouse,
 }) => {
+>>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
     const [openFull, setOpenFull] = useState(false);
 
     const handleOpenFull = () => {
@@ -27,6 +34,9 @@ const MapToolbar = ({
 
     return (
         <div className={`map-toolbar ${openFull && 'tool-large'}`}>
+<<<<<<< HEAD
+            <Button variant="outline-primary" onClick={onZoomIn}>
+=======
             <Button variant="outline-primary" onClick={addNewPlace}>
                 <PushPinOutlined/>
             </Button>
@@ -37,6 +47,7 @@ const MapToolbar = ({
                 <TravelExplore/>
             </Button>
             <Button variant="outline-primary" onClick={onZoomIn} className='mt-10px'>
+>>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
                 <ZoomIn/>
             </Button>
             <Button variant="outline-primary" onClick={onZoomOut} className='mt-10px'>
@@ -45,6 +56,15 @@ const MapToolbar = ({
             <Button variant="outline-primary" onClick={onResetView} className='mt-10px'>
                 <RestartAltOutlined/>
             </Button>
+<<<<<<< HEAD
+            <Button variant="outline-primary" onClick={addNewPlace} className='mt-10px'>
+                <PushPinOutlined/>
+            </Button>
+            <Button variant="outline-primary" onClick={findPlace} className='mt-10px'>
+                <TravelExplore/>
+            </Button>
+=======
+>>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
 
             {
                 openFull ? (

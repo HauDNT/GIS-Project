@@ -3,12 +3,18 @@ import { toast } from 'react-toastify';
 import axiosInstance from '../../common/AxiosInstance.js';
 import DataTable from "../../components/DataTable.js";
 import { formatDatetime } from "../../utils/FormatDateTime.js";
+<<<<<<< HEAD
+=======
 import Loading from '../../components/Loading.js';
+>>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
 
 function CustomersRestore() {
     const [customers, setCustomers] = useState([]);
     const headerNames = ['STT', 'Họ và tên', 'Email', 'Số điện thoại', 'Giới tính', 'Địa chỉ', 'Thời điểm xoá'];
+<<<<<<< HEAD
+=======
     const [isLoading, setLoading] = useState(true);
+>>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
 
     const fetchCustomersDeleted = async () => {
         try {
@@ -47,6 +53,17 @@ function CustomersRestore() {
 
     useEffect(() => {
         fetchCustomersDeleted();
+<<<<<<< HEAD
+    }, []);
+
+    return (
+        <DataTable
+            data={customers || []}
+            columnHeadersName={headerNames}
+            pageSize={customers.length}
+            onRestore={restoreCustomers}
+        />
+=======
 
         const timeoutId = setTimeout(() => setLoading(false), 1000);
         return () => clearTimeout(timeoutId);
@@ -63,6 +80,7 @@ function CustomersRestore() {
                 onRestore={restoreCustomers}
             />
         )
+>>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
     )
 }
 

@@ -8,7 +8,10 @@ import axiosInstance from '../../common/AxiosInstance';
 function Riceplants() {
     const [rices, setRices] = useState([]);
     const [lazyLoading, setLazyLoading] = useState(true);
+<<<<<<< HEAD
+=======
     const [stopLoading, setStopLoading] = useState(false);
+>>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
     const [page, setPage] = useState(1);
     const loader = useRef(null);
 
@@ -21,6 +24,9 @@ function Riceplants() {
             const result = await axiosInstance.get(`/riceplants?page=${page}&limit=12`);
 
             if (result.data.payload) {
+<<<<<<< HEAD
+                setRices((prevData) => [...prevData, ...result.data.payload]);
+=======
                 if (result.data.payload.length > 0) {
                     setRices((prevData) => [...prevData, ...result.data.payload]);
                 }
@@ -28,6 +34,7 @@ function Riceplants() {
                     setStopLoading(true);
                     toast.info('Đã tải hết dữ liệu');
                 };
+>>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
             };
         } catch (error) {
             console.log(error);
@@ -38,9 +45,13 @@ function Riceplants() {
     };
 
     useEffect(() => {
+<<<<<<< HEAD
+        fetchCustomers();
+=======
         if (!stopLoading) {
             fetchCustomers();
         };
+>>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
     }, [page]);
 
     useEffect(() => {

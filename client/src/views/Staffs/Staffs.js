@@ -6,7 +6,11 @@ import BorderColorIcon from '@mui/icons-material/BorderColor';
 import axiosInstance from '../../common/AxiosInstance';
 import DataTable from "../../components/DataTable.js";
 import { hideField } from "../../utils/HideFieldInData.js";
+<<<<<<< HEAD
+import AddStaffModal from './AddStaffModal.js';
+=======
 import AddStaffModal from '../../components/Modals/AddStaffModal.js';
+>>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
 import Loading from '../../components/Loading.js';
 
 const softDeleteStaffs = async (staffIds) => {
@@ -47,8 +51,13 @@ function Staffs() {
         try {
             fetchAllStaffs();
 
+<<<<<<< HEAD
+            const intervalId = setInterval(() => setLoading(false), 1000);
+            return () => clearInterval(intervalId);
+=======
             const timeoutId = setTimeout(() => setLoading(false), 1000);
             return () => clearTimeout(timeoutId);
+>>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
         } catch (error) {
             toast.error('Đã xảy ra lỗi trong quá trình lấy dữ liệu nhân viên.');
         }

@@ -1,15 +1,30 @@
 import { useState, useEffect, useContext } from 'react';
+<<<<<<< HEAD
+=======
 import {
     ReceiptLongOutlined,
     MapsHomeWorkOutlined,
     AccountCircleOutlined,
 } from '@mui/icons-material';
+>>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
 import axiosInstance from '../../common/AxiosInstance.js';
 import { WarehousesContext } from '../../context/WarehousesContext.js';
 import { Container, Row, Col } from 'react-bootstrap';
 import MapComponent from "../../components/Mapbox/MainMap/MapComponent.js";
 import DashboardCard from '../../components/Cards/DashboardCard.js';
 import Loading from '../../components/Loading.js';
+<<<<<<< HEAD
+
+function Dashboard() {
+    const { listWarehouses, loadWarehousesData, addToListWarehouses } = useContext(WarehousesContext);
+    const [isLoading, setLoading] = useState(true);
+
+    useEffect(() => {
+        loadWarehousesData();
+        setInterval(() => setLoading(false), 1000);
+    }, []);
+
+=======
 import { toast } from 'react-toastify';
 
 function Dashboard() {
@@ -56,10 +71,15 @@ function Dashboard() {
             });
     };
  
+>>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
     const getNewestWarehouseJustAdded = async () => {
         const result = (await axiosInstance.get('/warehouses/newest'));
         if (result && result.data) {
             addToListWarehouses(result.data);
+<<<<<<< HEAD
+        };
+    };
+=======
             updateStatesData('warehouses', states.warehouses + 1);
         };
     };
@@ -75,10 +95,37 @@ function Dashboard() {
         return () => clearTimeout(timeoutId);
     }, []);
 
+>>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
 
     return (
         <Container fluid>
             {
+<<<<<<< HEAD
+                isLoading ? (
+                    <Loading />
+                ) : (
+                    <>
+                        <Row>
+                            <Col sm={5} xs={12}>
+                                <Row>
+                                    <Col className='pt-1-5em'>
+                                        <DashboardCard />
+                                    </Col>
+                                    <Col className='pt-1-5em'>
+                                        <DashboardCard />
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col className='pt-1-5em'>
+                                        <DashboardCard />
+                                    </Col>
+                                    <Col className='pt-1-5em'>
+                                        <DashboardCard />
+                                    </Col>
+                                </Row>
+                            </Col>
+                            <Col sm={7} xs={12}>
+=======
                 states.isLoading ? (
                     <Loading />
                 ) : (
@@ -107,6 +154,7 @@ function Dashboard() {
                         </Row>
                         {/* <Row>
                             <Col md={12} sm={12}>
+>>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
                                 <div className="wrapper mt-1-5em">
                                     <img
                                         src="https://www.chartjs.org/docs/latest/assets/img/usage-2.9f9eb8e8.png"
@@ -115,7 +163,11 @@ function Dashboard() {
                                     />
                                 </div>
                             </Col>
+<<<<<<< HEAD
+                        </Row>
+=======
                         </Row> */}
+>>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
                         <Row>
                             <Col sm={12} xs={12}>
                                 <MapComponent

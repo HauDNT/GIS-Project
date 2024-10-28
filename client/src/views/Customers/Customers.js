@@ -6,7 +6,11 @@ import { Typography } from "@mui/material";
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import axiosInstance from '../../common/AxiosInstance.js';
 import DataTable from "../../components/DataTable.js";
+<<<<<<< HEAD
+import AddCustomerModal from "./AddCustomerModal.js";
+=======
 import AddCustomerModal from "../../components/Modals/AddCustomerModal.js";
+>>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
 import UpdateCustomerModal from "./UpdateCustomerModal.js";
 import Loading from '../../components/Loading.js';
 
@@ -16,7 +20,11 @@ function Customers() {
     const [customersSelected, setCustomerSelected] = useState(null);
     const [enableAddModal, setEnableAddModal] = useState(false);
     const [enableUpdateModal, setEnableUpdateModal] = useState(false);
+<<<<<<< HEAD
+    const headerNames = ['Họ và tên', 'Email', 'Số điện thoại', 'Giới tính', 'Địa chỉ'];
+=======
     const headerNames = ['Mã khách hàng', 'Họ và tên', 'Email', 'Số điện thoại', 'Giới tính', 'Địa chỉ'];
+>>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
     const [isLoading, setLoading] = useState(true);
 
     const fetchCustomers = async () => {
@@ -46,8 +54,13 @@ function Customers() {
         try {
             fetchCustomers();
 
+<<<<<<< HEAD
+            const intervalId = setInterval(() => setLoading(false), 1000);
+            return () => clearInterval(intervalId);
+=======
             const timeoutId = setTimeout(() => setLoading(false), 1000);
             return () => clearTimeout(timeoutId);
+>>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
         } catch (error) {
             console.log(error);
             toast.error('Xảy ra lỗi trong quá trình tải dữ liệu khách hàng!');

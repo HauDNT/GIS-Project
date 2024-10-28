@@ -1,3 +1,23 @@
+<<<<<<< HEAD
+import {
+    Image
+} from '@mui/icons-material';
+
+const DashboardCard = () => {
+    return (
+        <div className='card-container'>
+            <div className='w-100 card-header d-flex'>
+                <h5 className="m-0">Title</h5>
+                <div className="text-end w-100">
+                    <Image/>
+                </div>
+            </div>
+            <div className="card-content ">
+                <h3>3000</h3>
+            </div>
+        </div>
+    )
+=======
 import { Col } from "react-bootstrap";
 
 const DashboardCard = ({
@@ -24,6 +44,7 @@ const DashboardCard = ({
             </div>
         </Col>
     );
+>>>>>>> 1ec3338ddce2e6a5e398b58ea071b815f25afdc8
 }
 
 export default DashboardCard;
