@@ -55,6 +55,7 @@ function WarehousesRestore() {
             pageSize={warehousesDeleted.length}
             onDelete={forceDeletedWarehouses}
             onRestore={restoreWarehouses}
+            onCreate={false}
         />
     );
 }

@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import axiosInstance from '../../common/AxiosInstance.js';
 import DataTable from "../../components/DataTable.js";
 import { formatDatetime } from "../../utils/FormatDateTime.js";
+import { hideField } from "../../utils/HideFieldInData.js";
 import Loading from '../../components/Loading.js';
 
 function RestoreStaffs() {
@@ -55,7 +56,7 @@ function RestoreStaffs() {
             <Loading />
         ) : (
             <DataTable
-                data={staffsData || []}
+                data={hideField(staffsData, 'imageUrl') || []}
                 columnHeadersName={headerNames}
                 pageSize={staffsData.length}
                 onRestore={restoreStaffs}

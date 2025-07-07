@@ -62,6 +62,7 @@ export class CustomersController {
 
             return createSuccessResponse('Thêm khách hàng mới thành công!', newCustomer);
         } catch (error) {
+            console.log(error.message);
             throw new HttpException(createErrorResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR.toString(),
                 'Thêm khách hàng mới thất bại!',

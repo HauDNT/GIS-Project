@@ -50,7 +50,7 @@ export class WarehousesController {
     };
 
     @Get('deleted')
-    @UseGuards(JWTGuard)
+    // @UseGuards(JWTGuard)
     getWarehousesDeleted(): Promise<Warehouse[]> {
         return this.warehousesService.getWarehousesDeleted();
     };

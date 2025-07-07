@@ -50,6 +50,10 @@ export class CustomersService {
             },
         });
 
+        customersDeleted.forEach((item, index) => {
+            customersDeleted[index] = omitFields(item, ['imageUrl', 'isDeleted']);
+        });
+
         return customersDeleted;
     };
 

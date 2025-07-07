@@ -77,7 +77,11 @@ export class WarehousesService {
             where: { isDeleted: true },
         });
 
-        return omitFields(result, ['isDeleted']);
+        result.forEach((item, index) => {
+            result[index] = omitFields(item, ['imageUrl', 'isDeleted']);
+        });
+
+        return result;
     };
 
     async getAmount(): Promise<number> {

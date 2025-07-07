@@ -35,18 +35,18 @@ function Dashboard() {
                 axiosInstance.get('/receiving-slips/amount'),
                 axiosInstance.get('/dispatch-slips/amount'),
                 axiosInstance.get('/staffs/amount'),
-                // axiosInstance.get('/warehouses/amount'),
+                axiosInstance.get('/warehouses/amount'),
             ])
             .then(
                 ([
                     resReBillsAmount,
                     resDisBillsAmount,
                     resStaffsAmount,
-                    // resWarehousesAmount,
+                    resWarehousesAmount,
                 ]) => {
                     updateStatesData('receiveBills', resReBillsAmount.data.payload);
                     updateStatesData('dispatchBills', resDisBillsAmount.data.payload);
-                    updateStatesData('warehouses', listWarehouses.length);
+                    updateStatesData('warehouses', resWarehousesAmount.data.payload);
                     updateStatesData('staffs', resStaffsAmount.data.payload);
                 }
             )
