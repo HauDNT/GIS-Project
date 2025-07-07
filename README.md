@@ -9,7 +9,7 @@
 <h4>Một số hình ảnh của dự án</h4>
 <h5>Giao diện Website</h5>
 <p align="center">
-  <img src="./images/dashboard.png" alt="Dashboard" width="48%" style="border:1px solid #ccc;">
+  <img src="./images/Dashboard.png" alt="Dashboard" width="48%" style="border:1px solid #ccc;">
   <img src="./images/Riceplants.png" alt="Danh sách lúa" width="48%" style="border:1px solid #ccc;">
 </p>
 <p align="center">
